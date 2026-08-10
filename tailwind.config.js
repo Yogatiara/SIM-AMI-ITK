@@ -169,11 +169,11 @@ module.exports = {
         },
     },
     plugins: [
-        forms,
-        require("@tailwindcss/line-clamp"),
-        require("tailwind-scrollbar"),
-        require("flowbite/plugin"),
-        require("preline/plugin"),
+        // forms,
+        // require("@tailwindcss/line-clamp"),
+        // require("tailwind-scrollbar"),
+        // require("flowbite/plugin"),
+        // require("preline/plugin"),
         plugin(({ addUtilities, theme }) => {
             const newUtilities = {};
 
