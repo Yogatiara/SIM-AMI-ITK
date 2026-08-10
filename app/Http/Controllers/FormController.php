@@ -149,7 +149,7 @@ class FormController extends Controller
         $units = Unit::all();
         $users = User::all();
 
-        return view('forms.create', compact('units', 'users',  'documentId', 'documents', 'categories', 'standardsByCategory', 'competenciesByStandard', 'indicatorsByCompetency'));
+        return view('forms.create', compact('units', 'users', 'documentId', 'documents', 'categories', 'standardsByCategory', 'competenciesByStandard', 'indicatorsByCompetency'));
     }
 
     /**
@@ -297,7 +297,7 @@ class FormController extends Controller
 
         $formAccesses = FormAccess::where('form_id', $form->id)->get();
 
-        return view('forms.edit', compact('formAccesses', 'form', 'units', 'users',  'documentId', 'documents', 'categories', 'standardsByCategory', 'competenciesByStandard', 'indicatorsByCompetency'));
+        return view('forms.edit', compact('formAccesses', 'form', 'units', 'users', 'documentId', 'documents', 'categories', 'standardsByCategory', 'competenciesByStandard', 'indicatorsByCompetency'));
     }
 
 
@@ -379,10 +379,10 @@ class FormController extends Controller
                     "validation" => 'required|string',
                     "link" => 'required|string',
                 ])->setAttributeNames([
-                    "submission_status" => "Audit {$code}",
-                    "validation" => "Validation {$code}",
-                    "link" => "Link {$code}",
-                ])->validate();
+                            "submission_status" => "Audit {$code}",
+                            "validation" => "Validation {$code}",
+                            "link" => "Link {$code}",
+                        ])->validate();
             }
 
             FormTime::updateOrCreate(
@@ -476,9 +476,9 @@ class FormController extends Controller
                     "assessment_status" => 'required|integer|exists:statuses,id',
                     "description" => 'nullable|string',
                 ])->setAttributeNames([
-                    "assessment_status" => "Audit {$code}",
-                    "description" => "Description {$code}",
-                ])->validate();
+                            "assessment_status" => "Audit {$code}",
+                            "description" => "Description {$code}",
+                        ])->validate();
             }
 
             FormTime::updateOrCreate(
@@ -574,11 +574,11 @@ class FormController extends Controller
                     "feedback" => 'required|integer',
                     "comment" => 'nullable|string',
                 ])->setAttributeNames([
-                    "validation" => "Validation {$code}",
-                    "link" => "Link {$code}",
-                    "feedback" => "Feedback {$code}",
-                    "comment" => "Comment {$code}",
-                ])->validate();
+                            "validation" => "Validation {$code}",
+                            "link" => "Link {$code}",
+                            "feedback" => "Feedback {$code}",
+                            "comment" => "Comment {$code}",
+                        ])->validate();
 
                 FormAudit::updateOrCreate(
                     ['id' => $indicator['id']], // Cari evaluasi berdasarkan ID
@@ -682,9 +682,9 @@ class FormController extends Controller
                     "validation_status" => 'required|integer|exists:statuses,id',
                     "conclusion" => 'required|string',
                 ])->setAttributeNames([
-                    "validation_status" => "Audit {$code}",
-                    "conclusion" => "Conclusion {$code}",
-                ])->validate();
+                            "validation_status" => "Audit {$code}",
+                            "conclusion" => "Conclusion {$code}",
+                        ])->validate();
             }
 
             FormTime::updateOrCreate(
@@ -901,8 +901,8 @@ class FormController extends Controller
                     "id" => 'required|integer|exists:form_audits,id',
                     "planning" => 'required|string',
                 ])->setAttributeNames([
-                    "planning" => "Plan {$code}",
-                ])->validate();
+                            "planning" => "Plan {$code}",
+                        ])->validate();
             }
 
             FormTime::updateOrCreate(
@@ -1115,10 +1115,10 @@ class FormController extends Controller
         )->sortBy(function ($access) {
             return $access->position === 'Chief' ? 0 : (intval(str_replace('PIC', '', $access->position)) ?: 1);
         })->map(fn($auditee) => [
-            'auditee_position' => str_replace(array_keys($translations), array_values($translations), $auditee->position),
-            'auditee_name' => $auditee->user->name ?? '',
-            'auditee_contact' => $auditee->user->contact,
-        ])->values();
+                'auditee_position' => str_replace(array_keys($translations), array_values($translations), $auditee->position),
+                'auditee_name' => $auditee->user->name ?? '',
+                'auditee_contact' => $auditee->user->contact,
+            ])->values();
 
         // Filter dan transformasi data untuk auditors
         $auditorsData = $formAccesses->filter(
@@ -1127,10 +1127,10 @@ class FormController extends Controller
         )->sortBy(function ($access) {
             return $access->position === 'Leader' ? 0 : (intval(str_replace('Member', '', $access->position)) ?: 1);
         })->map(fn($auditor) => [
-            'auditor_position' => str_replace(array_keys($translations), array_values($translations), $auditor->position),
-            'auditor_name' => $auditor->user->name ?? '',
-            'auditor_contact' => $auditor->user->contact,
-        ])->values();
+                'auditor_position' => str_replace(array_keys($translations), array_values($translations), $auditor->position),
+                'auditor_name' => $auditor->user->name ?? '',
+                'auditor_contact' => $auditor->user->contact,
+            ])->values();
 
         // Gabungkan data auditees dan auditors sebagai template
         $combinedData = collect(range(0, max($auditeesData->count(), $auditorsData->count()) - 1))
@@ -1383,7 +1383,7 @@ class FormController extends Controller
 
         // Windows
         // $command = "{$libreOfficePath} --headless --convert-to pdf --outdir " . storage_path('app/public') . " " . escapeshellarg($wordPath);
-        
+
         // Server
         $command = "libreoffice --headless --convert-to pdf --outdir " . storage_path('app/public') . " " . escapeshellarg($wordPath);
 

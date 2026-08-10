@@ -13,22 +13,15 @@ class UnitController extends Controller
      */
     public function index()
     {
-        $units = Unit::latest();
+        $units = Unit::withCount('forms')
+            ->latest()
+            ->get();
 
         foreach ($units as $unit) {
-
-            $canBeDeleted = true;
-
-            if ($unit->forms->isNotEmpty()) {
-                $canBeDeleted = false;
-            }
-
-            $unit->can_be_deleted = $canBeDeleted;
+            $unit->can_be_deleted = $unit->forms_count == 0;
         }
 
-        return view('units.index', [
-            'units' => $units->get()
-        ]);
+        return view('units.index', compact('units'));
     }
 
     /**
@@ -78,7 +71,7 @@ class UnitController extends Controller
     {
         $units = Unit::all();
         $faculties = Faculty::all();
-        return view('units.edit', compact('unit', 'units',  'faculties'));
+        return view('units.edit', compact('unit', 'units', 'faculties'));
     }
 
     /**

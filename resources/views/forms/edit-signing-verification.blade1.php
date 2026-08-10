@@ -86,42 +86,42 @@
                             class="grid max-h-[55vh] grid-cols-4 overflow-y-auto overflow-x-hidden text-gray-700 scrollbar-thin dark:text-cool-gray-50 dark:scrollbar-track-gray-500 dark:scrollbar-thumb-gray-800">
                             <div class="col-span-2 flex flex-col gap-4 px-3">
                                 @foreach ($auditees as $auditee)
-                                    <div class="flex flex-col gap-1 text-sm">
-                                        <div> {{ $auditee->position }} </div>
-                                        <div class="flex items-center">
-                                            <div class="relative mr-3 h-9 w-9 flex-shrink-0">
-                                                <img class="h-full w-full rounded-full object-cover"
-                                                    src="https://ui-avatars.com/api/?name={{ $auditee->user->name }}&background=random"
-                                                    alt="" loading="lazy" />
-                                            </div>
-                                            <div class="min-w-0 flex-1">
-                                                <div class="truncate">{{ $auditee->user->name }}</div>
-                                                <div class="truncate text-gray-500 dark:text-gray-400">
-                                                    {{ $auditee->user->contact }}
-                                                </div>
+                                <div class="flex flex-col gap-1 text-sm">
+                                    <div> {{ $auditee->position }} </div>
+                                    <div class="flex items-center">
+                                        <div class="relative mr-3 h-9 w-9 flex-shrink-0">
+                                            <img class="h-full w-full rounded-full object-cover"
+                                                src="https://ui-avatars.com/api/?name={{ $auditee->user->name }}&background=random"
+                                                alt="" loading="lazy" />
+                                        </div>
+                                        <div class="min-w-0 flex-1">
+                                            <div class="truncate">{{ $auditee->user->name }}</div>
+                                            <div class="truncate text-gray-500 dark:text-gray-400">
+                                                {{ $auditee->user->contact }}
                                             </div>
                                         </div>
                                     </div>
+                                </div>
                                 @endforeach
                             </div>
                             <div class="col-span-2 flex flex-col gap-4 px-3">
                                 @foreach ($auditors as $auditor)
-                                    <div class="flex flex-col gap-1 text-sm">
-                                        <div> {{ $auditor->position }} </div>
-                                        <div class="flex items-center">
-                                            <div class="relative mr-3 h-9 w-9 flex-shrink-0">
-                                                <img class="h-full w-full rounded-full object-cover"
-                                                    src="https://ui-avatars.com/api/?name={{ $auditor->user->name }}&background=random"
-                                                    alt="" loading="lazy" />
-                                            </div>
-                                            <div class="min-w-0 flex-1">
-                                                <div class="truncate">{{ $auditor->user->name }}</div>
-                                                <div class="truncate text-gray-500 dark:text-gray-400">
-                                                    {{ $auditor->user->contact }}
-                                                </div>
+                                <div class="flex flex-col gap-1 text-sm">
+                                    <div> {{ $auditor->position }} </div>
+                                    <div class="flex items-center">
+                                        <div class="relative mr-3 h-9 w-9 flex-shrink-0">
+                                            <img class="h-full w-full rounded-full object-cover"
+                                                src="https://ui-avatars.com/api/?name={{ $auditor->user->name }}&background=random"
+                                                alt="" loading="lazy" />
+                                        </div>
+                                        <div class="min-w-0 flex-1">
+                                            <div class="truncate">{{ $auditor->user->name }}</div>
+                                            <div class="truncate text-gray-500 dark:text-gray-400">
+                                                {{ $auditor->user->contact }}
                                             </div>
                                         </div>
                                     </div>
+                                </div>
                                 @endforeach
                             </div>
                         </div>
@@ -138,15 +138,15 @@
 
         {{-- <embed src="{{ Storage::url($form->rtm_link) }}" type="application/pdf" width="100%" height="600px"> --}}
         @if ($form->signing && Storage::exists('public/' . $form->signing))
-            <iframe class="rounded-sm" src="{{ Storage::url($form->signing) }}#toolbar=0" type="application/pdf"
-                width="100%" height="650px"></iframe>
+        <iframe class="rounded-sm" src="{{ Storage::url($form->signing) }}#toolbar=0" type="application/pdf"
+            width="100%" height="650px"></iframe>
         @else
-            <div
-                class="h-[85%] w-full overflow-y-auto scrollbar-thin dark:scrollbar-track-gray-500 dark:scrollbar-thumb-gray-800">
-                <div class="flex h-full items-center justify-center">
-                    <p class="font-semibold text-red-500">File tidak ditemukan.</p>
-                </div>
+        <div
+            class="h-[85%] w-full overflow-y-auto scrollbar-thin dark:scrollbar-track-gray-500 dark:scrollbar-thumb-gray-800">
+            <div class="flex h-full items-center justify-center">
+                <p class="font-semibold text-red-500">File tidak ditemukan.</p>
             </div>
+        </div>
         @endif
 
         <div class="flex justify-between py-2">
