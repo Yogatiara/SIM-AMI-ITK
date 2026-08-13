@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'gerbang' => [
+        'api_url' => env('GERBANG_API_URL', 'https://api-gerbang.itk.ac.id/api/siakad'),
+    ],
+
 ];

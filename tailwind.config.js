@@ -15,16 +15,20 @@ module.exports = {
         "./node_modules/preline/dist/*.js",
     ],
     theme: {
+        fontFamily: {
+            figtree: ["Figtree", "sans-serif"],
+
+            helvetica: ["Helvetica", "Arial", "sans-serif"],
+        },
         extend: {
-            fontFamily: {
-                // sans: ['Inter', ...defaultTheme.fontFamily.sans],
-                sans: ["sans-serif", ...defaultTheme.fontFamily.sans],
-                helvetica: ["Helvetica", "Arial", "sans-serif"],
-            },
             colors: {
                 transparent: "transparent",
                 white: "#ffffff",
                 black: "#000000",
+                primary: "#2982DC",
+                primaryDark: "#003566",
+                secondary: "#F5B75A",
+
                 gray: {
                     50: "#f9fafb",
                     100: "#f4f5f7",

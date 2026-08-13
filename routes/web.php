@@ -13,9 +13,11 @@ use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EvaluationController;
+use App\Livewire\auth\Login;
 
 Route::middleware(['guest'])->group(function () {
-    Route::get('/login', [AuthController::class, 'login'])->name('login');
+    Route::get('/login', Login::class)->name('login');
+
     Route::post('/auth', [AuthController::class, 'auth'])->name('auth');
 });
 
@@ -32,7 +34,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route::get('/dashboard', function () {
     //     return view('index');
     // })->name('dashboard');
-    
+
     // Route::get('/test', function () {
     //     FormUpdated::dispatch('test1');
     //     // event(new FormUpdated('test'));
@@ -48,7 +50,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/contacts/{id}/edit', [UserController::class, 'editContact'])->name('contacts.edit');
     Route::put('/contacts/{id}', [UserController::class, 'updateContact'])->name('contacts.update');
     Route::get('/getUser', [UserController::class, 'getUser']);
-    
+
     Route::resource('/documents', DocumentController::class);
     Route::get('/documents/drafts/{draft}/edit', [DocumentController::class, 'editDraft'])->name('documents.editDraft');
     Route::delete('/documents/drafts/{draft}', [DocumentController::class, 'destroyDraft'])->name('documents.destroyDraft');
@@ -72,6 +74,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/forms/{form}/signingVerification', [FormController::class, 'editSigningVerification'])->name('forms.editSigningVerification');
     Route::put('/forms/{form}/signingVerification', [FormController::class, 'updateSigningVerification'])->name('forms.updateSigningVerification');
     Route::get('/forms/{form}/report', [FormController::class, 'showReport'])->name('forms.showReport');
-    
-    Route::get('/forms/{form}/export', [FormController::class, 'export'])->name('forms.export');    
+
+    Route::get('/forms/{form}/export', [FormController::class, 'export'])->name('forms.export');
 });
