@@ -4,7 +4,40 @@
       <h2 class="text-2xl font-semibold text-blue-800 dark:text-gray-200">
         Tahapan AMI
       </h2>
+      {{-- <div class="flex w-full max-w-4xl flex-col items-stretch p-2 sm:h-56 sm:flex-row sm:overflow-hidden">
+        @php
+          $colors = ['red-500', 'yellow-300', 'green-400', 'blue-500', 'purple-400'];
+        @endphp
+        @foreach ($stages as $stage)
+          <form action="{{ route('stages.update', $stage->id) }}" method="POST"
+            class="pane bg-{{ $colors[$loop->index % count($colors)] }} relative m-2 flex min-h-14 min-w-14 flex-grow cursor-pointer items-start justify-center overflow-hidden rounded-3xl text-gray-200 transition-all duration-700 ease-in-out">
+            @csrf
+            @method('PUT')
+            <textarea {{ $userRole !== 'PJM' ? 'disabled' : '' }} name="description"
+              class="m-2 hidden w-full resize-none overflow-hidden border-0 bg-transparent font-semibold placeholder-gray-200 focus:ring-0"
+              rows="5" placeholder="Deskripsi Tahapan Audit" style="text-align: justify;" type="text"
+              name="input_{{ $stage->id }}">{{ $stage->description }}</textarea>
 
+            <div id="stage"
+              class="absolute bottom-0 z-20 m-2 flex items-center gap-x-2 transition-all duration-700 ease-in-out">
+              <div
+                class="text-{{ $colors[$loop->index % count($colors)] }} flex h-10 w-10 items-center justify-center rounded-full bg-gray-800">
+                <i class="fa-solid fa-{{ $stage->id }}"></i>
+              </div>
+              <div id="title" class="content hidden items-center justify-between gap-x-32">
+                <div class="translate-x-8 transform font-bold opacity-0 transition-all duration-700">
+                  {{ $stage->name }}
+                </div>
+                @if ($userRole == 'PJM')
+                  <button>
+                    Submit
+                  </button>
+                @endif
+              </div>
+            </div>
+          </form>
+        @endforeach
+      </div> --}}
 
 
       @php
@@ -96,15 +129,33 @@
                   {{ $stage->name }}
                 </h1>
 
-                <div
+                <form action="{{ route('stages.update', $stage->id) }}" method="POST"
                   class="{{ $color['card'] }}
-                               w-full rounded-xl border p-3 shadow-sm
-                               transition-all duration-300
-                               hover:shadow-lg">
-                  <p class="{{ $color['description'] }} text-sm leading-5">
-                    {{ $stage->description }}
-                  </p>
-                </div>
+           w-full rounded-xl border p-3 shadow-sm
+           transition-all duration-300
+           hover:shadow-lg">
+                  @csrf
+                  @method('PUT')
+
+                  @if ($userRole === 'PJM')
+                    <textarea name="description" rows="5"
+                      class="{{ $color['description'] }}
+                   w-full resize-none overflow-scroll
+                   border-0 bg-transparent text-sm leading-5
+                   focus:outline-none focus:ring-0"
+                      placeholder="Deskripsi Tahapan Audit">{{ $stage->description }}</textarea>
+
+                    <button type="submit"
+                      class=" rounded-lg bg-white/20 px-3 py-1.5 text-sm font-semibold
+                      text-white hover:bg-white/30">
+                      Simpan
+                    </button>
+                  @else
+                    <p class="{{ $color['description'] }} text-sm leading-5">
+                      {{ $stage->description }}
+                    </p>
+                  @endif
+                </form>
 
               </div>
 
@@ -149,15 +200,32 @@
                 </div>
 
                 {{-- Card --}}
-                <div
+                <form action="{{ route('stages.update', $stage->id) }}" method="POST"
                   class="{{ $color['card'] }}
-                               mt-3 w-full max-w-56 rounded-xl border p-3
-                               shadow-sm transition-all duration-300
-                               ease-in-out hover:scale-105 hover:shadow-lg">
-                  <p class="{{ $color['description'] }} text-sm leading-5">
-                    {{ $stage->description }}
-                  </p>
-                </div>
+           mt-3 w-full max-w-56 rounded-xl border p-3
+           shadow-sm transition-all duration-300
+           ease-in-out hover:scale-105 hover:shadow-lg">
+                  @csrf
+                  @method('PUT')
+
+                  @if ($userRole === 'PJM')
+                    <textarea name="description" rows="5"
+                      class="{{ $color['description'] }}
+                   w-full resize-none overflow-scroll
+                   border-0 bg-transparent text-sm leading-5
+                   focus:outline-none focus:ring-0"
+                      placeholder="Deskripsi Tahapan Audit">{{ $stage->description }}</textarea>
+
+                    <button type="submit"
+                      class=" rounded-lg bg-white/20 px-3 py-1.5 text-sm font-semibold text-white hover:bg-white/30">
+                      Simpan
+                    </button>
+                  @else
+                    <p class="{{ $color['description'] }} text-sm leading-5">
+                      {{ $stage->description }}
+                    </p>
+                  @endif
+                </form>
 
               </div>
             @endforeach
@@ -169,8 +237,8 @@
           {{-- GARIS DESKTOP --}}
           {{-- ========================= --}}
           <div
-            class="absolute left-1 top-[10%] -z-10
-                   h-[59%] w-[100%] xl:top-[12%] xl:h-[60%] xl:w-[90%]
+            class="absolute left-1 top-[9%] -z-10
+                   h-[55%] w-[100%] xl:top-[9%] xl:h-[55%] xl:w-[95%]
                    rounded-r-full
                    border-b-2 border-r-2 border-t-2
                    border-gray-400">
@@ -212,15 +280,32 @@
                 </div>
 
                 {{-- Card --}}
-                <div
+                <form action="{{ route('stages.update', $stage->id) }}" method="POST"
                   class="{{ $color['card'] }}
-                               mt-3 w-full max-w-56 rounded-xl border p-3
-                               shadow-sm transition-all duration-300
-                               ease-in-out hover:scale-105 hover:shadow-lg">
-                  <p class="{{ $color['description'] }} text-sm leading-5">
-                    {{ $stage->description }}
-                  </p>
-                </div>
+           mt-3 w-full max-w-56 rounded-xl border p-3
+           shadow-sm transition-all duration-300
+           ease-in-out hover:scale-105 hover:shadow-lg">
+                  @csrf
+                  @method('PUT')
+
+                  @if ($userRole === 'PJM')
+                    <textarea name="description" rows="5"
+                      class="{{ $color['description'] }}
+                   w-full resize-none overflow-scroll
+                   border-0 bg-transparent text-sm leading-5
+                   focus:outline-none focus:ring-0"
+                      placeholder="Deskripsi Tahapan Audit">{{ $stage->description }}</textarea>
+
+                    <button type="submit"
+                      class=" rounded-lg bg-white/20 px-3 py-1.5 text-sm font-semibold text-white hover:bg-white/30">
+                      Simpan
+                    </button>
+                  @else
+                    <p class="{{ $color['description'] }} text-sm leading-5">
+                      {{ $stage->description }}
+                    </p>
+                  @endif
+                </form>
 
               </div>
             @endforeach
