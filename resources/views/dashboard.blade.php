@@ -4,40 +4,7 @@
       <h2 class="text-2xl font-semibold text-blue-800 dark:text-gray-200">
         Tahapan AMI
       </h2>
-      {{-- <div class="flex w-full max-w-4xl flex-col items-stretch p-2 sm:h-56 sm:flex-row sm:overflow-hidden">
-        @php
-          $colors = ['red-500', 'yellow-300', 'green-400', 'blue-500', 'purple-400'];
-        @endphp
-        @foreach ($stages as $stage)
-          <form action="{{ route('stages.update', $stage->id) }}" method="POST"
-            class="pane bg-{{ $colors[$loop->index % count($colors)] }} relative m-2 flex min-h-14 min-w-14 flex-grow cursor-pointer items-start justify-center overflow-hidden rounded-3xl text-gray-200 transition-all duration-700 ease-in-out">
-            @csrf
-            @method('PUT')
-            <textarea {{ $userRole !== 'PJM' ? 'disabled' : '' }} name="description"
-              class="m-2 hidden w-full resize-none overflow-hidden border-0 bg-transparent font-semibold placeholder-gray-200 focus:ring-0"
-              rows="5" placeholder="Deskripsi Tahapan Audit" style="text-align: justify;" type="text"
-              name="input_{{ $stage->id }}">{{ $stage->description }}</textarea>
 
-            <div id="stage"
-              class="absolute bottom-0 z-20 m-2 flex items-center gap-x-2 transition-all duration-700 ease-in-out">
-              <div
-                class="text-{{ $colors[$loop->index % count($colors)] }} flex h-10 w-10 items-center justify-center rounded-full bg-gray-800">
-                <i class="fa-solid fa-{{ $stage->id }}"></i>
-              </div>
-              <div id="title" class="content hidden items-center justify-between gap-x-32">
-                <div class="translate-x-8 transform font-bold opacity-0 transition-all duration-700">
-                  {{ $stage->name }}
-                </div>
-                @if ($userRole == 'PJM')
-                  <button>
-                    Submit
-                  </button>
-                @endif
-              </div>
-            </div>
-          </form>
-        @endforeach
-      </div> --}}
 
 
       @php
@@ -94,49 +61,51 @@
       @endphp
 
 
-      <div class="relative mt-6 flex w-full flex-col gap-16">
+      <div class="relative mt-6 w-full">
 
         {{-- ========================= --}}
-        {{-- BARIS ATAS : 1 - 4 --}}
+        {{-- MOBILE : 1 - 8 --}}
         {{-- ========================= --}}
-        <div class="relative z-10 flex justify-start gap-5">
+        <div class="flex flex-col gap-6 md:hidden">
 
-          @foreach ($stages->take(4) as $stage)
+          @foreach ($stages as $stage)
             @php
               $color = $stageColors[$loop->index];
             @endphp
 
-            <div>
+            <div class="relative flex gap-4">
 
-              {{-- Nama + Nomor --}}
-              <div class="flex flex-col-reverse">
+              {{-- Garis timeline --}}
+              @if (!$loop->last)
+                <div class="absolute left-5 top-10 h-full w-0.5 bg-gray-300"></div>
+              @endif
 
-                {{-- Nomor --}}
-                <div
-                  class="{{ $color['number'] }}
-                        flex h-10 w-10 items-center justify-center
-                        rounded-full font-semibold shadow-sm">
-                  {{ $loop->index + 1 }}
-                </div>
-
-                {{-- Nama --}}
-                <div class="mb-2">
-                  <h1 class="{{ $color['title'] }} text-start font-semibold">
-                    {{ $stage->name }}
-                  </h1>
-                </div>
-
+              {{-- Nomor --}}
+              <div
+                class="{{ $color['number'] }}
+                           relative z-10 flex h-10 w-10 min-h-10 min-w-10
+                           items-center justify-center rounded-full
+                           font-semibold shadow-sm">
+                {{ $loop->index + 1 }}
               </div>
 
-              {{-- CARD DESKRIPSI --}}
-              <div
-                class="{{ $color['card'] }}
-                    mt-3 w-56 rounded-xl border p-3 shadow-sm
-    transition-all duration-300 ease-in-out
-    hover:scale-105 hover:shadow-lg">
-                <p class="{{ $color['description'] }} text-sm leading-5">
-                  {{ $stage->description }}
-                </p>
+              {{-- Content --}}
+              <div class="min-w-0 flex-1">
+
+                <h1 class="{{ $color['title'] }} mb-2 font-semibold">
+                  {{ $stage->name }}
+                </h1>
+
+                <div
+                  class="{{ $color['card'] }}
+                               w-full rounded-xl border p-3 shadow-sm
+                               transition-all duration-300
+                               hover:shadow-lg">
+                  <p class="{{ $color['description'] }} text-sm leading-5">
+                    {{ $stage->description }}
+                  </p>
+                </div>
+
               </div>
 
             </div>
@@ -146,64 +115,118 @@
 
 
         {{-- ========================= --}}
-        {{-- BARIS BAWAH : 5 - 8 --}}
+        {{-- DESKTOP : 1 - 4 --}}
         {{-- ========================= --}}
-        <div class="relative z-10 mt-10 flex justify-start gap-5">
+        <div class="relative hidden md:block">
 
-          @foreach ($stages->skip(4)->reverse() as $stage)
-            @php
-              // Ambil warna berdasarkan index stage aslinya
-              $stageIndex = $stages->search(fn($item) => $item->id === $stage->id);
-              $color = $stageColors[$stageIndex];
-            @endphp
+          <div class="relative z-10 flex w-full justify-between gap-5">
 
-            <div>
+            @foreach ($stages->take(4) as $stage)
+              @php
+                $color = $stageColors[$loop->index];
+              @endphp
 
-              {{-- Nama + Nomor --}}
-              <div class="flex flex-col-reverse">
+              <div class="min-w-0 flex-1">
 
-                {{-- Nomor --}}
+                {{-- Nama + Nomor --}}
+                <div class="flex flex-col-reverse">
+
+                  {{-- Nomor --}}
+                  <div
+                    class="{{ $color['number'] }}
+                                   flex h-10 w-10 items-center justify-center
+                                   rounded-full font-semibold shadow-sm">
+                    {{ $loop->index + 1 }}
+                  </div>
+
+                  {{-- Nama --}}
+                  <div class="mb-2">
+                    <h1 class="{{ $color['title'] }} font-semibold">
+                      {{ $stage->name }}
+                    </h1>
+                  </div>
+
+                </div>
+
+                {{-- Card --}}
                 <div
-                  class="{{ $color['number'] }}
-                        flex h-10 w-10 items-center justify-center
-                        rounded-full font-semibold shadow-sm">
-                  {{ $stageIndex + 1 }}
-                </div>
-
-                {{-- Nama --}}
-                <div class="mb-2">
-                  <h1 class="{{ $color['title'] }} text-start font-semibold">
-                    {{ $stage->name }}
-                  </h1>
+                  class="{{ $color['card'] }}
+                               mt-3 w-full max-w-56 rounded-xl border p-3
+                               shadow-sm transition-all duration-300
+                               ease-in-out hover:scale-105 hover:shadow-lg">
+                  <p class="{{ $color['description'] }} text-sm leading-5">
+                    {{ $stage->description }}
+                  </p>
                 </div>
 
               </div>
+            @endforeach
 
-              {{-- CARD DESKRIPSI --}}
-              <div
-                class="{{ $color['card'] }}
-                    mt-3 w-56 rounded-xl border p-3 shadow-sm
-    transition-all duration-300 ease-in-out
-    hover:scale-105 hover:shadow-lg">
-                <p class="{{ $color['description'] }} text-sm leading-5">
-                  {{ $stage->description }}
-                </p>
+          </div>
+
+
+          {{-- ========================= --}}
+          {{-- GARIS DESKTOP --}}
+          {{-- ========================= --}}
+          <div
+            class="absolute left-1 top-[10%] -z-10
+                   h-[59%] w-[100%] xl:top-[12%] xl:h-[60%] xl:w-[90%]
+                   rounded-r-full
+                   border-b-2 border-r-2 border-t-2
+                   border-gray-400">
+          </div>
+
+
+          {{-- ========================= --}}
+          {{-- DESKTOP : 5 - 8 --}}
+          {{-- ========================= --}}
+          <div class="relative z-10 mt-16 flex w-full justify-between gap-5">
+
+            @foreach ($stages->skip(4)->reverse() as $stage)
+              @php
+                $stageIndex = $stages->search(fn($item) => $item->id === $stage->id);
+
+                $color = $stageColors[$stageIndex];
+              @endphp
+
+              <div class="min-w-0 flex-1">
+
+                {{-- Nama + Nomor --}}
+                <div class="flex flex-col-reverse">
+
+                  {{-- Nomor --}}
+                  <div
+                    class="{{ $color['number'] }}
+                                   flex h-10 w-10 items-center justify-center
+                                   rounded-full font-semibold shadow-sm">
+                    {{ $stageIndex + 1 }}
+                  </div>
+
+                  {{-- Nama --}}
+                  <div class="mb-2">
+                    <h1 class="{{ $color['title'] }} font-semibold">
+                      {{ $stage->name }}
+                    </h1>
+                  </div>
+
+                </div>
+
+                {{-- Card --}}
+                <div
+                  class="{{ $color['card'] }}
+                               mt-3 w-full max-w-56 rounded-xl border p-3
+                               shadow-sm transition-all duration-300
+                               ease-in-out hover:scale-105 hover:shadow-lg">
+                  <p class="{{ $color['description'] }} text-sm leading-5">
+                    {{ $stage->description }}
+                  </p>
+                </div>
+
               </div>
+            @endforeach
 
-            </div>
-          @endforeach
+          </div>
 
-        </div>
-
-
-        {{-- ========================= --}}
-        {{-- GARIS S --}}
-        {{-- ========================= --}}
-        <div
-          class="absolute left-1 top-[11%] -z-10
-               h-[64%] w-[80%]
-               rounded-r-full
-               border-b-2 border-r-2 border-t-2 border-gray-400">
         </div>
 
       </div>

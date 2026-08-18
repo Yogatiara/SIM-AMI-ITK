@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('user_role', function () {
             return Auth::check() ? Cache::get('user_role_' . Auth::id()) : null;
         });
-        
+
         View::composer('*', function ($view) {
             $userRole = Cache::get('user_role_' . Auth::id());
 

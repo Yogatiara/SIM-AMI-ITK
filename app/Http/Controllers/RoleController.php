@@ -13,7 +13,7 @@ class RoleController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {        
+    {
         $roles = Auth::user()->getRoleNames();
         return view('roles.index', compact('roles'));
     }
@@ -32,6 +32,13 @@ class RoleController extends Controller
     public function store(Request $request, Role $role)
     {
         $role = $request->input('role');
+
+        $validated = $request->validate([
+            'role' => ['required'],
+        ]);
+
+        $role = $validated['role'];
+
 
         Cache::put('user_role_' . Auth::id(), $role, 60 * 60);
         return redirect('/');

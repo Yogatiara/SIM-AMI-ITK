@@ -45,20 +45,28 @@ class Login extends Component
             ->orWhere('username', $this->email)
             ->first();
 
-        $gerbangResponse = Http::post(config('services.gerbang.api_url') . '/login', $credentials);
 
-        if ($gerbangResponse->successful()) {
-            Auth::login($user);
-            session()->regenerate();
-            return redirect()->intended('/');
-        } else if (Auth::attempt($credentials)) {
-            session()->regenerate();
-            return redirect()->intended('/');
+        if ($user) {
+            $gerbangResponse = Http::post(config('services.gerbang.api_url') . '/login', $credentials);
+
+            if ($gerbangResponse->successful()) {
+                Auth::login($user);
+                session()->regenerate();
+                return redirect()->intended('/');
+            } else if (Auth::attempt($credentials)) {
+                session()->regenerate();
+                return redirect()->intended('/');
+            } else {
+                session()->flash('error', 'Login gagal, silakan periksa email dan password Anda.');
+                $this->password = '';
+
+            }
         } else {
-            session()->flash('error', 'Login gagal, silakan periksa email dan password Anda.');
-            $this->password = '';
+            session()->flash('error', 'Akun belum terdaftar dalam sistem.');
 
         }
+
+
 
 
 

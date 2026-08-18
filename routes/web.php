@@ -30,7 +30,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return redirect('/dashboard');
     });
     Route::get('/dashboard', [AuthController::class, 'index'])->name('dashboard');
-    Route::get('/dashboard', [AuthController::class, 'index'])->name('dashboard');
     // Route::get('/dashboard', function () {
     //     return view('index');
     // })->name('dashboard');
