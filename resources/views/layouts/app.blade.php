@@ -48,7 +48,7 @@
   <script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" defer></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+  {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" /> --}}
   <link rel="icon" href="{{ asset('images/Logo ITK.png') }}">
   <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.min.css">
 </head>
@@ -84,6 +84,7 @@
   <script src="https://kit.fontawesome.com/478979d709.js" crossorigin="anonymous"></script>
   <script src="{{ asset('js/script.js') }}"></script>
   <script src="{{ asset('js/focus-trap.js') }}"></script>
+  {{-- <script src="https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.js"></script> --}}
 
 </body>
 

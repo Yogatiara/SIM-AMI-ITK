@@ -240,7 +240,7 @@
           @if ($userRole === 'PJM')
             <div
               class="absolute left-1 top-[9%] -z-10
-                   h-[55%] w-[100%] xl:top-[8%] xl:h-[56%] xl:w-[95%]
+                   h-[55%] w-full xl:top-[8%] xl:h-[56%] xl:w-[95%]
                    rounded-r-full
                    border-b-2 border-r-2 border-t-2
                    border-gray-400">
@@ -248,7 +248,7 @@
           @else
             <div
               class="absolute left-1 top-[10%] -z-10
-                   h-[59%] w-[100%] xl:top-[12%] xl:h-[60%] xl:w-[90%]
+                   h-[59%] w-full xl:top-[12%] xl:h-[60%] xl:w-[90%]
                    rounded-r-full
                    border-b-2 border-r-2 border-t-2
                    border-gray-400">
