@@ -1111,7 +1111,7 @@ class FormController extends Controller
         // Filter dan transformasi data untuk auditees
         $auditeesData = $formAccesses->filter(
             fn($access) =>
-            in_array($access->position, ['Chief', 'PIC']) || strpos($access->position, 'PIC') !== false
+                in_array($access->position, ['Chief', 'PIC']) || strpos($access->position, 'PIC') !== false
         )->sortBy(function ($access) {
             return $access->position === 'Chief' ? 0 : (intval(str_replace('PIC', '', $access->position)) ?: 1);
         })->map(fn($auditee) => [
@@ -1123,7 +1123,7 @@ class FormController extends Controller
         // Filter dan transformasi data untuk auditors
         $auditorsData = $formAccesses->filter(
             fn($access) =>
-            in_array($access->position, ['Leader', 'Member']) || strpos($access->position, 'Member') !== false
+                in_array($access->position, ['Leader', 'Member']) || strpos($access->position, 'Member') !== false
         )->sortBy(function ($access) {
             return $access->position === 'Leader' ? 0 : (intval(str_replace('Member', '', $access->position)) ?: 1);
         })->map(fn($auditor) => [

@@ -765,7 +765,9 @@
                                                                                         indicator.entry === 'Cost' ? indicator.entry + ' ($)' :
                                                                                         indicator.entry === 'Percentage' ? indicator.entry + ' (%)' :
                                                                                         indicator.rate_option === '1-10' ? indicator.entry + ' (1/10)' :
-                                                                                        indicator.rate_option === '1-100' ? indicator.entry + ' (1/100)' : ''">
+                                                                                        indicator.rate_option === '1-100' ? indicator.entry + ' (1/100)' :
+
+                                                                                        indicator.rate_option === 'researcherSatisfaction' ? 'Tingkat Kepuasan (label)' : indicator.entry">
                                           </div>
                                           <!-- md: Popover -->
                                           <div

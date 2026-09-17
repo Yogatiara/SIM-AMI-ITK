@@ -59,7 +59,7 @@
   <x-toast></x-toast>
   <!-- End Toast -->
 
-  @include('layouts.navbar')
+  @include('layouts.sidebar')
 
   <div class="flex w-full flex-1 flex-col overflow-hidden">
 

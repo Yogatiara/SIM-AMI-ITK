@@ -9,3 +9,7 @@
         @apply font-figtree;
     }
 }
+
+[x-cloak] {
+    display: none !important;
+}

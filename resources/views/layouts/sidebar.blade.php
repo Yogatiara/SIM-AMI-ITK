@@ -1,33 +1,33 @@
 <!-- Desktop sidebar -->
 <aside :class="{ 'slide': isSideMenuOpen }"
   class="z-40 hidden min-h-screen w-60 bg-white font-medium transition-all duration-300 ease-in-out dark:bg-gray-900 lg:block">
-  <div class="border-b border-solid border-blue-800 py-2 text-center">
+  <div class="border-b border-solid border-gray-300 py-2 text-center">
     <table>
       <tr>
-        <td class="w-[10%]">
-          <img class="ml-8 h-full w-full rounded-md p-1 dark:bg-cool-gray-50" src="{{ asset('images/Logo ITK.png') }}"
+        <td class="w-[25%]">
+          <img class="ml-8 h-full w-full rounded-md p-1 dark:bg-cool-gray-50" src="{{ asset('images/Logo-ITK.webp') }}"
             alt="Logo ITK">
         </td>
-        <td class="text-xl text-blue-800 dark:text-cool-gray-50">
+        <td class="text-lg text-primary dark:text-cool-gray-50">
           <h5><b>SIM AMI ITK</b></h5>
         </td>
       </tr>
     </table>
   </div>
-  <ul class="max-h-full overflow-y-auto scrollbar-thin">
+  <ul class="max-h-full overflow-y-auto scrollbar-thin p-3">
     <li
-      class="{{ Request::is('dashboard') ? 'font-bold text-blue-800 dark:text-cool-gray-50 bg-cool-gray-50 dark:bg-gray-800' : 'text-gray-500 hover:bg-cool-gray-50 dark:hover:bg-gray-800' }}">
-      <a class="flex w-full items-center justify-between px-1 py-3 pl-8" href="/dashboard">
+      class="{{ Request::is('dashboard') ? 'font-bold text-primary  dark:text-cool-gray-50 bg-cool-gray-50 dark:bg-gray-800' : 'text-gray-500 hover:bg-cool-gray-50 dark:hover:bg-gray-800' }} rounded-md">
+      <a class="flex w-full items-center justify-between px-4 py-3" href="/dashboard">
         <div class="flex items-center gap-x-5">
-          <i class="fa-solid fa-chart-column w-5 text-center"></i>
-          <span>Dashboard</span>
+          <i class="fa-solid fa-home w-5 text-center"></i>
+          <span>Beranda</span>
         </div>
       </a>
     </li>
 
-    {{-- <li
-            class="{{ Request::is('calendar*') ? 'font-bold text-blue-800 dark:text-cool-gray-50 bg-cool-gray-50 dark:bg-gray-800' : 'text-gray-500 hover:bg-cool-gray-50 dark:hover:bg-gray-800' }}">
-            <a href="/calendar" class="flex w-full items-center justify-between px-1 py-3 pl-8">
+    {{-- <li mt-
+            class="{{ Request::is('calendar*') ? 'font-bold text-primary dark:text-cool-gray-50 bg-cool-gray-50 dark:bg-gray-800' : 'text-gray-500 hover:bg-cool-gray-50 dark:hover:bg-gray-800' }}">
+            <a href="/calendar" class="flex w-full items-center justify-between px-4 py-3">
                 <div class="flex items-center gap-x-5">
                     <svg class="w-5 text-center" aria-hidden="true" fill="none" stroke-linecap="round"
                         stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
@@ -41,8 +41,8 @@
         </li> --}}
 
     <li
-      class="{{ Request::is('forms*') ? 'font-bold text-blue-800 dark:text-cool-gray-50 bg-cool-gray-50 dark:bg-gray-800' : 'text-gray-500 hover:bg-cool-gray-50 dark:hover:bg-gray-800' }}">
-      <a class="flex w-full items-center justify-between px-1 py-3 pl-8" href="/forms">
+      class="{{ Request::is('forms*') ? 'font-bold text-primary  dark:text-cool-gray-50 bg-cool-gray-50 dark:bg-gray-800' : 'text-gray-500 hover:bg-cool-gray-50 dark:hover:bg-gray-800' }} rounded-md mt-2">
+      <a class="flex w-full items-center justify-between px-4 py-3" href="/forms">
         <div class="flex items-center gap-x-5">
           <svg class="w-5 text-center" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round"
             stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
@@ -50,15 +50,15 @@
               d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z">
             </path>
           </svg>
-          <span>Forms</span>
+          <span>Formulir</span>
         </div>
       </a>
     </li>
 
     @if ($userRole == 'PJM')
       <li
-        class="{{ Request::is('documents*') ? 'font-bold text-blue-800 dark:text-cool-gray-50 bg-cool-gray-50 dark:bg-gray-800' : 'text-gray-500 hover:bg-cool-gray-50 dark:hover:bg-gray-800' }}">
-        <a class="flex w-full items-center justify-between px-1 py-3 pl-8" href="/documents">
+        class="{{ Request::is('documents*') ? 'font-bold text-primary dark:text-cool-gray-50 bg-cool-gray-50 dark:bg-gray-800' : 'text-gray-500 hover:bg-cool-gray-50 dark:hover:bg-gray-800' }}  mt-2 rounded-md">
+        <a class="flex w-full items-center justify-between px-4 py-3" href="/documents">
           <div class="flex items-center gap-x-5">
             <svg class="w-5 text-center" aria-hidden="true" fill="none" stroke-linecap="round"
               stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
@@ -67,17 +67,17 @@
               </path>
 
             </svg>
-            <span>Documents</span>
+            <span>Dokumen</span>
           </div>
         </a>
       </li>
 
       <li
-        class="{{ Request::is(['users*', 'units*', 'departments*', 'logs*']) ? 'font-bold text-blue-800 dark:text-cool-gray-50 bg-cool-gray-50 dark:bg-gray-800' : 'text-gray-500 hover:bg-cool-gray-50 dark:hover:bg-gray-800' }}">
-        <button @click="togglePagesMenu" class="flex w-full items-center justify-between px-1 py-3 pl-8">
-          <div class="flex items-center gap-x-5">
-            <i class="fa-solid fa-database w-5 text-center"></i>
-            <span>Data Management</span>
+        class="{{ Request::is(['users*', 'units*', 'departments*', 'logs*']) ? 'font-bold text-primary dark:text-cool-gray-50 bg-cool-gray-50 dark:bg-gray-800' : 'text-gray-500 hover:bg-cool-gray-50 dark:hover:bg-gray-800' }}  mt-2 rounded-md">
+        <button @click="togglePagesMenu" class="flex w-full items-center justify-between px-4 py-3">
+          <div class="flex items-center ">
+            <i class="fa-solid fa-database text-sm mr-3 text-center"></i>
+            <span>Manajemen sistem</span>
           </div>
           <template x-if="isPagesMenuOpen">
             <svg class="w-5 text-center" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
@@ -98,9 +98,9 @@
           <ul x-transition:enter="transition-all ease-in-out duration-300" x-transition:enter-start="opacity-25 max-h-0"
             x-transition:enter-end="opacity-100 max-h-xl" x-transition:leave="transition-all ease-in-out duration-300"
             x-transition:leave-start="opacity-100 max-h-xl" x-transition:leave-end="opacity-0"
-            class="space-y-2 overflow-hidden px-20 py-3 font-medium dark:text-gray-400">
+            class="space-y-2 overflow-hidden px-8 pb-3 font-medium dark:text-gray-400">
             <li
-              class="{{ Request::is('departments*') ? 'text-blue-800 dark:text-cool-gray-50 bg-cool-gray-50 dark:bg-gray-800' : 'text-gray-500 hover:text-blue-800' }}">
+              class="{{ Request::is('departments*') ? 'text-primary  dark:text-cool-gray-50 bg-cool-gray-50 dark:bg-gray-800' : 'text-gray-500 hover:text-primary ' }}">
               <a class="flex w-full items-center justify-between" href="/departments">
                 <div class="flex items-center gap-x-4">
                   <svg class="w-5 text-center" aria-hidden="true" fill="none" stroke-linecap="round"
@@ -109,12 +109,12 @@
                       d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z">
                     </path>
                   </svg>
-                  <span>Departments</span>
+                  <span>Departemen</span>
                 </div>
               </a>
             </li>
             <li
-              class="{{ Request::is('units*') ? 'text-blue-800 dark:text-cool-gray-50 bg-cool-gray-50 dark:bg-gray-800' : 'text-gray-500 hover:text-blue-800' }}">
+              class="{{ Request::is('units*') ? 'text-primary mt- dark:text-cool-gray-50 bg-cool-gray-50 dark:bg-gray-800' : 'text-gray-500 hover:text-primary mt-' }}">
               <a class="flex w-full items-center justify-between" href="/units">
                 <div class="flex items-center gap-x-4">
                   <svg class="w-5 text-center" aria-hidden="true" fill="none" stroke-linecap="round"
@@ -123,12 +123,12 @@
                       d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z">
                     </path>
                   </svg>
-                  <span>Units</span>
+                  <span>Unit</span>
                 </div>
               </a>
             </li>
             <li
-              class="{{ Request::is('users*') ? 'text-blue-800 dark:text-cool-gray-50 bg-cool-gray-50 dark:bg-gray-800' : 'text-gray-500 hover:text-blue-800' }}">
+              class="{{ Request::is('users*') ? 'text-primary mt- dark:text-cool-gray-50 bg-cool-gray-50 dark:bg-gray-800' : 'text-gray-500 hover:text-primary mt-' }}">
               <a class="flex w-full items-center justify-between" href="/users">
                 <div class="flex items-center gap-x-4">
                   <svg class="w-5 text-center" aria-hidden="true" fill="none" stroke-linecap="round"
@@ -142,7 +142,7 @@
               </a>
             </li>
             {{-- <li
-                            class="{{ Request::is('logs*') ? 'text-blue-800 dark:text-cool-gray-50 bg-cool-gray-50 dark:bg-gray-800' : 'text-gray-500 hover:text-blue-800' }}">
+                            class="{{ Request::is('logs*') ? 'text-primary mt- dark:text-cool-gray-50 bg-cool-gray-50 dark:bg-gray-800' : 'text-gray-500 hover:text-primary mt-' }}">
                             <a class="flex w-full items-center justify-between" href="/logs">
                                 <div class="flex items-center gap-x-4">
                                     <svg class="w-5 text-center" aria-hidden="true" fill="none"
@@ -162,34 +162,34 @@
     @endif
 
     {{-- @if ($userRole == 'Auditee')
-            <li
-                class="{{ Request::is('evaluations*') ? 'font-bold text-blue-800 dark:text-cool-gray-50 bg-cool-gray-50 dark:bg-gray-800' : 'text-gray-500 hover:bg-cool-gray-50 dark:hover:bg-gray-800' }}">
-                <a class="flex w-full items-center justify-between px-1 py-3 pl-8" href="/evaluations">
-                    <div class="flex items-center gap-x-5">
-                        <i class="fas fa-marker w-5 text-center"></i>
-                        <span>Evaluations</span>
-                    </div>
-                </a>
-            </li>
-        @endif
+      <li
+        class="{{ Request::is('evaluations*') ? 'font-bold text-primary mt- dark:text-cool-gray-50 bg-cool-gray-50 dark:bg-gray-800' : 'text-gray-500 hover:bg-cool-gray-50 dark:hover:bg-gray-800' }}">
+        <a class="flex w-full items-center justify-between px-4 py-3" href="/evaluations">
+          <div class="flex items-center gap-x-5">
+            <i class="fas fa-marker w-5 text-center"></i>
+            <span>Evaluations</span>
+          </div>
+        </a>
+      </li>
+    @endif
 
-        @if ($userRole == 'Auditor')
-            <li
-                class="{{ Request::is('audits*') ? 'font-bold text-blue-800 dark:text-cool-gray-50 bg-cool-gray-50 dark:bg-gray-800' : 'text-gray-500 hover:bg-cool-gray-50 dark:hover:bg-gray-800' }}">
-                <a class="flex w-full items-center justify-between px-1 py-3 pl-8" href="/audits">
-                    <div class="flex items-center gap-x-5">
-                        <i class="fa-solid fa-scroll w-5"></i>
-                        <span>Audits</span>
-                    </div>
-                </a>
-            </li>
-        @endif --}}
+    @if ($userRole == 'Auditor')
+      <li
+        class="{{ Request::is('audits*') ? 'font-bold text-primary mt- dark:text-cool-gray-50 bg-cool-gray-50 dark:bg-gray-800' : 'text-gray-500 hover:bg-cool-gray-50 dark:hover:bg-gray-800' }}">
+        <a class="flex w-full items-center justify-between px-4 py-3" href="/audits">
+          <div class="flex items-center gap-x-5">
+            <i class="fa-solid fa-scroll w-5"></i>
+            <span>Audits</span>
+          </div>
+        </a>
+      </li>
+    @endif --}}
   </ul>
 </aside>
 
 <!-- Mobile sidebar -->
 <!-- Backdrop -->
-<div x-show="isSideMenuOpenResponsive" x-transition:enter="transition ease-in-out duration-150"
+<div x-cloak x-show="isSideMenuOpenResponsive" x-transition:enter="transition ease-in-out duration-150"
   x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
   x-transition:leave="transition ease-in-out duration-150" x-transition:leave-start="opacity-100"
   x-transition:leave-end="opacity-0"
@@ -214,8 +214,8 @@
     <ul class="flex flex-col">
       <li class="relative px-6 py-2">
         <span
-          class="{{ Request::is('dashboard') ? '' : 'hidden' }} absolute inset-y-0 left-0 w-1 rounded-br-lg rounded-tr-lg bg-blue-800 dark:bg-indigo-600"></span>
-        <a class="{{ Request::is('dashboard') ? 'font-semibold text-blue-800 dark:text-indigo-500' : 'hover:text-blue-800 dark:hover:text-gray-100' }} inline-flex w-full items-center text-sm font-semibold transition-colors duration-150"
+          class="{{ Request::is('dashboard') ? '' : 'hidden' }} absolute inset-y-0 left-0 w-1 rounded-br-lg rounded-tr-lg bg-primary mt- dark:bg-indigo-600"></span>
+        <a class="{{ Request::is('dashboard') ? 'font-semibold text-primary mt- dark:text-indigo-500' : 'hover:text-primary mt- dark:hover:text-gray-100' }} inline-flex w-full items-center text-sm font-semibold transition-colors duration-150"
           href="/dashboard">
           <svg class="w-5 text-center" aria-hidden="true" fill="none" stroke-linecap="round"
             stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
@@ -229,8 +229,8 @@
 
       {{-- <li class="relative px-6 py-2">
                 <span
-                    class="{{ Request::is('calendar*') ? '' : 'hidden' }} absolute inset-y-0 left-0 w-1 rounded-br-lg rounded-tr-lg bg-blue-800 dark:bg-indigo-600"></span>
-                <a class="{{ Request::is('calendar*') ? 'font-semibold text-blue-800 dark:text-indigo-500' : 'hover:text-blue-800 dark:hover:text-gray-100' }} inline-flex w-full items-center text-sm font-semibold transition-colors duration-150"
+                    class="{{ Request::is('calendar*') ? '' : 'hidden' }} absolute inset-y-0 left-0 w-1 rounded-br-lg rounded-tr-lg bg-primary mt- dark:bg-indigo-600"></span>
+                <a class="{{ Request::is('calendar*') ? 'font-semibold text-primary mt- dark:text-indigo-500' : 'hover:text-primary mt- dark:hover:text-gray-100' }} inline-flex w-full items-center text-sm font-semibold transition-colors duration-150"
                     href="/calendar">
                     <svg class="w-5 text-center" aria-hidden="true" fill="none" stroke-linecap="round"
                         stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
@@ -244,8 +244,8 @@
 
       <li class="relative px-6 py-2">
         <span
-          class="{{ Request::is('forms*') ? '' : 'hidden' }} absolute inset-y-0 left-0 w-1 rounded-br-lg rounded-tr-lg bg-blue-800 dark:bg-indigo-600"></span>
-        <a class="{{ Request::is('forms*') ? 'font-semibold text-blue-800 dark:text-indigo-500' : 'hover:text-blue-800 dark:hover:text-gray-100' }} inline-flex w-full items-center text-sm font-semibold transition-colors duration-150"
+          class="{{ Request::is('forms*') ? '' : 'hidden' }} absolute inset-y-0 left-0 w-1 rounded-br-lg rounded-tr-lg bg-primary mt- dark:bg-indigo-600"></span>
+        <a class="{{ Request::is('forms*') ? 'font-semibold text-primary mt- dark:text-indigo-500' : 'hover:text-primary mt- dark:hover:text-gray-100' }} inline-flex w-full items-center text-sm font-semibold transition-colors duration-150"
           href="/forms">
           <svg class="w-5 text-center" aria-hidden="true" fill="none" stroke-linecap="round"
             stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
@@ -260,8 +260,8 @@
       @if ($userRole == 'PJM')
         <li class="relative px-6 py-2">
           <span
-            class="{{ Request::is('documents*') ? '' : 'hidden' }} absolute inset-y-0 left-0 w-1 rounded-br-lg rounded-tr-lg bg-blue-800 dark:bg-indigo-600"></span>
-          <a class="{{ Request::is('documents*') ? 'font-semibold text-blue-800 dark:text-indigo-500' : 'hover:text-blue-800 dark:hover:text-gray-100' }} inline-flex w-full items-center text-sm font-semibold transition-colors duration-150"
+            class="{{ Request::is('documents*') ? '' : 'hidden' }} absolute inset-y-0 left-0 w-1 rounded-br-lg rounded-tr-lg bg-primary mt- dark:bg-indigo-600"></span>
+          <a class="{{ Request::is('documents*') ? 'font-semibold text-primary mt- dark:text-indigo-500' : 'hover:text-primary mt- dark:hover:text-gray-100' }} inline-flex w-full items-center text-sm font-semibold transition-colors duration-150"
             href="/documents">
             <svg class="w-5 text-center" aria-hidden="true" fill="none" stroke-linecap="round"
               stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
@@ -275,8 +275,8 @@
 
         {{-- <li class="relative px-6 py-2">
                     <span
-                        class="{{ Request::is('users*') ? '' : 'hidden' }} absolute inset-y-0 left-0 w-1 rounded-br-lg rounded-tr-lg bg-blue-800 dark:bg-indigo-600"></span>
-                    <a class="{{ Request::is('users*') ? 'font-semibold text-blue-800 dark:text-indigo-500' : 'hover:text-blue-800 dark:hover:text-gray-100' }} inline-flex w-full items-center text-sm font-semibold transition-colors duration-150"
+                        class="{{ Request::is('users*') ? '' : 'hidden' }} absolute inset-y-0 left-0 w-1 rounded-br-lg rounded-tr-lg bg-primary mt- dark:bg-indigo-600"></span>
+                    <a class="{{ Request::is('users*') ? 'font-semibold text-primary mt- dark:text-indigo-500' : 'hover:text-primary mt- dark:hover:text-gray-100' }} inline-flex w-full items-center text-sm font-semibold transition-colors duration-150"
                         href="/users">
                         <svg class="w-5 text-center" aria-hidden="true" fill="none" stroke-linecap="round"
                             stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
@@ -290,8 +290,8 @@
 
         <li class="relative px-6 py-2">
           <span
-            class="{{ Request::is('users*') ? '' : 'hidden' }} absolute inset-y-0 left-0 w-1 rounded-br-lg rounded-tr-lg bg-blue-800 dark:bg-indigo-600"></span>
-          <a class="{{ Request::is('users*') ? 'font-semibold text-blue-800 dark:text-indigo-500' : 'hover:text-blue-800 dark:hover:text-gray-100' }} inline-flex w-full items-center text-sm font-semibold transition-colors duration-150"
+            class="{{ Request::is('users*') ? '' : 'hidden' }} absolute inset-y-0 left-0 w-1 rounded-br-lg rounded-tr-lg bg-primary mt- dark:bg-indigo-600"></span>
+          <a class="{{ Request::is('users*') ? 'font-semibold text-primary mt- dark:text-indigo-500' : 'hover:text-primary mt- dark:hover:text-gray-100' }} inline-flex w-full items-center text-sm font-semibold transition-colors duration-150"
             href="/users">
             <svg class="w-5 text-center" aria-hidden="true" fill="none" stroke-linecap="round"
               stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
@@ -305,8 +305,8 @@
 
         <li class="relative px-6 py-2">
           <span
-            class="{{ Request::is('users*') ? '' : 'hidden' }} absolute inset-y-0 left-0 w-1 rounded-br-lg rounded-tr-lg bg-blue-800 dark:bg-indigo-600"></span>
-          <a class="{{ Request::is('users*') ? 'font-semibold text-blue-800 dark:text-indigo-500' : 'hover:text-blue-800 dark:hover:text-gray-100' }} inline-flex w-full items-center text-sm font-semibold transition-colors duration-150"
+            class="{{ Request::is('users*') ? '' : 'hidden' }} absolute inset-y-0 left-0 w-1 rounded-br-lg rounded-tr-lg bg-primary mt- dark:bg-indigo-600"></span>
+          <a class="{{ Request::is('users*') ? 'font-semibold text-primary mt- dark:text-indigo-500' : 'hover:text-primary mt- dark:hover:text-gray-100' }} inline-flex w-full items-center text-sm font-semibold transition-colors duration-150"
             href="/users">
             <svg class="w-5 text-center" aria-hidden="true" fill="none" stroke-linecap="round"
               stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
@@ -320,8 +320,8 @@
 
         {{-- <li class="relative px-6 py-2">
                     <span
-                        class="{{ Request::is('logs*') ? '' : 'hidden' }} absolute inset-y-0 left-0 w-1 rounded-br-lg rounded-tr-lg bg-blue-800 dark:bg-indigo-600"></span>
-                    <a class="{{ Request::is('logs*') ? 'font-semibold text-blue-800 dark:text-indigo-500' : 'hover:text-blue-800 dark:hover:text-gray-100' }} inline-flex w-full items-center text-sm font-semibold transition-colors duration-150"
+                        class="{{ Request::is('logs*') ? '' : 'hidden' }} absolute inset-y-0 left-0 w-1 rounded-br-lg rounded-tr-lg bg-primary mt- dark:bg-indigo-600"></span>
+                    <a class="{{ Request::is('logs*') ? 'font-semibold text-primary mt- dark:text-indigo-500' : 'hover:text-primary mt- dark:hover:text-gray-100' }} inline-flex w-full items-center text-sm font-semibold transition-colors duration-150"
                         href="/logs">
                         <svg class="w-5 text-center" aria-hidden="true" fill="none" stroke-linecap="round"
                             stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
@@ -337,8 +337,8 @@
       {{-- @if ($userRole == 'Auditee')
                 <li class="relative px-6 py-2">
                     <span
-                        class="{{ Request::is('evaluations*') ? '' : 'hidden' }} absolute inset-y-0 left-0 w-1 rounded-br-lg rounded-tr-lg bg-blue-800 dark:bg-indigo-600"></span>
-                    <a class="{{ Request::is('evaluations*') ? 'font-semibold text-blue-800 dark:text-indigo-500' : 'hover:text-blue-800 dark:hover:text-gray-100' }} inline-flex w-full items-center text-sm font-semibold transition-colors duration-150"
+                        class="{{ Request::is('evaluations*') ? '' : 'hidden' }} absolute inset-y-0 left-0 w-1 rounded-br-lg rounded-tr-lg bg-primary mt- dark:bg-indigo-600"></span>
+                    <a class="{{ Request::is('evaluations*') ? 'font-semibold text-primary mt- dark:text-indigo-500' : 'hover:text-primary mt- dark:hover:text-gray-100' }} inline-flex w-full items-center text-sm font-semibold transition-colors duration-150"
                         href="/evaluations">
                         <i class="fas fa-marker w-5 text-center"></i>
                         <span class="ml-4">Evaluations</span>
@@ -349,8 +349,8 @@
             @if ($userRole == 'Auditor')
                 <li class="relative px-6 py-2">
                     <span
-                        class="{{ Request::is('audits*') ? '' : 'hidden' }} absolute inset-y-0 left-0 w-1 rounded-br-lg rounded-tr-lg bg-blue-800 dark:bg-indigo-600"></span>
-                    <a class="{{ Request::is('audits*') ? 'font-semibold text-blue-800 dark:text-indigo-500' : 'hover:text-blue-800 dark:hover:text-gray-100' }} inline-flex w-full items-center text-sm font-semibold transition-colors duration-150"
+                        class="{{ Request::is('audits*') ? '' : 'hidden' }} absolute inset-y-0 left-0 w-1 rounded-br-lg rounded-tr-lg bg-primary mt- dark:bg-indigo-600"></span>
+                    <a class="{{ Request::is('audits*') ? 'font-semibold text-primary mt- dark:text-indigo-500' : 'hover:text-primary mt- dark:hover:text-gray-100' }} inline-flex w-full items-center text-sm font-semibold transition-colors duration-150"
                         href="/audits">
                         <i class="fas fa-marker w-5 text-center"></i>
                         <span class="ml-4">Audits</span>
