@@ -185,31 +185,49 @@ class DocumentController extends Controller
         if ($request->input('action') === 'draft') {
 
             return redirect('/documents#drafts')->with('success', $document_name . ' saved as draft!');
-            
+
         } elseif ($request->input('action') === 'submit') {
 
-            $validator = Validator::make($request->all(), [
-                'document_name' => 'required|string|unique:documents,name',
-                'categories' => 'required|array',
-                'categories.*.id' => 'nullable|integer',
-                'categories.*.name' => 'required|string',
-                'categories.*.standards' => 'nullable|array',
-                'categories.*.standards.*.id' => 'nullable|integer',
-                'categories.*.standards.*.category_id' => 'required|integer',
-                'categories.*.standards.*.name' => 'required|string',
-                'categories.*.standards.*.competencies' => 'nullable|array',
-                'categories.*.standards.*.competencies.*.id' => 'nullable|integer',
-                'categories.*.standards.*.competencies.*.standard_id' => 'required|string',
-                'categories.*.standards.*.competencies.*.name' => 'required|string',
-                'categories.*.standards.*.competencies.*.indicators' => 'nullable|array',
-                'categories.*.standards.*.competencies.*.indicators.*.id' => 'nullable|integer',
-                'categories.*.standards.*.competencies.*.indicators.*.competency_id' => 'required|integer',
-                'categories.*.standards.*.competencies.*.indicators.*.assessment' => 'required|string',
-                'categories.*.standards.*.competencies.*.indicators.*.code' => 'required|string',
-                'categories.*.standards.*.competencies.*.indicators.*.entry' => 'required|string',
-                'categories.*.standards.*.competencies.*.indicators.*.link_info' => 'nullable|string',
-                'categories.*.standards.*.competencies.*.indicators.*.rate_option' => 'nullable|string',
-            ]);
+            $validator = Validator::make(
+                $request->all(),
+                [
+                    'document_name' => 'required|string|unique:documents,name',
+                    'categories' => 'required|array',
+                    'categories.*.id' => 'nullable|integer',
+                    'categories.*.name' => 'required|string',
+                    'categories.*.standards' => 'nullable|array',
+                    'categories.*.standards.*.id' => 'nullable|integer',
+                    'categories.*.standards.*.category_id' => 'required|integer',
+                    'categories.*.standards.*.name' => 'required|string',
+                    'categories.*.standards.*.competencies' => 'nullable|array',
+                    'categories.*.standards.*.competencies.*.id' => 'nullable|integer',
+                    'categories.*.standards.*.competencies.*.standard_id' => 'required|string',
+                    'categories.*.standards.*.competencies.*.name' => 'required|string',
+                    'categories.*.standards.*.competencies.*.indicators' => 'nullable|array',
+                    'categories.*.standards.*.competencies.*.indicators.*.id' => 'nullable|integer',
+                    'categories.*.standards.*.competencies.*.indicators.*.competency_id' => 'required|integer',
+                    'categories.*.standards.*.competencies.*.indicators.*.assessment' => 'required|string',
+                    'categories.*.standards.*.competencies.*.indicators.*.code' => 'required|string',
+                    'categories.*.standards.*.competencies.*.indicators.*.entry' => 'required|string',
+                    'categories.*.standards.*.competencies.*.indicators.*.link_info' => 'nullable|string',
+                    'categories.*.standards.*.competencies.*.indicators.*.rate_option' => 'nullable|string',
+                ],
+                [
+                    'document_name.required' => 'Nama dokumen wajib diisi.',
+                    'document_name.unique' => 'Nama dokumen sudah digunakan.',
+                    'categories.required' => 'Minimal satu kategori harus diisi.',
+                    'categories.*.name.required' => 'Nama kategori wajib diisi.',
+                    'categories.*.standards.*.category_id.required' => 'Kategori pada standar wajib diisi.',
+                    'categories.*.standards.*.name.required' => 'Nama standar wajib diisi.',
+                    'categories.*.standards.*.competencies.*.standard_id.required' => 'Standar pada kompetensi wajib diisi.',
+                    'categories.*.standards.*.competencies.*.name.required' => 'Nama kompetensi wajib diisi.',
+                    'categories.*.standards.*.competencies.*.indicators.*.competency_id.required' => 'Kompetensi pada indikator wajib diisi.',
+                    'categories.*.standards.*.competencies.*.indicators.*.assessment.required' => 'Assessment indikator wajib diisi.',
+                    'categories.*.standards.*.competencies.*.indicators.*.code.required' => 'Kode indikator wajib diisi.',
+                    'categories.*.standards.*.competencies.*.indicators.*.entry.required' => 'Jenis input indikator wajib diisi.',
+                ]
+
+            );
 
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
@@ -328,25 +346,25 @@ class DocumentController extends Controller
     {
         return view('documents.edit');
     }
-    
+
     public function editDraft($draft)
     {
         $filePath = 'public/drafts/' . $draft . '.json';
-        
+
         $data = json_decode(Storage::get($filePath), true);
 
-            // Ambil kategori, standar, kompetensi, dan indikator dari data JSON
-            $categories = collect($data['categories'] ?? []);
-            $standards = collect($data['standards'] ?? []);
-            $competencies = collect($data['competencies'] ?? []);
-            $indicators = collect($data['indicators'] ?? []);
+        // Ambil kategori, standar, kompetensi, dan indikator dari data JSON
+        $categories = collect($data['categories'] ?? []);
+        $standards = collect($data['standards'] ?? []);
+        $competencies = collect($data['competencies'] ?? []);
+        $indicators = collect($data['indicators'] ?? []);
 
-            // Kelompokkan standar, kompetensi, dan indikator berdasarkan id
-            $standardsByCategory = $standards->groupBy('category_id');
-            $competenciesByStandard = $competencies->groupBy('standard_id');
-            $indicatorsByCompetency = $indicators->groupBy('competency_id');
-            
-            return view('documents.edit-draft', compact('draft', 'categories', 'standardsByCategory', 'competenciesByStandard', 'indicatorsByCompetency'));
+        // Kelompokkan standar, kompetensi, dan indikator berdasarkan id
+        $standardsByCategory = $standards->groupBy('category_id');
+        $competenciesByStandard = $competencies->groupBy('standard_id');
+        $indicatorsByCompetency = $indicators->groupBy('competency_id');
+
+        return view('documents.edit-draft', compact('draft', 'categories', 'standardsByCategory', 'competenciesByStandard', 'indicatorsByCompetency'));
     }
 
     /**

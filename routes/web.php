@@ -6,6 +6,8 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\StageManagementController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use App\Livewire\auth\Login;
@@ -80,11 +82,114 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Roles
+    | Role Switching (jangan diubah)
     |--------------------------------------------------------------------------
     */
 
-    Route::resource('/roles', RoleController::class);
+    Route::get('/roles', [RoleController::class, 'choseRole']);
+
+    Route::post('/roles', [RoleController::class, 'store']);
+
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Roles Management (khusus admin)
+    |--------------------------------------------------------------------------
+    */
+
+    Route::middleware('can:manage roles')->group(function () {
+        Route::get('/roles-management', [RoleController::class, 'index'])
+            ->name('roles-management.index');
+
+        Route::get('/roles-management/create', [RoleController::class, 'create'])
+            ->name('roles-management.create');
+
+        Route::post('/roles-management', [RoleController::class, 'store'])
+            ->name('roles-management.store');
+
+        Route::get('/roles-management/{role}', [RoleController::class, 'show'])
+            ->name('roles-management.show');
+
+        Route::get('/roles-management/{role}/edit', [RoleController::class, 'edit'])
+            ->name('roles-management.edit');
+
+        Route::put('/roles-management/{role}', [RoleController::class, 'update'])
+            ->name('roles-management.update');
+
+        Route::delete('/roles-management/{role}', [RoleController::class, 'destroy'])
+            ->name('roles-management.destroy');
+    });
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Permissions Management (khusus admin)
+    |--------------------------------------------------------------------------
+    */
+
+    Route::middleware('can:manage permissions')->group(function () {
+        Route::get('/permissions-management', [PermissionController::class, 'index'])
+            ->name('permissions-management.index');
+
+        Route::get('/permissions-management/create', [PermissionController::class, 'create'])
+            ->name('permissions-management.create');
+
+        Route::post('/permissions-management', [PermissionController::class, 'store'])
+            ->name('permissions-management.store');
+
+        Route::get('/permissions-management/{permission}', [PermissionController::class, 'show'])
+            ->name('permissions-management.show');
+
+        Route::get('/permissions-management/{permission}/edit', [PermissionController::class, 'edit'])
+            ->name('permissions-management.edit');
+
+        Route::put('/permissions-management/{permission}', [PermissionController::class, 'update'])
+            ->name('permissions-management.update');
+
+        Route::delete('/permissions-management/{permission}', [PermissionController::class, 'destroy'])
+            ->name('permissions-management.destroy');
+    });
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Stages Management (PJM & Admin)
+    |--------------------------------------------------------------------------
+    */
+
+    Route::middleware('can:manage stages')->group(function () {
+        Route::get('/stages-management', [StageManagementController::class, 'index'])
+            ->name('stages-management.index');
+
+        Route::get('/stages-management/create', [StageManagementController::class, 'create'])
+            ->name('stages-management.create');
+
+        Route::post('/stages-management', [StageManagementController::class, 'store'])
+            ->name('stages-management.store');
+
+        Route::get('/stages-management/{stage}', [StageManagementController::class, 'show'])
+            ->name('stages-management.show');
+
+        Route::get('/stages-management/{stage}/edit', [StageManagementController::class, 'edit'])
+            ->name('stages-management.edit');
+
+        Route::put('/stages-management/{stage}', [StageManagementController::class, 'update'])
+            ->name('stages-management.update');
+
+        Route::delete('/stages-management/{stage}', [StageManagementController::class, 'destroy'])
+            ->name('stages-management.destroy');
+
+        Route::put('/stages-management/{stage}/move-up', [StageManagementController::class, 'moveUp'])
+            ->name('stages-management.move-up');
+
+        Route::put('/stages-management/{stage}/move-down', [StageManagementController::class, 'moveDown'])
+            ->name('stages-management.move-down');
+
+        Route::put('/stages-management/{stage}/toggle', [StageManagementController::class, 'toggleActive'])
+            ->name('stages-management.toggle');
+    });
 
 
     /*
@@ -267,7 +372,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/signingVerification', 'editSigningVerification')
                 ->name('editSigningVerification');
-
 
             Route::put('/signingVerification', 'updateSigningVerification')
                 ->name('updateSigningVerification');

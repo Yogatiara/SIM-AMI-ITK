@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rules;
-use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rules;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -41,7 +42,7 @@ class UserController extends Controller
             'name' => 'required',
             'username' => 'required|unique:users',
             'email' => 'required|email:dns|unique:users',
-            'contact' => 'nullable|string|regex:/^[\d\s()+]+$/', // Memperbolehkan hanya angka, +, (, ), dan spasi
+            'contact' => 'nullable|string|regex:/^[\d\s()+]+$/',
             'roles' => 'required',
         ]);
 
@@ -65,7 +66,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        $roles = Role::all();
+        return view('users.edit', compact('user', 'roles'));
     }
 
     public function editContact(User $user)
@@ -78,32 +80,78 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'username' => 'required|unique:users,username,' . $user->id,
+            'email' => 'required|email:dns|unique:users,email,' . $user->id,
+            'contact' => 'nullable|string|regex:/^[\d\s()+]+$/',
+            'roles' => 'required',
+            'password' => 'nullable|min:8|confirmed',
+        ]);
+
+        // Only update password if provided
+        if ($request->filled('password')) {
+            $validatedData['password'] = \Hash::make($request->password);
+        } else {
+            unset($validatedData['password']);
+        }
+
+        $user->update($validatedData);
+
+        $user->syncRoles($request->roles);
+
+        return redirect('/users')->with('success', 'Updated user successfully.');
     }
 
     public function updateContact(Request $request, string $id)
     {
-        // Validasi input
         $request->validate([
             'contact' => [
                 'required',
                 'string',
                 'unique:users',
-                'regex:/^[\d\s()+]+$/', // Memperbolehkan hanya angka, +, (, ), dan spasi
+                'regex:/^[\d\s()+]+$/',
             ],
         ]);
 
-        // Temukan pengguna berdasarkan ID
         $user = User::findOrFail($id);
 
-        // Cek apakah pengguna memiliki kontak
         $user->update([
             'contact' => $request->input('contact'),
         ]);
 
         return redirect('/')->with('success', 'Contact updated successfully.');
+    }
+
+    /**
+     * Show the form for editing the user's password.
+     */
+    public function editPassword(User $user)
+    {
+        return view('users.edit-password', compact('user'));
+    }
+
+    /**
+     * Update the user's password in storage.
+     */
+    public function updatePassword(Request $request, User $user)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        if (!\Hash::check($request->current_password, $user->password)) {
+            return redirect()->back()->withErrors(['current_password' => 'Password saat ini tidak sesuai.']);
+        }
+
+        $user->update([
+            'password' => \Hash::make($request->password),
+        ]);
+
+        return redirect('/users')->with('success', 'Password berhasil diubah.');
     }
 
     /**
@@ -118,24 +166,44 @@ class UserController extends Controller
 
     public function getUser(Request $request)
     {
-        // Token dan URL API eksternal
-        $apiUrl = env('API_SEARCH_USER_URL');
-        $apiToken = env('API_USER_TOKEN');
+        $apiUrl = env('GERBANG_API_URL');
+        $apiToken = env('GERBANG_TOKEN');
 
-        // Ambil keyword dari request frontend
         $keyword = $request->input('keyword', '');
 
-        // Fetch data dari API eksternal
-        $response = Http::withToken($apiToken)
-            ->get($apiUrl, [
+        try {
+            $response = Http::withToken($apiToken)
+                ->timeout(10)
+                ->get($apiUrl . "/pegawai/search", [
+                    'keyword' => $keyword,
+                ]);
+
+            Log::info('Search User API', [
+                'url' => $apiUrl,
                 'keyword' => $keyword,
+                'status' => $response->status(),
+                'body' => $response->body(),
             ]);
 
-        // Periksa respons dan kembalikan hasil
-        if ($response->successful()) {
-            return response()->json($response->json(), 200);
-        }
+            if ($response->successful()) {
+                return response()->json($response->json());
+            }
 
-        return response()->json(['message' => 'Failed to fetch data'], 500);
+            return response()->json([
+                'message' => 'Failed to fetch data',
+                'status' => $response->status(),
+                'response' => $response->json(),
+            ], $response->status());
+
+        } catch (\Throwable $e) {
+            Log::error('Search User API Error', [
+                'message' => $e->getMessage(),
+            ]);
+
+            return response()->json([
+                'message' => 'Error connecting to API',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }

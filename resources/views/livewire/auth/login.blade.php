@@ -5,15 +5,14 @@
      <div class=" lg:w-1/2 xl:w-5/12 p-6 sm:p-12 my-auto">
 
        <div>
-         <img src="{{ asset('images/Logo-ITK-with-Text.webp') }}" class="w-56 mx-auto" />
+         <img src="{{ asset('logo/sim-ami.jpeg') }}" class="w-20 mx-auto" />
        </div>
        <div class="flex flex-col items-center">
 
          <div class="mb-8 mt-4 text-center">
            <div
              class="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-             Sistem Informasi Manajemen Audit Mutu Internal
-             Institut Teknologi Kalimantan </div>
+             Sistem Automasi Tertata dan Realisasi Integritas Audit Mutu Internal Institut Teknologi Kalimantan </div>
          </div>
          @if (session()->has('message'))
            <span
@@ -109,9 +108,9 @@
            </form>
 
 
-           <a class="flex  mt-2 justify-end text-sm  text-blue-700 hover:underline" href="/forgot-password">
+           {{-- <a class="flex  mt-2 justify-end text-sm  text-blue-700 hover:underline" href="/forgot-password">
              Lupa Password?
-           </a>
+           </a> --}}
 
          </div>
        </div>

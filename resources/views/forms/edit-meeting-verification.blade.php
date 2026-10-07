@@ -4,7 +4,7 @@
     @csrf
     @method('PUT')
 
-    <div class="flex items-center justify-between py-1 text-indigo-700 dark:text-cool-gray-50 md:text-lg">
+    <div class="flex items-center justify-between py-1 text-blue-700 dark:text-cool-gray-50 md:text-lg">
       <ol class="flex items-center gap-x-1">
         <li>
           <a href="/forms" class="hover:underline">
@@ -38,7 +38,7 @@
       <div class="flex items-center gap-x-2">
 
         <input type="datetime-local" disabled value="{{ $form->meeting_time }}"
-          class="rounded-sm border border-gray-300 bg-gray-50 py-1 text-sm text-gray-900 shadow-sm focus:border-indigo-800 focus:outline-none focus:ring-indigo-800 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500">
+          class="rounded-sm border border-gray-300 bg-gray-50 py-1 text-sm text-gray-900 shadow-sm focus:border-blue-800 focus:outline-none focus:ring-blue-800 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500">
 
         <button type="button" @click="openContact()"
           class="inline-flex gap-x-1 rounded-sm border-2 border-green-400 bg-green-400 p-1 text-sm text-white transition hover:shadow-outline-green">
@@ -59,7 +59,7 @@
             x-transition:enter-start="opacity-0 transform translate-y-1/2" x-transition:enter-end="opacity-100"
             x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0 transform translate-y-1/2"
-            class="w-full space-y-3 overflow-hidden rounded-t-lg bg-white p-3 text-indigo-800 dark:bg-gray-700 dark:text-cool-gray-50 sm:m-4 sm:max-w-xl sm:rounded-lg"
+            class="w-full space-y-3 overflow-hidden rounded-t-lg bg-white p-3 text-blue-800 dark:bg-gray-700 dark:text-cool-gray-50 sm:m-4 sm:max-w-xl sm:rounded-lg"
             id="modal-contact">
             <header class="flex justify-between">
               <div class="ms-5">
@@ -129,7 +129,7 @@
             </div>
             <footer class="-mx-6 flex flex-row items-center justify-end px-6 pt-2">
               <button @click="closeContact()" type="button"
-                class="w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm text-white transition-colors duration-150 hover:bg-blue-800 focus:shadow-outline-indigo sm:w-auto sm:px-4 sm:py-2">
+                class="w-full rounded-lg bg-blue-600 px-5 py-3 text-sm text-white transition-colors duration-150 hover:bg-blue-500 focus:shadow-outline-blue sm:w-auto sm:px-4 sm:py-2">
                 Close
               </button>
             </footer>
@@ -167,7 +167,7 @@
           {{ __('Decline') }}
         </button>
         <button type="button"
-          class="rounded-md bg-blue-800 px-4 py-2 text-xs uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-blue-700 focus:shadow-outline-blue"
+          class="rounded-md bg-blue-600 px-4 py-2 text-xs uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-blue-500 focus:shadow-outline-blue"
           @click="openConfirm('accept', 'Yakin ingin mengirim?', 'Verifikasi yang dikirim tidak dapat diubah.', () => {
                             document.getElementById('form').submit()
                         });">

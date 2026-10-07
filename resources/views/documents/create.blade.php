@@ -1,61 +1,26 @@
 <x-app-layout>
-  <form action="/documents" method="POST" class="flex h-full w-full flex-col gap-2">
+  <form action="/documents" method="POST" class="flex h-full w-full flex-col gap-y-4">
     @csrf
 
-    <div class="flex items-center justify-between font-semibold text-blue-800 dark:text-cool-gray-50 sm:text-lg">
-      <ol class="flex items-center gap-x-2">
-        <li>
-          <a href="/documents" class="hover:underline">
-            Documents
-          </a>
-        </li>
-        <li>
-          <svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="m1 9 4-4-4-4" />
-          </svg>
-        </li>
-        <li>
-          Create
-        </li>
-      </ol>
-      <div class="flex items-center gap-x-2">
-        @if ($errors->any() || session('name'))
-          <div id="toast-success"
-            class="hidden w-full max-w-xs items-center rounded-sm border-green-400 bg-white px-3 py-1.5 text-gray-500 shadow dark:bg-gray-800 dark:text-gray-400 lg:flex"
-            role="alert">
-            <div
-              class="inline-flex flex-shrink-0 items-center justify-center rounded-lg bg-green-100 p-0.5 text-green-400 dark:bg-green-800 dark:text-green-200">
-              <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                viewBox="0 0 20 20">
-                <path
-                  d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
-              </svg>
-              <span class="sr-only">Check icon</span>
-            </div>
-            @if (session('name'))
-              <div class="mx-2 text-sm font-medium">{{ session('name') }}</div>
-            @else
-              <div class="mx-2 text-sm font-medium">{{ $errors->first() }}</div>
-            @endif
-            <button type="button"
-              class="ms-auto inline-flex items-center justify-center rounded-lg bg-white p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-900 focus:ring-2 focus:ring-gray-300 dark:bg-gray-800 dark:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-white"
-              data-dismiss-target="#toast-success" aria-label="Close">
-              <svg class="h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                viewBox="0 0 14 14">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-              </svg>
-            </button>
-          </div>
-        @endif
-        <input name="document_name" type="text" placeholder="Document Name" required autofocus
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2 text-sm">
+        <a href="/documents"
+          class="text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+          Daftar Dokumen
+        </a>
+        <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+        <span class="font-medium text-gray-900 dark:text-white">Tambah Dokumen</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <input name="document_name" type="text" placeholder="Nama Dokumen" required autofocus
           value="{{ old('document_name') }}"
-          class="h-8 w-40 rounded-sm border-2 border-indigo-800 focus:shadow-outline-indigo dark:border-cool-gray-50 dark:bg-gray-700 dark:text-cool-gray-50 dark:placeholder-cool-gray-300">
+          class="h-9 w-48 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
       </div>
     </div>
 
-    <div class="h-[85%] w-full font-semibold" x-data="{
+    <div class="w-full " x-data="{
         openTab: 1,
         categories: [
             @forelse ($categories as $index => $category) {
@@ -83,6 +48,8 @@
                                                 entry: '{{ $indicator['entry'] }}',
                                                 link_info: '{{ str_replace(["\r\n", "\r", "\n"], "\\n", e($indicator['link_info'])) }}',
                                                 rate_option: '{{ $indicator['rate_option'] }}',
+                                                percentage_options: [],
+
                                             }, @endforeach
                                         @else
                                             { id: 1, competency_id: 1, code: '', assessment: '',  entry: '', link_info: '', rate_option: '' }
@@ -101,6 +68,7 @@
                 }, @empty
                 { id: 1, name: '', standards: [] } @endforelse
         ],
+    
         updateAllIds() {
             let categoryId = 1,
                 standardId = 1,
@@ -227,19 +195,19 @@
         }
     }">
 
-      <div class="flex justify-between gap-2">
+      <div class="rounded-2xl bg-white p-3 shadow-sm ring-1 ring-gray-100 dark:bg-gray-900 dark:ring-gray-800 mb-2">
         <div class="flex w-full whitespace-nowrap" data-simplebar>
-          <ul class="mb-2 flex">
+          <ul class=" flex">
             <template x-for="(category, index) in categories" :key="category.id">
               <li @click.prevent="openTab = category.id"
                 :class="openTab === category.id ?
-                    'text-indigo-800 dark:text-purple-400 border border-indigo-800 dark:border-gray-500' :
-                    'border-2 border-gray-200 text-gray-500 dark:text-gray-400 hover:text-green-400 dark:hover:text-gray-200 hover:border hover:border-indigo-800 dark:hover:border-purple-500'"
+                    ' dark:text-purple-400 border border-primary !rounded-2xl  dark:border-gray-500' :
+                    'border-2 border-gray-200 text-gray-500 dark:text-gray-400  hover:text-green-400 dark:hover:text-gray-200 hover:border hover:border-primary dark:hover:border-purple-500 !rounded-2xl'"
                 class="mr-1 flex cursor-pointer items-center gap-x-2 rounded bg-white p-1 dark:bg-gray-700">
                 <input type="hidden" x-model="category.id" :name="'categories[' + index + '][id]'" />
                 <input type="text" x-model="category.name" :name="'categories[' + index + '][name]'"
-                  class="w-36 border-0 border-indigo-800 bg-white p-0 text-indigo-800 focus:ring-0 dark:border-gray-500 dark:bg-gray-700 dark:text-purple-400"
-                  placeholder="Enter Tab Name" />
+                  class="w-36 border-0 border-primary bg-white rounded-2xl  text-primary focus:ring-0 dark:border-gray-500 dark:bg-gray-700 dark:text-purple-400"
+                  placeholder=" Nama Tab" />
                 <button type="button" @click.stop="removeTab(category.id)"
                   class="rounded-full text-gray-500 hover:text-red-600 dark:text-neutral-600 dark:hover:text-blue-500 dark:focus:text-blue-500">
                   <svg class="size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -253,8 +221,8 @@
               </li>
             </template>
             <li @click="addTab()"
-              class="flex cursor-pointer items-center gap-x-2 rounded border-2 border-gray-200 bg-white p-1 text-green-400 hover:border hover:border-green-400 hover:text-green-400 dark:bg-gray-700 dark:text-gray-400 dark:hover:border-purple-500 dark:hover:text-gray-200">
-              <span>Add Tab</span>
+              class="flex cursor-pointer items-center gap-2 whitespace-nowrap rounded-lg px-4 py-2 text-sm font-medium text-emerald-600 transition-colors hover:bg-emerald-50 dark:text-emerald-400 dark:hover:bg-emerald-900/20">
+              <span>Tambah Tab</span>
               <button type="button"
                 class="rounded-full dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500">
                 <svg class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -272,7 +240,7 @@
       </div>
 
       <div
-        class="shadow-xs h-[90%] w-full overflow-y-auto rounded-b rounded-r border-2 border-gray-200 bg-white p-1 text-center scrollbar-thin dark:border-gray-500 dark:bg-gray-700 dark:scrollbar-track-gray-500 dark:scrollbar-thumb-gray-800">
+        class="shadow-xs h-[90%] w-full overflow-y-auto rounded-2xl  border border-gray-200 bg-gray-100 p-3 text-center scrollbar-thin dark:border-gray-500 dark:bg-gray-700 dark:scrollbar-track-gray-500 dark:scrollbar-thumb-gray-800">
         <template x-for="(category, index) in categories" :key="category.id">
           <div x-show="openTab === category.id, initTextareas()">
             <template x-for="(standard, standardIndex) in category.standards" :key="standard.id">
@@ -281,8 +249,8 @@
                   <button type="button" @click="removeStandard(standardIndex)"
                     class="rounded-full p-1 text-gray-500 hover:text-red-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500">
                     <svg class="size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                      stroke-linecap="round" stroke-linejoin="round">
+                      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round">
                       <circle cx="12" cy="12" r="10"></circle>
                       <path d="m15 9-6 6"></path>
                       <path d="m9 9 6 6"></path>
@@ -294,289 +262,402 @@
                     :name="'categories[' + index + '][standards][' + standardIndex + '][category_id]'" />
                   <input type="text" x-model="standard.name"
                     :name="'categories[' + index + '][standards][' + standardIndex + '][name]'"
-                    class="min-w-52 border-0 border-indigo-800 bg-white p-0 text-lg font-semibold text-indigo-800 focus:ring-0 dark:border-gray-500 dark:bg-gray-700 dark:text-purple-400"
-                    x-bind:style="'width: ' + (standard.name.length + 1) + 'ch;'" placeholder="Enter Standard Name" />
+                    class="min-w-52 border-0 border-primary bg-gray-100 p-0 text-lg font-semibold  focus:ring-0 dark:border-gray-500 dark:bg-gray-700 dark:text-purple-400"
+                    x-bind:style="'width: ' + (standard.name.length + 1) + 'ch;'" placeholder="Masukan Nama Standar" />
                 </div>
-                <table class="w-full border-collapse">
-                  <thead>
-                    <tr>
-                      <th class="w-[2%]"></th>
-                      <th class="w-[44%] border border-indigo-800 font-semibold dark:border-gray-400 dark:text-white">
-                        Competencies</th>
-                      <th class="w-[44%] border border-indigo-800 font-semibold dark:border-gray-400 dark:text-white">
-                        Indicators</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <template x-for="(competency, competencyIndex) in standard.competencies" :key="competency.id">
-                      <tr>
-                        <td>
-                          <button type="button" @click="removeCompetency(standardIndex, competencyIndex)"
-                            class="rounded-full text-gray-500 hover:text-red-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500">
-                            <svg class="size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                              stroke-linecap="round" stroke-linejoin="round">
-                              <circle cx="12" cy="12" r="10"></circle>
-                              <path d="m15 9-6 6"></path>
-                              <path d="m9 9 6 6"></path>
-                            </svg>
-                          </button>
-                        </td>
-                        <td class="border border-blue-800 p-2 dark:border-gray-500 dark:text-white">
-                          <input type="hidden" x-model="competency.id"
-                            :name="'categories[' + index + '][standards][' + standardIndex +
-                                '][competencies][' + competencyIndex + '][id]'" />
-                          <input type="hidden" x-model="competency.standard_id"
-                            :name="'categories[' + index + '][standards][' + standardIndex +
-                                '][competencies][' + competencyIndex + '][standard_id]'" />
-                          <textarea x-model="competency.name"
-                            :name="'categories[' + index + '][standards][' + standardIndex +
-                                '][competencies][' + competencyIndex + '][name]'"
-                            class="w-full resize-none overflow-hidden border-0 bg-transparent font-semibold text-indigo-800 focus:ring-0"
-                            placeholder="Enter Competency Name" style="text-align: justify;">
+                <div
+                  class="rounded-2xl bg-gray-wihite shadow-sm mt-2 bg-white ring-gray-100 dark:bg-gray-900 dark:ring-gray-800">
+                  <table class="w-full overflow-hidden">
+                    <thead>
+                      <tr
+                        class="border-b border-gray-100 text-left text-xs font-medium uppercase tracking-wider text-gray-400 dark:border-gray-800 dark:text-gray-500">
+                        <th class="px-6 py-4"></th>
+                        <th class="px-6 py-4">
+                          Kompetensi</th>
+                        <th class="px-6 py-4">
+                          Indikator</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <template x-for="(competency, competencyIndex) in standard.competencies" :key="competency.id">
+                        <tr class="border-b ">
+                          <td>
+                            <button type="button" @click="removeCompetency(standardIndex, competencyIndex)"
+                              class="rounded-full text-gray-500 hover:text-red-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500">
+                              <svg class="size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="m15 9-6 6"></path>
+                                <path d="m9 9 6 6"></path>
+                              </svg>
+                            </button>
+                          </td>
+                          <td class="  p-2 dark:border-gray-500 dark:text-white">
+                            <input type="hidden" x-model="competency.id"
+                              :name="'categories[' + index + '][standards][' + standardIndex +
+                                  '][competencies][' + competencyIndex + '][id]'" />
+                            <input type="hidden" x-model="competency.standard_id"
+                              :name="'categories[' + index + '][standards][' + standardIndex +
+                                  '][competencies][' + competencyIndex + '][standard_id]'" />
+                            <textarea x-model="competency.name"
+                              :name="'categories[' + index + '][standards][' + standardIndex +
+                                  '][competencies][' + competencyIndex + '][name]'"
+                              class="w-full resize-none overflow-hidden border-0 bg-transparent font-semibold focus:ring-0"
+                              placeholder="Masukkan Nama Kompetensi" style="text-align: justify;">
                                                     </textarea>
-                        </td>
-                        <td class="border border-blue-800 p-2 dark:border-gray-500 dark:text-white">
-                          <template x-for="(indicator, indicatorIndex) in competency.indicators"
-                            :key="indicator.id">
-                            <div class="mb-4 items-center justify-between gap-x-2 md:flex">
-                              <button type="button"
-                                @click="removeIndicator(standardIndex, competencyIndex, indicatorIndex)"
-                                class="rounded-full text-gray-500 hover:text-red-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500">
-                                <svg class="size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                  stroke-linecap="round" stroke-linejoin="round">
-                                  <circle cx="12" cy="12" r="10">
-                                  </circle>
-                                  <path d="m15 9-6 6"></path>
-                                  <path d="m9 9 6 6"></path>
-                                </svg>
-                              </button>
-                              <input type="hidden" x-model="indicator.id"
-                                :name="'categories[' + index + '][standards][' +
-                                    standardIndex + '][competencies][' +
-                                    competencyIndex + '][indicators][' +
-                                    indicatorIndex + '][id]'" />
-                              <input type="hidden" x-model="indicator.competency_id"
-                                :name="'categories[' + index + '][standards][' +
-                                    standardIndex + '][competencies][' +
-                                    competencyIndex + '][indicators][' +
-                                    indicatorIndex + '][competency_id]'" />
-                              <input type="text" x-model="indicator.code" readonly
-                                :name="'categories[' + index + '][standards][' +
-                                    standardIndex + '][competencies][' +
-                                    competencyIndex + '][indicators][' +
-                                    indicatorIndex + '][code]'"
-                                class="min-w-8 border-0 border-indigo-800 bg-transparent p-0 text-center text-sm font-semibold text-indigo-800 focus:ring-0 dark:border-gray-500 dark:bg-gray-700 dark:text-purple-400"
-                                x-bind:style="'width: ' + (indicator.code.length + 1) + 'ch;'" />
-                              <textarea x-model="indicator.assessment" @keydown.enter.prevent
-                                :name="'categories[' + index + '][standards][' +
-                                    standardIndex + '][competencies][' +
-                                    competencyIndex + '][indicators][' +
-                                    indicatorIndex + '][assessment]'"
-                                class="w-[90%] resize-none overflow-hidden border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent pb-0 text-sm font-semibold text-indigo-800 focus:border-x-transparent focus:border-b-indigo-600 focus:border-t-transparent focus:ring-0"
-                                rows="1" placeholder="Enter Indicator Assessment" style="text-align: justify;">
+                          </td>
+                          <td class="  p-2 dark:border-gray-500 dark:text-white">
+                            <template x-for="(indicator, indicatorIndex) in competency.indicators"
+                              :key="indicator.id">
+                              <div class="mb-4 items-center justify-between gap-x-2 md:flex">
+                                <button type="button"
+                                  @click="removeIndicator(standardIndex, competencyIndex, indicatorIndex)"
+                                  class="rounded-full text-gray-500 hover:text-red-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500">
+                                  <svg class="size-4" xmlns="http://www.w3.org/2000/svg" width="24"
+                                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10">
+                                    </circle>
+                                    <path d="m15 9-6 6"></path>
+                                    <path d="m9 9 6 6"></path>
+                                  </svg>
+                                </button>
+                                <input type="hidden" x-model="indicator.id"
+                                  :name="'categories[' + index + '][standards][' +
+                                      standardIndex + '][competencies][' +
+                                      competencyIndex + '][indicators][' +
+                                      indicatorIndex + '][id]'" />
+                                <input type="hidden" x-model="indicator.competency_id"
+                                  :name="'categories[' + index + '][standards][' +
+                                      standardIndex + '][competencies][' +
+                                      competencyIndex + '][indicators][' +
+                                      indicatorIndex + '][competency_id]'" />
+                                <input type="text" x-model="indicator.code" readonly
+                                  :name="'categories[' + index + '][standards][' +
+                                      standardIndex + '][competencies][' +
+                                      competencyIndex + '][indicators][' +
+                                      indicatorIndex + '][code]'"
+                                  class="min-w-8 border-0 border-primary bg-transparent p-0 text-center text-sm font-semibold text-gray-600 focus:ring-0 dark:border-gray-500 dark:bg-gray-700 dark:text-purple-400"
+                                  x-bind:style="'width: ' + (indicator.code.length + 1) + 'ch;'" />
+                                <textarea x-model="indicator.assessment" @keydown.enter.prevent
+                                  :name="'categories[' + index + '][standards][' +
+                                      standardIndex + '][competencies][' +
+                                      competencyIndex + '][indicators][' +
+                                      indicatorIndex + '][assessment]'"
+                                  class="w-[90%] resize-none overflow-hidden border-b-1 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent pb-0 text-sm font-semibold text-gray-500 focus:border-x-transparent focus:border-b-primaryDark focus:border-t-transparent focus:ring-0"
+                                  rows="1" placeholder="Masukkan penilaian indikator" style="text-align: justify;">
                                                             </textarea>
 
-                              <!-- Modal Content -->
-                              <button type="button" @click="openModal(indicator.id)"
-                                class="text-gray-500 hover:text-indigo-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500">
-                                <svg class="size-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                  stroke-linecap="round" stroke-linejoin="round">
-                                  <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75">
-                                  </path>
-                                </svg>
-                              </button>
+                                <!-- Modal Content -->
+                                <button type="button" @click="openModal(indicator.id)"
+                                  class="flex items-center text-gray-500 hover:text-primaryDark dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500">
+                                  <svg class="size-5" xmlns="http://www.w3.org/2000/svg" width="24"
+                                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75">
+                                    </path>
+                                  </svg>
+                                  <p class="text-xs">
+                                    setting
 
-                              <!-- Modal backdrop. This what you want to place close to the closing body tag -->
-                              <div x-show="isModalOpen && currentIndicatorId === indicator.id"
-                                x-transition:enter="transition ease-out duration-150"
-                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                                x-transition:leave="transition ease-in duration-150"
-                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-                                class="fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-50 sm:items-center">
-                                <!-- Modal -->
+                                  </p>
+                                </button>
+
+                                <!-- Modal backdrop. This what you want to place close to the closing body tag -->
                                 <div x-show="isModalOpen && currentIndicatorId === indicator.id"
                                   x-transition:enter="transition ease-out duration-150"
-                                  x-transition:enter-start="opacity-0 transform translate-y-1/2"
-                                  x-transition:enter-end="opacity-100"
+                                  x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
                                   x-transition:leave="transition ease-in duration-150"
-                                  x-transition:leave-start="opacity-100"
-                                  x-transition:leave-end="opacity-0  transform translate-y-1/2"
-                                  @click.away="closeModal()" @keydown.escape="closeModal()"
-                                  class="w-full overflow-hidden rounded-t-lg bg-white px-6 py-4 text-left dark:bg-gray-800 sm:m-4 sm:max-w-xl sm:rounded-lg"
-                                  role="dialog" :id="'modal-' + indicator.id">
-                                  <!-- Remove header if you don't want a close icon. Use modal body to place modal tile. -->
-                                  <header class="flex justify-end">
-                                    <button type="button"
-                                      class="inline-flex h-6 w-6 items-center justify-center rounded text-gray-400 transition-colors duration-150 hover:text-gray-700 dark:hover:text-gray-200"
-                                      aria-label="close" @click="closeModal()">
-                                      <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20" role="img"
-                                        aria-hidden="true">
-                                        <path
-                                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                          clip-rule="evenodd" fill-rule="evenodd"></path>
-                                      </svg>
-                                    </button>
-                                  </header>
-                                  <!-- Modal body -->
-
-                                  <!-- Modal title -->
-                                  <div class="mb-6 flex flex-col gap-y-8 text-gray-500">
-                                    <h3 class="text-lg font-semibold text-indigo-800 dark:text-gray-300">
-                                      Set Indicator Entry
-                                      <span x-text="indicator.code"></span>
-                                    </h3>
-                                    <div class="flex flex-col gap-y-5">
-                                      <!-- Modal form -->
-                                      <div class="flex items-center justify-between gap-x-3">
-                                        <svg class="size-7" xmlns="http://www.w3.org/2000/svg" width="24"
-                                          height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                          <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M4.5 12a7.5 7.5 0 0 0 15 0m-15 0a7.5 7.5 0 1 1 15 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077 1.41-.513m14.095-5.13 1.41-.513M5.106 17.785l1.15-.964m11.49-9.642 1.149-.964M7.501 19.795l.75-1.3m7.5-12.99.75-1.3m-6.063 16.658.26-1.477m2.605-14.772.26-1.477m0 17.726-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205 12 12m6.894 5.785-1.149-.964M6.256 7.178l-1.15-.964m15.352 8.864-1.41-.513M4.954 9.435l-1.41-.514M12.002 12l-3.75 6.495">
-                                          </path>
+                                  x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+                                  class="fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-50 sm:items-center">
+                                  <!-- Modal -->
+                                  <div x-show="isModalOpen && currentIndicatorId === indicator.id"
+                                    x-transition:enter="transition ease-out duration-150"
+                                    x-transition:enter-start="opacity-0 transform translate-y-1/2"
+                                    x-transition:enter-end="opacity-100"
+                                    x-transition:leave="transition ease-in duration-150"
+                                    x-transition:leave-start="opacity-100"
+                                    x-transition:leave-end="opacity-0  transform translate-y-1/2"
+                                    @click.away="closeModal()" @keydown.escape="closeModal()"
+                                    class="w-full overflow-hidden rounded-t-lg bg-white px-6 py-4 text-left dark:bg-gray-800 sm:m-4 sm:max-w-xl sm:rounded-lg"
+                                    role="dialog" :id="'modal-' + indicator.id">
+                                    <!-- Remove header if you don't want a close icon. Use modal body to place modal tile. -->
+                                    <header class="flex justify-between">
+                                      <h3 class="text-md font-semibold  dark:text-gray-300">
+                                        Atur Jenis Masukan Indikator
+                                        <span x-text="indicator.code"></span>
+                                      </h3>
+                                      <button type="button"
+                                        class="inline-flex h-6 w-6 items-center justify-center rounded text-gray-400 transition-colors duration-150 hover:text-gray-700 dark:hover:text-gray-200"
+                                        aria-label="close" @click="closeModal()">
+                                        <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20" role="img"
+                                          aria-hidden="true">
+                                          <path
+                                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" fill-rule="evenodd"></path>
                                         </svg>
-                                        <select x-model="indicator.entry"
-                                          :name="'categories[' + index +
-                                              '][standards][' +
-                                              standardIndex +
-                                              '][competencies][' +
-                                              competencyIndex +
-                                              '][indicators][' +
-                                              indicatorIndex + '][entry]'"
-                                          @change="setData($event, indicator)"
-                                          class="w-[90%] border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent px-3 py-0 font-semibold text-indigo-800 focus:border-x-transparent focus:border-b-indigo-600 focus:border-t-transparent focus:ring-0">
-                                          <option value="Option">Option
-                                            ( Yes/No )
-                                          </option>
-                                          <option value="Digit">Digit ( # )
-                                          </option>
-                                          <option value="Decimal">Decimal ( .
-                                            )
-                                          </option>
-                                          <option value="Cost">Cost ( $ )
-                                          </option>
-                                          <option value="Percentage">
-                                            Percentage ( % )</option>
-                                          <option value="Rate">
-                                            Rate ( * )</option>
+                                      </button>
+                                    </header>
+                                    <!-- Modal body -->
 
-                                        </select>
-                                      </div>
+                                    <div class="mt-6 flex flex-col gap-y-8 text-gray-500">
 
-                                      <div class="flex items-center justify-end gap-x-3">
-                                        <template x-if="indicator.entry === 'Rate'">
-                                          <select x-model="indicator.rate_option"
+                                      <div class="flex flex-col ">
+                                        <!-- Modal form -->
+                                        <div class=" items-center gap-x-3">
+                                          <div class="flex items-center mb-2">
+                                            {{-- <svg class="size-3 mr-2 " xmlns="http://www.w3.org/2000/svg"
+                                              width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                              stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                              stroke-linejoin="round">
+                                              <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M4.5 12a7.5 7.5 0 0 0 15 0m-15 0a7.5 7.5 0 1 1 15 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077 1.41-.513m14.095-5.13 1.41-.513M5.106 17.785l1.15-.964m11.49-9.642 1.149-.964M7.501 19.795l.75-1.3m7.5-12.99.75-1.3m-6.063 16.658.26-1.477m2.605-14.772.26-1.477m0 17.726-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205 12 12m6.894 5.785-1.149-.964M6.256 7.178l-1.15-.964m15.352 8.864-1.41-.513M4.954 9.435l-1.41-.514M12.002 12l-3.75 6.495">
+                                              </path>
+                                            </svg> --}}
+
+                                            <p>
+                                              Pilih jenis inputan
+                                            </p>
+
+                                          </div>
+
+                                          <select x-model="indicator.entry"
                                             :name="'categories[' + index +
                                                 '][standards][' +
                                                 standardIndex +
                                                 '][competencies][' +
                                                 competencyIndex +
                                                 '][indicators][' +
-                                                indicatorIndex +
-                                                '][rate_option]'"
-                                            class="w-[90%] border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent px-3 py-0 font-semibold text-indigo-800 focus:border-x-transparent focus:border-b-indigo-600 focus:border-t-transparent focus:ring-0">
-                                            <option hidden value="1-10">
-                                              Choose rating scale</option>
-                                            <option value="1-10">1-10
+                                                indicatorIndex + '][entry]'"
+                                            @change="setData($event, indicator)"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                            <option value="Option">Option
+                                              ( Yes/No )
                                             </option>
-                                            <option value="1-100">1-100
+                                            <option value="Digit">Digit ( # )
                                             </option>
+                                            <option value="Decimal">Decimal ( .
+                                              )
+                                            </option>
+                                            <option value="Cost">Cost ( $ )
+                                            </option>
+                                            <option value="Percentage">
+                                              Percentage ( % )</option>
+                                            <option value="Rate">
+                                              Rate ( * )</option>
 
-                                            <option value="researcherSatisfaction">
-                                              Tingkat Kepuasan (label)</option>
                                           </select>
-                                        </template>
+                                        </div>
+
+                                        <div class="flex items-center justify-end gap-x-3">
+                                          <template x-if="indicator.entry === 'Rate'">
+                                            <select x-model="indicator.rate_option"
+                                              :name="'categories[' + index +
+                                                  '][standards][' +
+                                                  standardIndex +
+                                                  '][competencies][' +
+                                                  competencyIndex +
+                                                  '][indicators][' +
+                                                  indicatorIndex +
+                                                  '][rate_option]'"
+                                              class=" bg-gray-50 border mt-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                              <option hidden value="1-10">
+                                                Pilih skala penilaian</option>
+                                              <option value="1-10">1-10
+                                              </option>
+                                              <option value="1-100">1-100
+                                              </option>
+
+                                              <option value="researcherSatisfaction">
+                                                Tingkat Kepuasan (label)</option>
+                                            </select>
+                                          </template>
+
+
+                                          <template x-if="indicator.entry === 'Percentage'">
+                                            <select x-model="indicator.rate_option"
+                                              :name="'categories[' + index +
+                                                  '][standards][' +
+                                                  standardIndex +
+                                                  '][competencies][' +
+                                                  competencyIndex +
+                                                  '][indicators][' +
+                                                  indicatorIndex +
+                                                  '][rate_option]'"
+                                              class=" bg-gray-50 border mt-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                              <option hidden value="1-10">
+                                                Pilih jenis inputan persentase</option>
+                                              <option value="actualPercentage">Presentase Aktual
+                                              </option>
+
+                                              <option value="categoricalPercentage">Presentase Kategorikal
+                                              </option>
+                                              Tingkat Kepuasan (label)</option>
+                                            </select>
+                                          </template>
+
+
+
+                                        </div>
+
+                                        <div class="mt-6">
+                                          <div class="flex w-full">
+                                            <span
+                                              class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 border-e-0 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                              <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                  stroke-linejoin="round" stroke-width="2"
+                                                  d="M13.213 9.787a3.391 3.391 0 0 0-4.795 0l-3.425 3.426a3.39 3.39 0 0 0 4.795 4.794l.321-.304m-.321-4.49a3.39 3.39 0 0 0 4.795 0l3.424-3.426a3.39 3.39 0 0 0-4.794-4.795l-1.028.961" />
+                                              </svg>
+
+                                            </span>
+                                            <input x-model="indicator.link_info" @keydown.enter.prevent
+                                              :name="'categories[' + index +
+                                                  '][standards][' +
+                                                  standardIndex +
+                                                  '][competencies][' +
+                                                  competencyIndex +
+                                                  '][indicators][' +
+                                                  indicatorIndex +
+                                                  '][link_info]'"
+                                              class="rounded-none rounded-e-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                              placeholder="Masukan link info verifikasi">
+                                          </div>
+
+
+
+                                          {{-- <input type="text" id="website-admin"
+                                          class="rounded-none rounded-e-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                          placeholder="elonmusk"> --}}
+                                        </div>
+
+                                        {{-- <form class="mx-auto mt-6 w-full">
+                                          <label for="activity_category"
+                                            class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                                            Kategori Kegiatan (opsional)
+                                          </label>
+
+                                          <select id="activity_category" x-model="indicator.activity_category"
+                                            @change="setData($event, indicator)"
+                                            class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+
+                                            <option value="">Pilih kategori kegiatan</option>
+                                            <option value="penelitian">Penelitian</option>
+                                            <option value="pengmas">Pengmas</option>
+                                          </select>
+                                        </form>
+
+
+                                        <template
+                                          x-if="
+    indicator.activity_category === 'penelitian' ||
+    indicator.activity_category === 'pengmas'
+">
+                                          <div class="mx-auto mt-6 w-full">
+
+                                            <label for="participant"
+                                              class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                                              Peserta
+                                            </label>
+
+                                            <select id="participant" x-model="indicator.participant"
+                                              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+
+                                              <option value="">Pilih jenis peserta</option>
+                                              <option value="mahasiswa">Mahasiswa</option>
+                                              <option value="tendik">Tendik</option>
+                                              <option value="mitra">Mitra</option>
+                                              <option value="eksternal">Eksternal</option>
+
+                                            </select>
+
+                                          </div>
+                                        </template> --}}
+
+
+
+
                                       </div>
 
-                                      <div class="flex items-start justify-between gap-x-3">
-                                        <svg class="size-7" xmlns="http://www.w3.org/2000/svg" width="24"
-                                          height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                          <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z">
-                                          </path>
-                                        </svg>
-                                        <textarea x-model="indicator.link_info" @keydown.enter.prevent
-                                          :name="'categories[' + index +
-                                              '][standards][' +
-                                              standardIndex +
-                                              '][competencies][' +
-                                              competencyIndex +
-                                              '][indicators][' +
-                                              indicatorIndex +
-                                              '][link_info]'"
-                                          class="w-[90%] border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent px-3 py-0 font-semibold text-indigo-800 focus:border-x-transparent focus:border-b-indigo-600 focus:border-t-transparent focus:ring-0"
-                                          placeholder="Enter link verification info">
-                                                                                </textarea>
-                                      </div>
+
+
+
                                     </div>
+
                                     <footer
                                       class="-mx-6 -mb-4 flex flex-row items-center justify-end space-x-6 space-y-0 bg-gray-50 px-6 py-3 dark:bg-gray-800">
                                       <button type="button" @click="closeModal"
-                                        class="text w-full rounded-lg border border-transparent bg-indigo-600 px-5 py-3 text-sm font-semibold leading-5 text-white transition-colors duration-150 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple active:bg-purple-600 sm:w-auto sm:px-4 sm:py-2">
-                                        Save
+                                        class="bg-blue-500 rounded-md px-4 py-2 text-sm font-semibold text-white hover:bg-primaryDark">
+                                        Simpan
                                       </button>
                                     </footer>
                                   </div>
                                 </div>
-                              </div>
-                              <!-- End of modal backdrop -->
-                              <!-- End Modal Content -->
+                                <!-- End of modal backdrop -->
+                                <!-- End Modal Content -->
 
-                            </div>
-                          </template>
-                          <button type="button" @click="addIndicator(standardIndex, competencyIndex)"
-                            class="w-[90%] rounded bg-green-500 p-1 text-xs font-semibold text-white hover:bg-green-600 dark:bg-blue-500 dark:hover:bg-blue-600">
-                            Add Indicator
+                              </div>
+                            </template>
+                            <button type="button" @click="addIndicator(standardIndex, competencyIndex)"
+                              class="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-gray-200 px-3 py-3 text-sm font-medium text-gray-500 transition-colors hover:border-green-600 hover:text-green-600 dark:border-gray-700 dark:text-gray-400 dark:hover:border-blue-400 dark:hover:text-blue-400">
+                              <i class="far fa-plus-square mr-2"></i>
+
+                              Tambah Indikator
+                            </button>
+                          </td>
+                        </tr>
+                      </template>
+                      <tr>
+                        <td class="w-[2%]"></td>
+                        <td colspan="3" class="  p-2 text-center dark:border-gray-500 dark:text-white">
+                          <button type="button" @click="addCompetency(standardIndex)"
+                            class="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-gray-200 px-3 py-3 text-sm font-medium text-gray-500 transition-colors hover:border-green-600 hover:text-green-600 dark:border-gray-700 dark:text-gray-400 dark:hover:border-blue-400 dark:hover:text-blue-400">
+                            <i class="far fa-plus-square mr-2"></i>
+
+                            Tambah Kompetensi
                           </button>
                         </td>
                       </tr>
-                    </template>
-                    <tr>
-                      <td class="w-[2%]"></td>
-                      <td colspan="3"
-                        class="border border-blue-800 p-2 text-center dark:border-gray-500 dark:text-white">
-                        <button type="button" @click="addCompetency(standardIndex)"
-                          class="w-full rounded bg-green-500 p-1 text-xs font-semibold text-white hover:bg-green-600 dark:bg-blue-500 dark:hover:bg-blue-600">
-                          Add Competency
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                    </tbody>
+                  </table>
+                </div>
+
+
               </div>
             </template>
           </div>
         </template>
         <button type="button" @click="addStandard()" x-show="categories.length > 0 && !isOpenTabInvalid()"
-          class="w-full rounded bg-green-500 p-1.5 text-xs font-semibold text-white hover:bg-green-600 dark:bg-blue-500 dark:hover:bg-blue-600">
-          Add Standard
+          class="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-gray-200 px-3 py-3 text-sm font-medium text-gray-500 transition-colors hover:border-green-600 hover:text-green-600 dark:border-gray-700 dark:text-gray-400 dark:hover:border-blue-400 dark:hover:text-blue-400"></i>
+          Tambah Standar
         </button>
         <div x-show="categories.length > 0 && isOpenTabInvalid()"
           class="flex h-full items-center justify-center text-gray-500">
-          Please choose some tab.
+          Tidak ada tab yang dipilih atau tab belum diberi nama.
         </div>
         <div x-show="categories.length === 0" class="flex h-full items-center justify-center text-gray-500">
-          No categories available. Please add some tab.
+          Tidak ada kategori yang tersedia. Silakan tambahkan beberapa tab.
         </div>
 
       </div>
+
+      <div class="flex justify-end gap-3 mt-2">
+        <button type="submit" name="action" value="draft"
+          class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
+          Simpan Sebagai Draft
+        </button>
+        <button type="submit" name="action" value="submit"
+          class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-500 dark:hover:bg-blue-400 dark:focus:ring-offset-gray-900">
+          Simpan
+        </button>
+      </div>
     </div>
 
-    <div class="space-x-8 text-right">
-      <button type="submit" name="action" value="draft"
-        class="inline-flex rounded-md bg-gray-500 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-600">
-        {{ __('Save as a Draft') }}
-      </button>
-      <button type="submit" name="action" value="submit"
-        class="inline-flex rounded-md bg-blue-700 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-blue-800">
-        {{ __('Submit') }}
-      </button>
-    </div>
+
   </form>
 
 </x-app-layout>

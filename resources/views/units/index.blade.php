@@ -1,97 +1,105 @@
 <x-app-layout>
+  <div class="space-y-6">
+    <!-- Page Header -->
+    <div class="flex items-center justify-between">
+      <div class="flex flex-col gap-1">
+        <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
+          Daftar Unit
+        </h1>
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+          Kelola unit kerja institusi
+        </p>
+      </div>
+      <a href="{{ route('units.create') }}"
+        class="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:bg-emerald-500 dark:hover:bg-emerald-400 dark:focus:ring-offset-gray-900">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        Tambah Unit
+      </a>
+    </div>
 
-    <div
-        class="mb-4 flex items-center justify-between text-sm font-medium text-blue-800 dark:text-cool-gray-50 md:text-lg">
-        <ol class="flex items-center">
-            <li>
-                <a class="mx-1">
-                    Units
-                </a>
-            </li>
-        </ol>
-        <div class="flex items-center gap-x-2">
-            @if (session('status'))
-                <div id="toast-success"
-                    class="hidden w-full max-w-xs items-center rounded-sm border-green-400 bg-white px-3 py-1.5 text-gray-500 shadow dark:bg-gray-800 dark:text-gray-400 md:flex"
-                    role="alert">
-                    <div
-                        class="inline-flex flex-shrink-0 items-center justify-center rounded-lg bg-green-100 p-0.5 text-green-400 dark:bg-green-800 dark:text-green-200">
-                        <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                            viewBox="0 0 20 20">
-                            <path
-                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
-                        </svg>
-                        <span class="sr-only">Check icon</span>
-                    </div>
-                    <div class="mx-2 text-sm font-medium">{{ session('status') }}</div>
-                    <button type="button"
-                        class="ms-auto inline-flex items-center justify-center rounded-lg bg-white p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-900 focus:ring-2 focus:ring-gray-300 dark:bg-gray-800 dark:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-white"
-                        data-dismiss-target="#toast-success" aria-label="Close">
-                        <svg class="h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                        </svg>
-                    </button>
-                </div>
-            @endif
-            <a href="/units/create"
-                class="inline-block whitespace-nowrap rounded-sm border-2 border-green-400 bg-green-400 px-3 py-1 text-sm font-medium text-white transition hover:shadow-outline-green">
-                <i class="far fa-plus-square mr-2"></i>Add Unit
-            </a>
+    <!-- Units Table -->
+    <div class="rounded-2xl bg-white shadow-sm ring-1 ring-gray-100 dark:bg-gray-900 dark:ring-gray-800">
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="border-b border-gray-100 text-left text-xs font-medium uppercase tracking-wider text-gray-400 dark:border-gray-800 dark:text-gray-500">
+              <th class="px-6 py-4">No</th>
+              <th class="px-6 py-4">Kode</th>
+              <th class="px-6 py-4">Nama Unit</th>
+              <th class="px-6 py-4">Fakultas</th>
+              <th class="px-6 py-4 text-right">Aksi</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
+            @foreach ($units as $unit)
+              <tr class="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
+                  {{ $loop->iteration }}
+                </td>
+                <td class="px-6 py-4">
+                  <span class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+                    {{ $unit->code }}
+                  </span>
+                </td>
+                <td class="px-6 py-4">
+                  <span class="text-sm font-medium text-gray-900 dark:text-white">
+                    {{ $unit->name }}
+                  </span>
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
+                  {{ optional($unit->faculty)->code ?? '-' }}
+                </td>
+                <td class="px-6 py-4">
+                  <div class="flex items-center justify-end gap-2">
+                    <a href="{{ route('units.edit', $unit) }}"
+                      class="inline-flex items-center gap-1.5 rounded-lg bg-amber-50 px-3 py-1.5 text-xs font-medium text-amber-700 transition-colors hover:bg-amber-100 dark:bg-amber-900/30 dark:text-amber-400 dark:hover:bg-amber-900/50">
+                      <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                      Edit
+                    </a>
+                    @if ($unit->can_be_deleted)
+                      <form action="{{ route('units.destroy', $unit) }}" method="POST" class="inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus unit ini?');"
+                          class="inline-flex items-center gap-1.5 rounded-lg bg-rose-50 px-3 py-1.5 text-xs font-medium text-rose-700 transition-colors hover:bg-rose-100 dark:bg-rose-900/30 dark:text-rose-400 dark:hover:bg-rose-900/50">
+                          <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                          Hapus
+                        </button>
+                      </form>
+                    @else
+                      <span class="text-xs text-gray-400 dark:text-gray-500">Tidak dapat dihapus</span>
+                    @endif
+                  </div>
+                </td>
+              </tr>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Empty State -->
+      @if ($units->count() === 0)
+        <div class="flex h-64 flex-col items-center justify-center gap-4 text-gray-500">
+          <svg class="h-12 w-12 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+          </svg>
+          <p class="text-sm">Belum ada unit</p>
+          <a href="{{ route('units.create') }}"
+            class="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-emerald-500">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Tambah Unit
+          </a>
         </div>
+      @endif
     </div>
-
-    <div
-        class="h-[545px] overflow-auto rounded-sm scrollbar-thin dark:scrollbar-track-gray-400 dark:scrollbar-thumb-gray-700">
-        @if ($units->count())
-            <table class="whitespace-no-wrap w-full">
-                <thead>
-                    <tr class="sticky top-0 bg-blue-800 text-cool-gray-50">
-                        <th class="px-4 py-2">#</th>
-                        <th class="px-8 py-2">Code</th>
-                        <th class="px-4 py-2 text-left">Name</th>
-                        <th class="px-4 py-2">Faculty</th>
-                        <th class="px-4 py-2">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($units as $unit)
-                        <tr
-                            class="border-b bg-white text-center hover:bg-gray-50 dark:border-gray-500 dark:bg-gray-800 dark:text-cool-gray-50">
-                            <td class="px-4 py-2">{{ $loop->iteration . '.' }}</td>
-                            <td class="px-8 py-2">{{ $unit->code }}</td>
-                            <td class="px-4 py-2 text-left">{{ $unit->name }}</td>
-                            <td class="px-4 py-2">{{ optional($unit->faculty)->code }}</td>
-                            <td class="grid gap-y-2 px-4 py-2 xl:block xl:space-x-2">
-                                <a href="/units/{{ $unit->id }}/edit"
-                                    class="inline-block rounded border border-yellow-300 px-3 py-1 text-sm font-medium text-yellow-300 transition hover:bg-yellow-300 hover:text-white">
-                                    <i class="fa fa-edit mr-1"></i>
-                                    Ubah
-                                </a>
-                                @if ($unit->can_be_deleted)
-                                    <form action="/units/{{ $unit->id }}" method="POST"
-                                        class="inline-block rounded border border-red-600 px-3 py-1 text-sm font-medium text-red-600 transition hover:bg-red-600 hover:text-white">
-                                        @method('delete')
-                                        @csrf
-                                        <button onclick="return confirm('Apakah Anda yakin ingin menghapus data?');">
-                                            <i class="fas fa-trash-alt"></i>
-                                            Hapus
-                                        </button>
-                                    </form>
-                                @else
-                                    <span class="text-gray-400">Tidak dapat dihapus</span>
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        @else
-            <div class="flex h-[540px] items-center justify-center bg-white font-bold text-gray-500">
-                No unit found.
-            </div>
-        @endif
-    </div>
-
+  </div>
 </x-app-layout>

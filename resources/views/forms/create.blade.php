@@ -1,55 +1,315 @@
-<x-app-layout>
-  <div class="flex h-full w-full flex-col">
-    <div class="flex items-center justify-between px-2 font-semibold text-blue-800 dark:text-cool-gray-50 sm:text-lg">
-      <ol class="flex items-center gap-x-2">
-        <li>
-          <a href="/forms" class="hover:underline">
-            Forms
-          </a>
-        </li>
-        <li>
-          <svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="m1 9 4-4-4-4" />
-          </svg>
-        </li>
-        <li>
-          Create
-        </li>
-      </ol>
-      <div class="flex items-center gap-x-2">
-        @if ($errors->any())
-          <div id="toast-success"
-            class="hidden w-full max-w-xs items-center rounded-sm border-green-400 bg-white px-3 py-1.5 text-gray-500 shadow dark:bg-gray-800 dark:text-gray-400 lg:flex"
-            role="alert">
-            <div
-              class="inline-flex flex-shrink-0 items-center justify-center rounded-lg bg-green-100 p-0.5 text-green-400 dark:bg-green-800 dark:text-green-200">
-              <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                viewBox="0 0 20 20">
-                <path
-                  d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
-              </svg>
-              <span class="sr-only">Check icon</span>
-            </div>
-            <div class="mx-2 text-sm font-medium">{{ $errors->first() }}</div>
-            <button type="button"
-              class="ms-auto inline-flex items-center justify-center rounded-lg bg-white p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-900 focus:ring-2 focus:ring-gray-300 dark:bg-gray-800 dark:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-white"
-              data-dismiss-target="#toast-success" aria-label="Close">
-              <svg class="h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                viewBox="0 0 14 14">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-              </svg>
-            </button>
-          </div>
-        @endif
+{{-- <x-app-layout>
+  <div class="flex h-full w-full flex-col gap-y-4">
+    <!-- Page Header -->
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2 text-sm">
+        <a href="/forms"
+          class="text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+          Formulir
+        </a>
+        <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+        <span class="font-medium text-gray-900 dark:text-white">Tambah Formulir</span>
       </div>
     </div>
 
     <!-- Stepper -->
-    <div class="h-[85%] w-full" data-hs-stepper="">
+    <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100 dark:bg-gray-900 dark:ring-gray-800">
       <!-- Stepper Nav -->
-      <ul class="mx-auto flex w-2/3 gap-x-2">
+      <div class="mx-auto flex w-2/3 gap-x-2">
+        <!-- Step 1 -->
+        <div class="group flex flex-1 items-center gap-x-2" data-hs-stepper-nav-item='{ "index": 1}'>
+          <span
+            class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-medium text-white">
+            1
+          </span>
+          <span class="text-sm font-medium text-gray-900 dark:text-white">Identitas</span>
+          <div class="h-px flex-1 bg-gray-200 group-last:hidden dark:bg-gray-700"></div>
+        </div>
+        <!-- Step 2 -->
+        <div class="group flex flex-1 items-center gap-x-2" data-hs-stepper-nav-item='{"index": 2}'>
+          <span
+            class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-200 text-sm font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-400">
+            2
+          </span>
+          <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Akses</span>
+          <div class="h-px flex-1 bg-gray-200 group-last:hidden dark:bg-gray-700"></div>
+        </div>
+        <!-- Step 3 -->
+        <div class="group flex flex-1 items-center gap-x-2" data-hs-stepper-nav-item='{"index": 3}'>
+          <span
+            class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-200 text-sm font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-400">
+            3
+          </span>
+          <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Formulir</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stepper Content -->
+    <form action="/forms" method="POST" class="flex-1">
+      @csrf
+      <div x-data="script()" class="flex h-full flex-col">
+        <!-- Step 1: Identity -->
+        <div data-hs-stepper-content-item='{"index": 1}' class="flex-1">
+          <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100 dark:bg-gray-900 dark:ring-gray-800">
+            <div class="mb-6 text-center">
+              <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Daftarkan Formulir Baru</h2>
+              <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Tentukan Unit Auditee, Periode, dan Tenggat Waktu
+              </p>
+            </div>
+
+            <div class="mx-auto max-w-md space-y-4">
+              <!-- Unit Selection -->
+              <div>
+                <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Pilih Auditee</label>
+                <select id="hs-select-with-multiple-setter" multiple x-model="selectedOptions" name="units[]"
+                  @change="updateSelectedUnits()"
+                  class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+                  @foreach ($units as $unit)
+                    <option value="{{ $unit->id }}" unit-code="{{ $unit->code }}">{{ $unit->name }}</option>
+                  @endforeach
+                </select>
+                <div class="mt-2 flex flex-wrap gap-2">
+                  <button type="button" @click="setProdi"
+                    class="inline-flex items-center gap-x-1 rounded-lg bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
+                    <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Set Prodi
+                  </button>
+                  <button type="button" @click="setJurusan"
+                    class="inline-flex items-center gap-x-1 rounded-lg bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
+                    <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Set Jurusan
+                  </button>
+                  <button type="button" @click="setLainnya"
+                    class="inline-flex items-center gap-x-1 rounded-lg bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
+                    <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Set Lainnya
+                  </button>
+                  <button type="button" @click="reset"
+                    class="inline-flex items-center gap-x-1 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
+                    <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    Reset
+                  </button>
+                </div>
+              </div>
+
+              <!-- Period Selection -->
+              <div>
+                <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Pilih Periode</label>
+                <select name="document"
+                  class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+                  <option hidden value="">Pilih Periode</option>
+                  @foreach ($documents as $id => $document)
+                    <option value="{{ $id }}" {{ old('document') == $id ? 'selected' : '' }}>
+                      {{ $document }}</option>
+                  @endforeach
+                </select>
+              </div>
+
+              <!-- Deadline -->
+              <div>
+                <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Tentukan Deadline</label>
+                <input name="deadline" type="datetime-local" value="{{ old('deadline') }}"
+                  class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Access -->
+        <div data-hs-stepper-content-item='{"index": 2}' style="display: none;" class="flex-1">
+          <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100 dark:bg-gray-900 dark:ring-gray-800">
+            <div x-show="selectedOptions.length === 0" class="flex h-64 items-center justify-center text-gray-500">
+              Tidak ada unit yang dipilih. Silakan pilih unit terlebih dahulu.
+            </div>
+            <div x-show="selectedOptions.length !== 0">
+              <div class="grid grid-cols-2 gap-6">
+                <!-- Auditee Column -->
+                <div>
+                  <h3 class="mb-4 text-sm font-semibold text-gray-900 dark:text-white">Daftarkan Unit Kerja</h3>
+                  <p class="mb-4 text-xs text-gray-500 dark:text-gray-400">Tentukan Pimpinan dan PIC</p>
+                  <div class="space-y-3">
+                    <input value="Pimpinan" readonly
+                      class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-center text-sm font-medium text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+                    <input value="PIC" readonly
+                      class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-center text-sm font-medium text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+                    <template x-for="(item, itemIndex) in auditees[option] || []" :key="item">
+                      <div class="flex items-center gap-2">
+                        <input type="text" :value="'PIC ' + item.id" readonly
+                          class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-center text-sm font-medium text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+                        <button type="button" @click="removeItem(option, 'auditees', itemIndex)"
+                          class="rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-red-500 dark:hover:bg-gray-800">
+                          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </div>
+                    </template>
+                    <button type="button" @click="addItem(option, 'auditees')"
+                      class="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-200 px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:border-blue-500 hover:text-blue-600 dark:border-gray-700 dark:text-gray-400 dark:hover:border-blue-400 dark:hover:text-blue-400">
+                      <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                      </svg>
+                      Tambah Auditee
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Auditor Column -->
+                <div>
+                  <h3 class="mb-4 text-sm font-semibold text-gray-900 dark:text-white">Daftarkan Auditor</h3>
+                  <p class="mb-4 text-xs text-gray-500 dark:text-gray-400">Tentukan Ketua dan anggota</p>
+                  <div class="space-y-3">
+                    <input value="Ketua" readonly
+                      class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-center text-sm font-medium text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+                    <input value="Anggota" readonly
+                      class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-center text-sm font-medium text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+                    <template x-for="(item, itemIndex) in auditors[option] || []" :key="item">
+                      <div class="flex items-center gap-2">
+                        <input type="text" :value="'Anggota ' + item.id" readonly
+                          class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-center text-sm font-medium text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+                        <button type="button" @click="removeItem(option, 'auditors', itemIndex)"
+                          class="rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-red-500 dark:hover:bg-gray-800">
+                          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </div>
+                    </template>
+                    <button type="button" @click="addItem(option, 'auditors')"
+                      class="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-200 px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:border-blue-500 hover:text-blue-600 dark:border-gray-700 dark:text-gray-400 dark:hover:border-blue-400 dark:hover:text-blue-400">
+                      <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                      </svg>
+                      Tambah Auditor
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Forms -->
+        <div data-hs-stepper-content-item='{"index": 3}' style="display: none;" class="flex-1">
+          <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100 dark:bg-gray-900 dark:ring-gray-800">
+            <div class="mb-4 text-center">
+              <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Konfigurasi Formulir</h2>
+              <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Atur kategori, standar, kompetensi, dan
+                indikator</p>
+            </div>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Fitur ini akan segera tersedia.</p>
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="mt-4 flex justify-between">
+          <button type="button" @click="previousStep()"
+            class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            Sebelumnya
+          </button>
+          <button type="button" @click="nextStep()"
+            class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-500 dark:hover:bg-blue-400 dark:focus:ring-offset-gray-900">
+            Selanjutnya
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    function script() {
+      return {
+        selectedOptions: [],
+        auditees: {},
+        auditors: {},
+        currentStep: 1,
+        updateSelectedUnits() {},
+        setProdi() {},
+        setJurusan() {},
+        setLainnya() {},
+        reset() {
+          this.selectedOptions = [];
+        },
+        addItem(option, type) {
+          if (!this[type][option]) this[type][option] = [];
+          this[type][option].push({
+            id: Date.now()
+          });
+        },
+        removeItem(option, type, index) {
+          this[type][option].splice(index, 1);
+        },
+        nextStep() {
+          if (this.currentStep < 3) {
+            this.currentStep++;
+            this.updateStepper();
+          }
+        },
+        previousStep() {
+          if (this.currentStep > 1) {
+            this.currentStep--;
+            this.updateStepper();
+          }
+        },
+        updateStepper() {
+          // Update stepper UI
+          document.querySelectorAll('[data-hs-stepper-content-item]').forEach(el => {
+            el.style.display = 'none';
+          });
+          const currentContent = document.querySelector(
+            `[data-hs-stepper-content-item='{"index": ${this.currentStep}}']`);
+          if (currentContent) currentContent.style.display = 'block';
+        }
+      }
+    }
+  </script>
+</x-app-layout> --}}
+
+
+
+
+<x-app-layout>
+  <div class="flex h-full w-full flex-col">
+    <div class="flex items-center justify-between mb-12">
+      <div class="flex items-center gap-2 text-sm">
+        <a href="/forms"
+          class="text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+          Formulir
+        </a>
+        <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+        <span class="font-medium text-gray-900 dark:text-white">Tambah Formulir</span>
+      </div>
+    </div>
+
+    <!-- Stepper -->
+    <div class="h-full w-full mx-auto" data-hs-stepper="">
+
+
+      <!-- Stepper Nav -->
+
+      <ul class="flex w-full ">
         <!-- First Item -->
         <li class="group flex flex-1 shrink basis-0 items-center gap-x-2" data-hs-stepper-nav-item='{ "index": 1}'>
           <span class="min-w-7 min-h-7 group inline-flex items-center align-middle text-xs">
@@ -65,7 +325,7 @@
               </svg>
             </span>
             <span class="ms-2 text-sm font-medium text-gray-800 dark:text-cool-gray-50">
-              Identity
+              Identitas
             </span>
           </span>
           <div
@@ -88,7 +348,7 @@
               </svg>
             </span>
             <span class="ms-2 text-sm font-medium text-gray-800 dark:text-cool-gray-50">
-              Access
+              Akses
             </span>
           </span>
           <div
@@ -111,7 +371,7 @@
               </svg>
             </span>
             <span class="ms-2 text-sm font-medium text-gray-800 dark:text-cool-gray-50">
-              Forms
+              Formulir
             </span>
           </span>
           <div
@@ -120,6 +380,7 @@
         </li>
         <!-- End Third Item -->
       </ul>
+
       <!-- End Stepper Nav -->
 
       <!-- Stepper Content -->
@@ -147,7 +408,7 @@
                   @change="updateSelectedUnits()"
                   data-hs-select='{
                                     "hasSearch": true,
-                                    "placeholder": "Select multiple options...",
+                                    "placeholder": "Pilih struktur organisasi...",
                                     "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
                                     "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600",
                                     "toggleCountText": "units selected",
@@ -212,7 +473,7 @@
                 <x-input-label for="name" :value="__('Pilih Periode')" />
                 <select name="document"
                   class="block w-full rounded-lg border-2 border-gray-200 bg-white px-8 py-2 text-sm scrollbar-thin scrollbar-thumb-blue-800 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:scrollbar-track-gray-500 dark:scrollbar-thumb-gray-800">
-                  <option hidden value="">Period</option>
+                  <option hidden value="">Periode</option>
                   @foreach ($documents as $id => $document)
                     <option value="{{ $id }}" {{ old('document') == $id ? 'selected' : '' }}>
                       {{ $document }}</option>
@@ -237,7 +498,7 @@
             <div class="h-full w-full">
               <div x-show="selectedOptions.length === 0"
                 class="flex h-full items-center justify-center text-gray-500">
-                No units available. Please add some unit.
+                Tidak ada data yang tersedia, harap tambah organisasi auditee terlebih dahulu
               </div>
               <table x-show="selectedOptions.length !== 0" class="w-full border-collapse">
                 <thead>
@@ -294,7 +555,7 @@
                                 <input type="text" :id="option + '-auditeeName-0'"
                                   @input="searchUsers(option, 'auditee', 0)" :name="'user_names[' + option + '][]'"
                                   class="w-full rounded-e-lg border border-s-2 border-gray-300 border-s-gray-50 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:border-s-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500"
-                                  placeholder="Search User" />
+                                  placeholder="Cari Pengguna" />
                                 <input type="hidden" :id="option + '-auditeeUsername-0'"
                                   :name="'user_usernames[' + option + '][]'" />
                                 <input type="hidden" :id="option + '-auditeeEmail-0'"
@@ -319,7 +580,7 @@
                                 <input type="text" :id="option + '-auditeeName-1'"
                                   @input="searchUsers(option, 'auditee', 1)" :name="'user_names[' + option + '][]'"
                                   class="w-full rounded-e-lg border border-s-2 border-gray-300 border-s-gray-50 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:border-s-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500"
-                                  placeholder="Search User" />
+                                  placeholder="Cari Pengguna" />
                                 <input type="hidden" :id="option + '-auditeeUsername-1'"
                                   :name="'user_usernames[' + option + '][]'" />
                                 <input type="hidden" :id="option + '-auditeeEmail-1'"
@@ -346,7 +607,7 @@
                                     @input="searchUsers(option, 'auditee', item.id)"
                                     :name="'user_names[' + option + '][]'"
                                     class="w-full rounded-e-lg border border-s-2 border-gray-300 border-s-gray-50 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:border-s-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500"
-                                    placeholder="Search User" />
+                                    placeholder="Cari Pengguna" />
                                   <input type="hidden" :id="option + '-auditeeUsername-' + item.id"
                                     :name="'user_usernames[' + option + '][]'" />
                                   <input type="hidden" :id="option + '-auditeeEmail-' + item.id"
@@ -380,7 +641,7 @@
                             <div class="flex items-center justify-end">
                               <button type="button" @click="addItem(option, 'auditees')"
                                 class="flex cursor-pointer items-center rounded text-green-400 hover:text-green-500 dark:bg-gray-700 dark:text-gray-400 dark:hover:border-purple-500 dark:hover:text-gray-200">
-                                <span>Add Auditee</span>
+                                <span>Tambah Auditee</span>
                                 <svg class="size-4 ml-2 shrink-0 rounded-full" xmlns="http://www.w3.org/2000/svg"
                                   width="24" height="24" viewBox="0 0 24 24" fill="none"
                                   stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -419,7 +680,7 @@
                                 <input type="text" :id="option + '-auditorName-0'"
                                   @input="searchUsers(option, 'auditor', 0)" :name="'user_names[' + option + '][]'"
                                   class="w-full rounded-e-lg border border-s-2 border-gray-300 border-s-gray-50 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:border-s-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500"
-                                  placeholder="Search User" />
+                                  placeholder="Cari Pengguna" />
                                 <input type="hidden" :id="option + '-auditorUsername-0'"
                                   :name="'user_usernames[' + option + '][]'" />
                                 <input type="hidden" :id="option + '-auditorEmail-0'"
@@ -444,7 +705,7 @@
                                 <input type="text" :id="option + '-auditorName-1'"
                                   @input="searchUsers(option, 'auditor', 1)" :name="'user_names[' + option + '][]'"
                                   class="w-full rounded-e-lg border border-s-2 border-gray-300 border-s-gray-50 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:border-s-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500"
-                                  placeholder="Search User" />
+                                  placeholder="Cari Pengguna" />
                                 <input type="hidden" :id="option + '-auditorUsername-1'"
                                   :name="'user_usernames[' + option + '][]'" />
                                 <input type="hidden" :id="option + '-auditorEmail-1'"
@@ -471,7 +732,7 @@
                                     @input="searchUsers(option, 'auditor', item.id)"
                                     :name="'user_names[' + option + '][]'"
                                     class="w-full rounded-e-lg border border-s-2 border-gray-300 border-s-gray-50 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:border-s-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500"
-                                    placeholder="Search User" />
+                                    placeholder="Cari Pengguna" />
                                   <input type="hidden" :id="option + '-auditorUsername-' + item.id"
                                     :name="'user_usernames[' + option + '][]'" />
                                   <input type="hidden" :id="option + '-auditorEmail-' + item.id"
@@ -505,7 +766,7 @@
                             <div class="flex items-center justify-end">
                               <button type="button" @click="addItem(option, 'auditors')"
                                 class="flex cursor-pointer items-center rounded text-green-400 hover:text-green-500 dark:bg-gray-700 dark:text-gray-400 dark:hover:border-purple-500 dark:hover:text-gray-200">
-                                <span>Add Auditor</span>
+                                <span>Tambah Auditor</span>
                                 <svg class="size-4 ml-2 shrink-0 rounded-full" xmlns="http://www.w3.org/2000/svg"
                                   width="24" height="24" viewBox="0 0 24 24" fill="none"
                                   stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -609,11 +870,11 @@
                     <template x-for="(category, index) in categories" :key="category.id">
                       <li @click.prevent="openTab = category.id"
                         :class="openTab === category.id ?
-                            'text-indigo-800 dark:text-purple-400 border border-indigo-800 dark:border-gray-500' :
-                            'border-2 border-gray-200 text-gray-500 dark:text-gray-400 hover:text-green-400 dark:hover:text-gray-200 hover:border hover:border-indigo-800 dark:hover:border-purple-500'"
-                        class="mr-1 flex cursor-pointer items-center gap-x-2 rounded bg-white p-1 dark:bg-gray-700">
+                            'text-gray-800 dark:text-purple-400 border border-blue-500  dark:border-gray-500' :
+                            'border-2 border-gray-200 text-gray-500 dark:text-gray-400 hover:text-green-400 dark:hover:text-gray-200 hover:border hover:border-gray-800 dark:hover:border-purple-500'"
+                        class="mr-1 flex cursor-pointer items-center gap-x-2 rounded-2xl p-2 bg-white  dark:bg-gray-700">
                         <div x-text="category.name"
-                          class="border-0 border-indigo-800 bg-white p-0 text-indigo-800 focus:ring-0 dark:border-gray-500 dark:bg-gray-700 dark:text-purple-400">
+                          class="border-0 border-gray-800 bg-white p-0 text-blue-500 focus:ring-0 dark:border-gray-500 dark:bg-gray-700 dark:text-purple-400">
                         </div>
                       </li>
                     </template>
@@ -670,95 +931,95 @@
                       <div class="mb-5">
                         <div class="flex items-center justify-start gap-x-2">
                           <div x-text="standard.name"
-                            class="min-w-52 border-0 border-indigo-800 bg-white pl-2 text-left text-lg font-semibold text-indigo-800 focus:ring-0 dark:border-gray-500 dark:bg-gray-700 dark:text-purple-400"
+                            class="min-w-52 border-0 border-gray-800 bg-white pl-2 text-left text-lg font-semibold text-gray-800 focus:ring-0 dark:border-gray-500 dark:bg-gray-700 dark:text-purple-400"
                             x-bind:style="{ width: (standard.name.length + 1) + 'ch' }"
                             placeholder="Enter Standard Name"></div>
                         </div>
-                        <table class="w-full border-collapse">
-                          <thead>
-                            <tr class="text-xs md:text-sm">
-                              <th
-                                class="w-[40%] border border-indigo-800 font-semibold dark:border-gray-400 dark:text-white">
-                                Competencies</th>
-                              <th class="border border-indigo-800 font-semibold dark:border-gray-400 dark:text-white">
-                                Indicators</th>
-                              <th
-                                class="w-[18%] border border-indigo-800 font-semibold dark:border-gray-400 dark:text-white">
-                                Validation</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <template x-for="(competency, competencyIndex) in standard.competencies"
-                              :key="competency.id">
-                              <tr>
-                                <td class="border border-blue-800 p-3 dark:border-gray-500 dark:text-white">
-                                  <textarea x-model="competency.name" disabled
-                                    class="w-full resize-none overflow-hidden border-0 bg-transparent font-semibold text-indigo-800 focus:ring-0"
-                                    style="text-align: justify;" placeholder="Competency Name">
+                        <div
+                          class="rounded-2xl bg-white shadow-sm mt-1 ring-1 ring-gray-100 dark:bg-gray-900 dark:ring-gray-800">
+                          <table class="w-full">
+                            <thead>
+                              <tr
+                                class="border-b border-gray-100 text-left text-xs font-medium uppercase tracking-wider text-gray-400 dark:border-gray-800 dark:text-gray-500">
+                                <th class="px-6 py-4">
+                                  Kompetensi</th>
+                                <th class="px-6 py-4">
+                                  Indikator</th>
+                                <th class="px-6 py-4">
+                                  Validasi</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <template x-for="(competency, competencyIndex) in standard.competencies"
+                                :key="competency.id">
+                                <tr class="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                  <td class="bpx-6 py-4">
+                                    <textarea x-model="competency.name" disabled
+                                      class="w-full resize-none overflow-hidden border-0 bg-transparent font-semibold text-gray-600 focus:ring-0"
+                                      style="text-align: justify;" placeholder="Competency Name">
                                                             </textarea>
-                                </td>
-                                <td colspan="2"
-                                  class="border border-blue-800 p-3 dark:border-gray-500 dark:text-white">
-                                  <template x-for="(indicator, indicatorIndex) in competency.indicators"
-                                    :key="indicator.id">
-                                    <div class="my-5 flex w-full items-center justify-between">
-                                      <div
-                                        class="flex w-8/12 flex-col items-center justify-between gap-x-5 gap-y-2 md:flex-row">
-                                        <div class="flex items-center gap-x-5">
-                                          <template
-                                            x-if="!indicator
+                                  </td>
+                                  <td colspan="2" class="px-6 py-4">
+                                    <template x-for="(indicator, indicatorIndex) in competency.indicators"
+                                      :key="indicator.id">
+                                      <div class="my-5 flex w-full items-center justify-between">
+                                        <div
+                                          class="flex w-8/12 flex-col items-center justify-between gap-x-5 gap-y-2 md:flex-row">
+                                          <div class="flex items-center gap-x-5">
+                                            <template
+                                              x-if="!indicator
                                                                                         .isDisabled">
-                                            <button type="button"
-                                              @click="toggleDisableIndicator(standardIndex, competencyIndex, indicatorIndex)"
-                                              class="rounded-full text-gray-500 hover:text-red-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500">
-                                              <svg class="w-5 text-center" aria-hidden="true" fill="none"
-                                                stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                  d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88">
-                                                </path>
-                                              </svg>
-                                            </button>
-                                          </template>
-                                          <template
-                                            x-if="indicator
+                                              <button type="button"
+                                                @click="toggleDisableIndicator(standardIndex, competencyIndex, indicatorIndex)"
+                                                class="rounded-full text-gray-500 hover:text-red-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500">
+                                                <svg class="w-5 text-center" aria-hidden="true" fill="none"
+                                                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  viewBox="0 0 24 24" stroke="currentColor">
+                                                  <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88">
+                                                  </path>
+                                                </svg>
+                                              </button>
+                                            </template>
+                                            <template
+                                              x-if="indicator
                                                                                         .isDisabled">
-                                            <button type="button"
-                                              @click="toggleDisableIndicator(standardIndex, competencyIndex, indicatorIndex)"
-                                              class="rounded-full text-gray-500 hover:text-blue-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500">
-                                              <svg class="w-5 text-center" aria-hidden="true" fill="none"
-                                                stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                  d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z">
-                                                </path>
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                  d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z">
-                                                </path>
-                                              </svg>
-                                            </button>
-                                          </template>
-                                          <input type="hidden" :disabled="indicator.isDisabled"
-                                            x-model="indicator.id" name="indicators_id[]" />
-                                          <div x-text="indicator.code"
-                                            class="border-0 border-indigo-800 bg-transparent text-sm font-semibold text-indigo-800 dark:border-gray-500 dark:bg-gray-700 dark:text-purple-400">
+                                              <button type="button"
+                                                @click="toggleDisableIndicator(standardIndex, competencyIndex, indicatorIndex)"
+                                                class="rounded-full text-gray-500 hover:text-blue-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500">
+                                                <svg class="w-5 text-center" aria-hidden="true" fill="none"
+                                                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  viewBox="0 0 24 24" stroke="currentColor">
+                                                  <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z">
+                                                  </path>
+                                                  <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z">
+                                                  </path>
+                                                </svg>
+                                              </button>
+                                            </template>
+                                            <input type="hidden" :disabled="indicator.isDisabled"
+                                              x-model="indicator.id" name="indicators_id[]" />
+                                            <div x-text="indicator.code"
+                                              class="border-0 border-gray-800 bg-transparent text-sm font-semibold text-gray-600 dark:border-gray-500 dark:bg-gray-700 dark:text-purple-400">
+                                            </div>
+                                          </div>
+
+                                          <!-- Indicator assessment field -->
+                                          <div x-text="indicator.assessment"
+                                            class="w-full border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent font-semibold text-gray-800"
+                                            :class="{ 'hidden': indicator.isDisabled }" style="text-align: justify;">
                                           </div>
                                         </div>
-
-                                        <!-- Indicator assessment field -->
-                                        <div x-text="indicator.assessment"
-                                          class="w-full border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent font-semibold text-indigo-800"
-                                          :class="{ 'hidden': indicator.isDisabled }" style="text-align: justify;">
-                                        </div>
-                                      </div>
-                                      {{-- Validation --}}
-                                      <template
-                                        x-if="!indicator
+                                        {{-- Validation --}}
+                                        <template
+                                          x-if="!indicator
                                                                                         .isDisabled">
-                                        <div class="w-3/12 items-center justify-between gap-4 align-middle md:flex">
-                                          <div class="hidden text-xs font-bold text-indigo-800 md:block"
-                                            style="text-align: justify"
-                                            x-text="
+                                          <div class="w-3/12 items-center justify-between gap-4 align-middle md:flex">
+                                            <div class="hidden text-xs font-bold text-gray-800 md:block"
+                                              style="text-align: justify"
+                                              x-text="
                                                                                         indicator.entry === 'Option' ? indicator.entry + ' (Yes/No)' :
                                                                                         indicator.entry === 'Digit' ? indicator.entry + ' (#)' :
                                                                                         indicator.entry === 'Decimal' ? indicator.entry + ' (.)' :
@@ -768,104 +1029,104 @@
                                                                                         indicator.rate_option === '1-100' ? indicator.entry + ' (1/100)' :
 
                                                                                         indicator.rate_option === 'researcherSatisfaction' ? 'Tingkat Kepuasan (label)' : indicator.entry">
-                                          </div>
-                                          <!-- md: Popover -->
-                                          <div
-                                            class="hs-tooltip hidden items-center justify-center [--trigger:hover] md:flex">
-                                            <div class="hs-tooltip-toggle">
-                                              <button type="button"
-                                                class="text-gray-500 hover:text-indigo-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500">
-                                                <svg class="size-6" xmlns="http://www.w3.org/2000/svg" width="24"
-                                                  height="24" viewBox="0 0 24 24" fill="none"
-                                                  stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                  stroke-linejoin="round">
-                                                  <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z">
-                                                  </path>
-                                                </svg>
-                                              </button>
-                                              <div
-                                                class="hs-tooltip-content invisible absolute z-50 hidden max-w-xs rounded-lg border border-gray-100 bg-white text-start opacity-0 shadow-md transition-opacity hs-tooltip-shown:visible hs-tooltip-shown:opacity-100 dark:border-neutral-700 dark:bg-neutral-800"
-                                                role="tooltip">
-                                                <span
-                                                  class="px-4 pt-3 text-lg font-bold text-gray-800 dark:text-white">
-                                                  Link
-                                                  Verification
-                                                  Info</span>
+                                            </div>
+                                            <!-- md: Popover -->
+                                            <div
+                                              class="hs-tooltip hidden items-center justify-center [--trigger:hover] md:flex">
+                                              <div class="hs-tooltip-toggle">
+                                                <button type="button"
+                                                  class="text-gray-500 hover:text-gray-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500">
+                                                  <svg class="size-6" xmlns="http://www.w3.org/2000/svg"
+                                                    width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                      d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z">
+                                                    </path>
+                                                  </svg>
+                                                </button>
                                                 <div
-                                                  class="flex flex-col gap-2 px-4 py-3 text-sm text-gray-600 dark:text-neutral-400">
-                                                  <p class="md:hidden" x-text="indicator.entry">
-                                                  </p>
-                                                  <p x-text="indicator.link_info">
-                                                  </p>
-                                                  <p x-show="!indicator.link_info" class="text-base">
-                                                    No info
-                                                    available
-                                                  </p>
+                                                  class="hs-tooltip-content invisible absolute z-50 hidden max-w-xs rounded-lg border border-gray-100 bg-white text-start opacity-0 shadow-md transition-opacity hs-tooltip-shown:visible hs-tooltip-shown:opacity-100 dark:border-neutral-700 dark:bg-neutral-800"
+                                                  role="tooltip">
+                                                  <span
+                                                    class="px-4 pt-3 text-lg font-bold text-gray-800 dark:text-white">
+                                                    Link
+                                                    Verification
+                                                    Info</span>
+                                                  <div
+                                                    class="flex flex-col gap-2 px-4 py-3 text-sm text-gray-600 dark:text-neutral-400">
+                                                    <p class="md:hidden" x-text="indicator.entry">
+                                                    </p>
+                                                    <p x-text="indicator.link_info">
+                                                    </p>
+                                                    <p x-show="!indicator.link_info" class="text-base">
+                                                      No info
+                                                      available
+                                                    </p>
+                                                  </div>
                                                 </div>
                                               </div>
                                             </div>
-                                          </div>
-                                          <!-- End md: Popover -->
+                                            <!-- End md: Popover -->
 
-                                          <!-- Popover -->
-                                          <div
-                                            class="hs-tooltip flex items-center justify-center [--trigger:hover] md:hidden">
-                                            <div class="hs-tooltip-toggle">
-                                              <button type="button"
-                                                class="text-gray-500 hover:text-indigo-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500">
-                                                <svg class="size-5" xmlns="http://www.w3.org/2000/svg" width="24"
-                                                  height="24" viewBox="0 0 24 24" fill="none"
-                                                  stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                  stroke-linejoin="round">
-                                                  <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z">
-                                                  </path>
-                                                </svg>
-                                              </button>
-                                              <div
-                                                class="hs-tooltip-content invisible absolute z-50 hidden max-w-xs rounded-lg border border-gray-100 bg-white text-start opacity-0 shadow-md transition-opacity hs-tooltip-shown:visible hs-tooltip-shown:opacity-100 dark:border-neutral-700 dark:bg-neutral-800"
-                                                role="tooltip">
-                                                <span
-                                                  class="px-4 pt-3 text-lg font-bold text-gray-800 dark:text-white">Validation</span>
+                                            <!-- Popover -->
+                                            <div
+                                              class="hs-tooltip flex items-center justify-center [--trigger:hover] md:hidden">
+                                              <div class="hs-tooltip-toggle">
+                                                <button type="button"
+                                                  class="text-gray-500 hover:text-gray-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500">
+                                                  <svg class="size-5" xmlns="http://www.w3.org/2000/svg"
+                                                    width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                      d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z">
+                                                    </path>
+                                                  </svg>
+                                                </button>
                                                 <div
-                                                  class="flex flex-col gap-2 px-4 py-3 text-sm text-gray-600 dark:text-neutral-400">
-                                                  <p x-text="indicator.entry">
-                                                  </p>
-                                                  <p x-text="indicator.rate_option">
-                                                  </p>
-                                                  <p x-text="indicator.link_info">
-                                                  </p>
-                                                  <p x-show="!indicator.link_info">
-                                                    No info
-                                                    verification
-                                                    link</p>
+                                                  class="hs-tooltip-content invisible absolute z-50 hidden max-w-xs rounded-lg border border-gray-100 bg-white text-start opacity-0 shadow-md transition-opacity hs-tooltip-shown:visible hs-tooltip-shown:opacity-100 dark:border-neutral-700 dark:bg-neutral-800"
+                                                  role="tooltip">
+                                                  <span
+                                                    class="px-4 pt-3 text-lg font-bold text-gray-800 dark:text-white">Validation</span>
+                                                  <div
+                                                    class="flex flex-col gap-2 px-4 py-3 text-sm text-gray-600 dark:text-neutral-400">
+                                                    <p x-text="indicator.entry">
+                                                    </p>
+                                                    <p x-text="indicator.rate_option">
+                                                    </p>
+                                                    <p x-text="indicator.link_info">
+                                                    </p>
+                                                    <p x-show="!indicator.link_info">
+                                                      Tidak ada informasi link verifikasi</p>
+                                                  </div>
                                                 </div>
                                               </div>
                                             </div>
+                                            <!-- End Popover -->
                                           </div>
-                                          <!-- End Popover -->
-                                        </div>
-                                      </template>
-                                      {{-- End Validation --}}
-                                    </div>
-                                  </template>
+                                        </template>
+                                        {{-- End Validation --}}
+                                      </div>
+                                    </template>
 
-                                </td>
-                              </tr>
-                            </template>
-                          </tbody>
-                        </table>
+                                  </td>
+                                </tr>
+                              </template>
+                            </tbody>
+                          </table>
+                        </div>
+
                       </div>
                     </template>
                   </div>
                 </template>
                 <div x-show="categories.length === 0"
                   class="flex h-full flex-col items-center justify-center gap-2 text-gray-500">
-                  <div>No documents available. Please add some document first.
+                  <div>Tidak ada dokumen yang tersedia. Harap tambah dokumen terlebih dahulu.
                     <a href="/documents/create" target="_blank"
                       class="rounded bg-green-400 px-2 py-0.5 text-center text-sm font-medium text-white transition hover:border-green-500 hover:bg-green-500">
-                      Add Document
+                      Tambah Dokumen
                       <i class="far fa-plus-square ml-2"></i>
                     </a>
                   </div>
@@ -890,7 +1151,7 @@
         <!-- Button Group -->
         <div class="mt-2 flex items-center justify-between gap-x-2">
           <button type="button"
-            class="inline-flex items-center gap-x-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-800 shadow-sm hover:bg-gray-50 focus:bg-gray-50 focus:outline-none disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+            class="inline-flex items-center gap-x-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-600 shadow-sm hover:bg-gray-50 focus:bg-gray-50 focus:outline-none disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
             data-hs-stepper-back-btn="">
             <svg class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
               viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"

@@ -14,30 +14,20 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        // Admin user
+        User::create([
+            'name' => 'Administrator',
+            'username' => 'admin',
+            'email' => 'admin@sim-ami.ac.id',
+            'password' => Hash::make('admin123'),
+        ])->assignRole('Admin');
+
+        // PJM user
         User::create([
             'name' => 'Yoga Tiara',
             'username' => 'yoga_tiara',
             'email' => 'yogatiarawiguna@gmail.com',
             'password' => Hash::make('zxcvbnm123'),
         ])->assignRole('PJM', 'Auditor', 'Auditee');
-
-        // User::create([
-        //     'name' => 'Penjaminan Mutu',
-        //     'username' => '11201091',
-        //     'email' => '11201091@student.itk.ac.id',
-        //     'password' => Hash::make('11111111'),
-        // ])->assignRole('PJM', 'Auditor', 'Auditee');
-
-        // User::create([
-        //     'name' => 'Rifqi Aulia Tanjung, S.T., M.T.',
-        //     'username' => '100118161',
-        //     'email' => 'rifqi.aulia@lecturer.itk.ac.id',
-        // ])->assignRole('PJM', 'Auditor', 'Auditee');
-
-        // User::create([
-        //     'name' => 'Darmansyah, S.Si., M.T.I',
-        //     'username' => '198704282022031002',
-        //     'email' => 'darmansyah@lecturer.itk.ac.id',
-        // ])->assignRole('PJM', 'Auditor', 'Auditee');
     }
 }

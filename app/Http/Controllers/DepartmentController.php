@@ -24,10 +24,10 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        return view('departments.form', [
-            'header' => "Daftarkan Jurusan Baru",
+        return view('departments.create', [
+            'header' => "Tambah Departemen Baru",
             'route' => route('departments.store'),
-            'submit' => "Daftar"
+            'submit' => "Simpan"
         ]);
     }
 
@@ -63,7 +63,12 @@ class DepartmentController extends Controller
      */
     public function edit(Department $department)
     {
-        //
+        return view('departments.edit', [
+            'header' => "Edit Departemen",
+            'route' => route('departments.update', $department),
+            'submit' => "Simpan Perubahan",
+            'department' => $department
+        ]);
     }
 
     /**
@@ -71,7 +76,18 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, Department $department)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:100', 'unique:departments,name,' . $department->id],
+            'code' => ['required', 'string', 'max:10', 'unique:departments,code,' . $department->id]
+        ]);
+
+        $department->update([
+            'name' => $request->name,
+            'code' => $request->code
+        ]);
+
+        return redirect('/departments')
+            ->with("status", "$department->code updated successfully!");
     }
 
     /**

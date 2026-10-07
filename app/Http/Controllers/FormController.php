@@ -116,7 +116,11 @@ class FormController extends Controller
             //     });
         }
 
-        return view('forms.index', compact('forms'));
+        // Get active stages
+        $activeStages = \App\Models\Stage::where('is_active', true)->orderBy('order', 'asc')->get();
+        $activeStageIds = $activeStages->pluck('id')->toArray();
+
+        return view('forms.index', compact('forms', 'activeStages', 'activeStageIds'));
     }
 
     public function create(Request $request)
@@ -257,9 +261,75 @@ class FormController extends Controller
             return $item->indicator?->competency?->standard?->category?->id ?? null;
         });
 
+        // Build categories structure for the view
+        $categories = [];
+        foreach ($grouped as $categoryId => $audits) {
+            if (!$categoryId)
+                continue;
+
+            $category = $audits->first()->indicator->competency->standard->category;
+            $standards = [];
+
+            $standardsGrouped = $audits->groupBy(function ($item) {
+                return $item->indicator?->competency?->standard?->id ?? null;
+            });
+
+            foreach ($standardsGrouped as $standardId => $standardAudits) {
+                if (!$standardId)
+                    continue;
+
+                $standard = $standardAudits->first()->indicator->competency->standard;
+                $competencies = [];
+
+                $competenciesGrouped = $standardAudits->groupBy(function ($item) {
+                    return $item->indicator?->competency?->id ?? null;
+                });
+
+                foreach ($competenciesGrouped as $competencyId => $competencyAudits) {
+                    if (!$competencyId)
+                        continue;
+
+                    $competency = $competencyAudits->first()->indicator->competency;
+                    $indicators = [];
+
+                    foreach ($competencyAudits as $audit) {
+                        $indicators[] = [
+                            'id' => $audit->indicator->id,
+                            'code' => $audit->indicator->code,
+                            'assessment' => $audit->indicator->assessment,
+                            'assessment_status' => $audit->assessment_status,
+                            'submission_status' => $audit->submission_status,
+                            'validation_status' => $audit->validation_status,
+                            'feedback' => $audit->feedback,
+                            'entry' => $audit->indicator->entry,
+                            'link' => $audit->link,
+                        ];
+                    }
+
+                    $competencies[] = [
+                        'id' => $competency->id,
+                        'name' => $competency->name,
+                        'indicators' => $indicators,
+                    ];
+                }
+
+                $standards[] = [
+                    'id' => $standard->id,
+                    'name' => $standard->name,
+                    'competencies' => $competencies,
+                ];
+            }
+
+            $categories[] = [
+                'id' => $category->id,
+                'name' => $category->name,
+                'standards' => $standards,
+            ];
+        }
+
         $statuses = Status::orderBy('id', 'desc')->get();
 
-        return view('forms.show', compact('form', 'auditees', 'auditors', 'grouped', 'statuses'));
+        return view('forms.show', compact('form', 'auditees', 'auditors', 'grouped', 'categories', 'statuses'));
     }
 
     /**
@@ -329,13 +399,15 @@ class FormController extends Controller
                 ($access->position === 'Chief' || strpos($access->position, 'PIC') !== false);
         });
 
-        if (!$editAccess || $form->stage_id !== 1 || app('user_role') !== 'Auditee') {
-            abort(403, "The form is currently {$form->stage->name} Stage.");
-        }
+        // if (!$editAccess || $form->stage_id !== 1 || app('user_role') !== 'Auditee') {
+        //     abort(403, "The form is currently {$form->stage->name} Stage.");
+        // }
 
-        $submitAccess = $formAccesses->contains(function ($access) {
-            return $access->user_id === auth()->id() && $access->position === 'Chief';
-        });
+        $submitAccess = true;
+
+        // $submitAccess = $formAccesses->contains(function ($access) {
+        //     return $access->user_id === auth()->id() && $access->position === 'Chief';
+        // });
 
         $auditees = $formAccesses->filter(function ($access) {
             return $access->position === 'Chief' || strpos($access->position, 'PIC') !== false;
@@ -360,6 +432,22 @@ class FormController extends Controller
         $statuses = Status::orderBy('id', 'desc')->get();
 
         return view('forms.edit-submission', compact('form', 'submitAccess', 'auditees', 'auditors', 'grouped', 'statuses'));
+    }
+
+    /**
+     * Find the next active stage after the given stage_id.
+     */
+    private function getNextActiveStageId(int $currentStageId): ?int
+    {
+        $currentStage = \App\Models\Stage::find($currentStageId);
+        $currentOrder = $currentStage?->order ?? 0;
+
+        $nextStage = \App\Models\Stage::where('is_active', true)
+            ->where('order', '>', $currentOrder)
+            ->orderBy('order', 'asc')
+            ->first();
+
+        return $nextStage?->id;
     }
 
     public function updateSubmission(Request $request, Form $form)
@@ -393,7 +481,7 @@ class FormController extends Controller
             // Gunakan operator ternary untuk menentukan nilai berdasarkan tombol yang ditekan
             Form::updateOrCreate(
                 ['id' => $form->id],
-                ['stage_id' => 2]
+                ['stage_id' => $this->getNextActiveStageId($form->stage_id) ?? 2]
             );
 
             return redirect('forms')->with('success', "Form {$form->unit->code} {$form->document->name} submitted successfully.");
@@ -489,7 +577,7 @@ class FormController extends Controller
             // Gunakan operator ternary untuk menentukan nilai berdasarkan tombol yang ditekan
             Form::updateOrCreate(
                 ['id' => $form->id],
-                ['stage_id' => 3]
+                ['stage_id' => $this->getNextActiveStageId($form->stage_id) ?? 3]
             );
 
             return redirect('forms')->with('success', "Form {$form->unit->code} {$form->document->name} submitted successfully.");
@@ -596,7 +684,7 @@ class FormController extends Controller
             // Gunakan operator ternary untuk menentukan nilai berdasarkan tombol yang ditekan
             Form::updateOrCreate(
                 ['id' => $form->id],
-                ['stage_id' => 4]
+                ['stage_id' => $this->getNextActiveStageId($form->stage_id) ?? 4]
             );
 
             return redirect('forms')->with('success', "Form {$form->unit->code} {$form->document->name} submitted successfully.");
@@ -695,7 +783,7 @@ class FormController extends Controller
             // Gunakan operator ternary untuk menentukan nilai berdasarkan tombol yang ditekan
             Form::updateOrCreate(
                 ['id' => $form->id],
-                ['stage_id' => 5]
+                ['stage_id' => $this->getNextActiveStageId($form->stage_id) ?? 5]
             );
 
             return redirect('forms')->with('success', "Form {$form->unit->code} {$form->document->name} submitted successfully.");
@@ -823,7 +911,7 @@ class FormController extends Controller
 
             Form::updateOrCreate(
                 ['id' => $form->id],
-                ['stage_id' => 6]
+                ['stage_id' => $this->getNextActiveStageId($form->stage_id) ?? 6]
             );
         } else if ($request->input('action') === 'decline') {
 
@@ -852,13 +940,15 @@ class FormController extends Controller
                 ($access->position === 'Chief' || strpos($access->position, 'PIC') !== false);
         });
 
-        if (!$editAccess || $form->stage_id !== 6 || app('user_role') !== 'Auditee') {
-            abort(403, "The form is currently {$form->stage->name} Stage.");
-        }
+        // if (!$editAccess || $form->stage_id !== 6 || app('user_role') !== 'Auditee') {
+        //     abort(403, "The form is currently {$form->stage->name} Stage.");
+        // }
 
-        $submitAccess = $formAccesses->contains(function ($access) {
-            return $access->user_id === auth()->id() && $access->position === 'Chief';
-        });
+        $submitAccess = true;
+
+        // $submitAccess = $formAccesses->contains(function ($access) {
+        //     return $access->user_id === auth()->id() && $access->position === 'Chief';
+        // });
 
         $auditees = $formAccesses->filter(function ($access) {
             return $access->position === 'Chief' || strpos($access->position, 'PIC') !== false;
@@ -872,10 +962,14 @@ class FormController extends Controller
             return $access->position === 'Leader' ? 0 : (intval(str_replace('Member', '', $access->position)) ?: 1);
         });
 
+
+        // $formAudits = FormAudit::with([
+        //     'indicator.competency.standard.category'
+        // ])->where('form_id', $form->id)->whereIn('validation_status', [1, 2])->get();
+
         $formAudits = FormAudit::with([
             'indicator.competency.standard.category'
-        ])->where('form_id', $form->id)->whereIn('validation_status', [1, 2])->get();
-
+        ])->where('form_id', $form->id)->get();
 
         $grouped = $formAudits->groupBy(function ($item) {
             return $item->indicator?->competency?->standard?->category?->id ?? null;
@@ -913,7 +1007,7 @@ class FormController extends Controller
             // Gunakan operator ternary untuk menentukan nilai berdasarkan tombol yang ditekan
             Form::updateOrCreate(
                 ['id' => $form->id],
-                ['stage_id' => 7]
+                ['stage_id' => $this->getNextActiveStageId($form->stage_id) ?? 7]
             );
 
             return redirect('forms')->with('success', "Form {$form->unit->code} {$form->document->name} successfully submitted.");
@@ -945,9 +1039,9 @@ class FormController extends Controller
                 ($access->position === 'Chief' || strpos($access->position, 'PIC') !== false);
         });
 
-        if (!$editAccess || $form->stage_id !== 7 || app('user_role') !== 'Auditee') {
-            abort(403, "The form is currently {$form->stage->name} Stage.");
-        }
+        // if (!$editAccess || $form->stage_id !== 7 || app('user_role') !== 'Auditee') {
+        //     abort(403, "The form is currently {$form->stage->name} Stage.");
+        // }
 
         $auditees = $formAccesses->filter(function ($access) {
             return $access->position === 'Chief' || strpos($access->position, 'PIC') !== false;
@@ -1037,7 +1131,7 @@ class FormController extends Controller
 
             Form::updateOrCreate(
                 ['id' => $form->id],
-                ['stage_id' => 8]
+                ['stage_id' => $this->getNextActiveStageId($form->stage_id) ?? 8]
             );
         } else if ($request->input('action') === 'decline') {
 
@@ -1393,6 +1487,11 @@ class FormController extends Controller
 
         $pdfPath = storage_path("app/public/{$fileName}.pdf");
 
+        if (!file_exists($pdfPath)) {
+            return redirect()
+                ->back()
+                ->with('error', 'File PDF belum tersedia.');
+        }
         // Unduh file PDF
         return response()->download($pdfPath)->deleteFileAfterSend(true);
     }

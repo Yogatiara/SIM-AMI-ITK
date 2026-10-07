@@ -11,25 +11,29 @@ const pieConfig = {
         datasets: [
             {
                 data: [tepatWaktu, tidakTepatWaktu],
-                /**
-                 * These colors come from Tailwind CSS palette
-                 * https://tailwindcss.com/docs/customizing-colors/#default-color-palette
-                 */
-                backgroundColor: ["#06b6d4", "#f05252"],
-                label: "Dataset 1",
+                backgroundColor: ["#10b981", "#fb7185"],
+                borderWidth: 0,
+                hoverOffset: 4,
             },
         ],
         labels: ["Tepat waktu", "Tidak tepat waktu"],
     },
     options: {
         responsive: true,
-        cutoutPercentage: 80,
-        /**
-         * Default legends are ugly and impossible to style.
-         * See examples in charts.html to add your own legends
-         *  */
-        legend: {
-            display: false,
+        maintainAspectRatio: false,
+        cutout: "75%",
+        plugins: {
+            legend: {
+                display: false,
+            },
+            tooltip: {
+                backgroundColor: "#1f2937",
+                titleFont: { family: "Inter", size: 13 },
+                bodyFont: { family: "Inter", size: 13 },
+                padding: 12,
+                cornerRadius: 8,
+                displayColors: false,
+            },
         },
     },
 };

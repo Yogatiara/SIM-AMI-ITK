@@ -4,7 +4,7 @@
         @csrf
         @method('PUT')
 
-        <div class="flex items-center justify-between py-1 text-indigo-700 dark:text-cool-gray-50 md:text-lg">
+        <div class="flex items-center justify-between py-1 text-blue-700 dark:text-cool-gray-50 md:text-lg">
             <ol class="flex items-center gap-x-1">
                 <li>
                     <a href="/forms" class="hover:underline">
@@ -57,7 +57,7 @@
                         x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150"
                         x-transition:leave-start="opacity-100"
                         x-transition:leave-end="opacity-0 transform translate-y-1/2"
-                        class="w-full space-y-3 overflow-hidden rounded-t-lg bg-white p-3 text-indigo-800 dark:bg-gray-700 dark:text-cool-gray-50 sm:m-4 sm:max-w-xl sm:rounded-lg"
+                        class="w-full space-y-3 overflow-hidden rounded-t-lg bg-white p-3 text-blue-800 dark:bg-gray-700 dark:text-cool-gray-50 sm:m-4 sm:max-w-xl sm:rounded-lg"
                         id="modal-contact">
                         <header class="flex justify-between">
                             <div class="ms-5">
@@ -127,7 +127,7 @@
                         </div>
                         <footer class="-mx-6 flex flex-row items-center justify-end px-6 pt-2">
                             <button @click="closeContact()" type="button"
-                                class="w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm text-white transition-colors duration-150 hover:bg-blue-800 focus:shadow-outline-indigo sm:w-auto sm:px-4 sm:py-2">
+                                class="w-full rounded-lg bg-emerald-600 px-5 py-3 text-sm text-white transition-colors duration-150 hover:bg-blue-800 focus:shadow-outline-blue sm:w-auto sm:px-4 sm:py-2">
                                 Close
                             </button>
                         </footer>
@@ -155,7 +155,7 @@
                     <div class="space-y-1 text-sm">
                         <label for="document" class="text-gray-900 dark:text-white">{{ __('Document') }}</label>
                         <input
-                            class="w-full cursor-pointer rounded-md border border-gray-300 bg-gray-50 pr-4 text-sm text-gray-900 shadow-sm focus:border-indigo-800 focus:outline-none focus:ring-indigo-800 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+                            class="w-full cursor-pointer rounded-md border border-gray-300 bg-gray-50 pr-4 text-sm text-gray-900 shadow-sm focus:border-blue-800 focus:outline-none focus:ring-blue-800 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
                             id="document" name="document" type="file">
                         @if ($errors->has('document'))
                             <p class="text-red-500">{{ $errors->first('document') }}</p>
@@ -168,7 +168,7 @@
                         <div class="flex flex-col gap-2">
                             <input name="time" id="time" datepicker-format="yyyy/mm/dd"
                                 type="datetime-local" value="{{ old('time') }}"
-                                class="w-full cursor-pointer rounded-md border border-gray-300 bg-gray-50 py-2.5 text-sm text-gray-900 shadow-sm focus:border-indigo-800 focus:outline-none focus:ring-indigo-800 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500">
+                                class="w-full cursor-pointer rounded-md border border-gray-300 bg-gray-50 py-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-800 focus:outline-none focus:ring-blue-800 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500">
                         </div>
                         @if ($errors->has('time'))
                             <p class="text-red-500">{{ $errors->first('time') }}</p>

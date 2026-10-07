@@ -1,520 +1,358 @@
 <x-app-layout>
-  <div class="space-y-8 font-semibold">
-    <div>
-      <h2 class="text-2xl font-semibold text-blue-800 dark:text-gray-200">
+  @php
+    $stageColors = [
+        ['number' => 'bg-blue-500 text-white', 'title' => 'text-blue-600 dark:text-blue-400'],
+        ['number' => 'bg-sky-500 text-white', 'title' => 'text-sky-600 dark:text-sky-400'],
+        ['number' => 'bg-teal-500 text-white', 'title' => 'text-teal-600 dark:text-teal-400'],
+        ['number' => 'bg-violet-500 text-white', 'title' => 'text-violet-600 dark:text-violet-400'],
+        ['number' => 'bg-rose-500 text-white', 'title' => 'text-rose-600 dark:text-rose-400'],
+        ['number' => 'bg-amber-500 text-white', 'title' => 'text-amber-600 dark:text-amber-400'],
+        ['number' => 'bg-emerald-500 text-white', 'title' => 'text-emerald-600 dark:text-emerald-400'],
+        ['number' => 'bg-blue-500 text-white', 'title' => 'text-blue-600 dark:text-blue-400'],
+    ];
+  @endphp
+
+  <div class="space-y-8">
+    <!-- Welcome Banner -->
+    <x-welcome-banner />
+
+    <!-- Page Header -->
+    <div class="flex flex-col gap-1">
+      <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
         Tahapan AMI
-      </h2>
-      {{-- <div class="flex w-full max-w-4xl flex-col items-stretch p-2 sm:h-56 sm:flex-row sm:overflow-hidden">
-        @php
-          $colors = ['red-500', 'yellow-300', 'green-400', 'blue-500', 'purple-400'];
-        @endphp
+      </h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400">
+        Pantau progres audit mutu internal institusi Anda
+      </p>
+    </div>
+
+    <!-- Stage Timeline -->
+    <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100 dark:bg-gray-900 dark:ring-gray-800">
+      <!-- Mobile: Vertical Timeline -->
+      <div class="flex flex-col gap-5 md:hidden">
         @foreach ($stages as $stage)
-          <form action="{{ route('stages.update', $stage->id) }}" method="POST"
-            class="pane bg-{{ $colors[$loop->index % count($colors)] }} relative m-2 flex min-h-14 min-w-14 flex-grow cursor-pointer items-start justify-center overflow-hidden rounded-3xl text-gray-200 transition-all duration-700 ease-in-out">
-            @csrf
-            @method('PUT')
-            <textarea {{ $userRole !== 'PJM' ? 'disabled' : '' }} name="description"
-              class="m-2 hidden w-full resize-none overflow-hidden border-0 bg-transparent font-semibold placeholder-gray-200 focus:ring-0"
-              rows="5" placeholder="Deskripsi Tahapan Audit" style="text-align: justify;" type="text"
-              name="input_{{ $stage->id }}">{{ $stage->description }}</textarea>
+          @php
+            $color = $stageColors[$loop->index];
+          @endphp
 
-            <div id="stage"
-              class="absolute bottom-0 z-20 m-2 flex items-center gap-x-2 transition-all duration-700 ease-in-out">
-              <div
-                class="text-{{ $colors[$loop->index % count($colors)] }} flex h-10 w-10 items-center justify-center rounded-full bg-gray-800">
-                <i class="fa-solid fa-{{ $stage->id }}"></i>
-              </div>
-              <div id="title" class="content hidden items-center justify-between gap-x-32">
-                <div class="translate-x-8 transform font-bold opacity-0 transition-all duration-700">
-                  {{ $stage->name }}
-                </div>
-                @if ($userRole == 'PJM')
-                  <button>
-                    Submit
-                  </button>
-                @endif
-              </div>
+          <div class="relative flex gap-4">
+            @if (!$loop->last)
+              <div class="absolute left-[19px] top-12 h-[calc(100%-24px)] w-px bg-gray-200 dark:bg-gray-700"></div>
+            @endif
+
+            <div
+              class="{{ $color['number'] }} relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold shadow-sm">
+              {{ $loop->index + 1 }}
             </div>
-          </form>
-        @endforeach
-      </div> --}}
 
+            <div class="min-w-0 flex-1">
+              <h3 class="mb-2 text-sm font-semibold text-gray-900 dark:text-white">
+                {{ $stage->name }}
+              </h3>
 
-      @php
-        $stageColors = [
-            [
-                'number' => 'bg-blue-500 text-white',
-                'title' => 'text-blue-600',
-                'card' => 'bg-blue-500 border-blue-700',
-                'description' => 'text-white',
-            ],
-            [
-                'number' => 'bg-emerald-500 text-white',
-                'title' => 'text-emerald-600',
-                'card' => 'bg-emerald-500 border-emerald-700',
-                'description' => 'text-white',
-            ],
-            [
-                'number' => 'bg-violet-500 text-white',
-                'title' => 'text-violet-600',
-                'card' => 'bg-violet-500 border-violet-700',
-                'description' => 'text-white',
-            ],
-            [
-                'number' => 'bg-orange-500 text-white',
-                'title' => 'text-orange-600',
-                'card' => 'bg-orange-500 border-orange-700',
-                'description' => 'text-white',
-            ],
-            [
-                'number' => 'bg-rose-500 text-white',
-                'title' => 'text-rose-600',
-                'card' => 'bg-rose-500 border-rose-700',
-                'description' => 'text-white',
-            ],
-            [
-                'number' => 'bg-cyan-500 text-white',
-                'title' => 'text-cyan-600',
-                'card' => 'bg-cyan-500 border-cyan-700',
-                'description' => 'text-white',
-            ],
-            [
-                'number' => 'bg-amber-500 text-white',
-                'title' => 'text-amber-600',
-                'card' => 'bg-amber-500 border-amber-700',
-                'description' => 'text-white',
-            ],
-            [
-                'number' => 'bg-indigo-500 text-white',
-                'title' => 'text-indigo-600',
-                'card' => 'bg-indigo-500 border-indigo-700',
-                'description' => 'text-white',
-            ],
-        ];
-      @endphp
+              <form action="{{ route('stages.update', $stage->id) }}" method="POST"
+                class="w-full rounded-xl border border-gray-200 bg-gray-50 p-3 transition-all duration-200 hover:border-gray-300 hover:bg-white dark:border-gray-700 dark:bg-gray-800 dark:hover:border-gray-600 dark:hover:bg-gray-700/50">
+                @csrf
+                @method('PUT')
 
+                @if ($userRole === 'PJM')
+                  <textarea name="description" rows="3"
+                    class="w-full resize-none border-0 bg-transparent text-sm leading-relaxed text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-0 dark:text-gray-300"
+                    placeholder="Deskripsi Tahapan Audit">{{ $stage->description }}</textarea>
 
-      <div class="relative mt-6 w-full">
-
-        {{-- ========================= --}}
-        {{-- MOBILE : 1 - 8 --}}
-        {{-- ========================= --}}
-        <div class="flex flex-col gap-6 md:hidden">
-
-          @foreach ($stages as $stage)
-            @php
-              $color = $stageColors[$loop->index];
-            @endphp
-
-            <div class="relative flex gap-4">
-
-              {{-- Garis timeline --}}
-              @if (!$loop->last)
-                <div class="absolute left-5 top-10 h-full w-0.5 bg-gray-300"></div>
-              @endif
-
-              {{-- Nomor --}}
-              <div
-                class="{{ $color['number'] }}
-                           relative z-10 flex h-10 w-10 min-h-10 min-w-10
-                           items-center justify-center rounded-full
-                           font-semibold shadow-sm">
-                {{ $loop->index + 1 }}
-              </div>
-
-              {{-- Content --}}
-              <div class="min-w-0 flex-1">
-
-                <h1 class="{{ $color['title'] }} mb-2 font-semibold">
-                  {{ $stage->name }}
-                </h1>
-
-                <form action="{{ route('stages.update', $stage->id) }}" method="POST"
-                  class="{{ $color['card'] }}
-           w-full rounded-xl border p-3 shadow-sm
-           transition-all duration-300
-           hover:shadow-lg">
-                  @csrf
-                  @method('PUT')
-
-                  @if ($userRole === 'PJM')
-                    <textarea name="description" rows="5"
-                      class="{{ $color['description'] }}
-                   w-full resize-none overflow-scroll
-                   border-0 bg-transparent text-sm leading-5
-                   focus:outline-none focus:ring-0"
-                      placeholder="Deskripsi Tahapan Audit">{{ $stage->description }}</textarea>
-
+                  <div class="mt-2 flex justify-end">
                     <button type="submit"
-                      class=" rounded-lg bg-white/20 px-3 py-1.5 text-sm font-semibold
-                      text-white hover:bg-white/30">
+                      class="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-emerald-500 dark:bg-emerald-500 dark:hover:bg-emerald-400">
                       Simpan
                     </button>
-                  @else
-                    <p class="{{ $color['description'] }} text-sm leading-5">
-                      {{ $stage->description }}
-                    </p>
-                  @endif
-                </form>
-
-              </div>
-
+                  </div>
+                @else
+                  <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+                    {{ $stage->description ?: 'Belum ada deskripsi' }}
+                  </p>
+                @endif
+              </form>
             </div>
-          @endforeach
+          </div>
+        @endforeach
+      </div>
 
-        </div>
-
-
-        {{-- ========================= --}}
-        {{-- DESKTOP : 1 - 4 --}}
-        {{-- ========================= --}}
-        <div class="relative hidden md:block">
-
-          <div class="relative z-10 flex w-full justify-between gap-5">
-
+      <!-- Desktop: Horizontal Stepper -->
+      <div class="hidden md:block">
+        <!-- Top row: 1-4 -->
+        <div class="relative">
+          <div class="absolute left-0 right-0 top-5 h-px bg-gray-200 dark:bg-gray-700"></div>
+          <div class="relative z-10 flex justify-between gap-4">
             @foreach ($stages->take(4) as $stage)
               @php
                 $color = $stageColors[$loop->index];
               @endphp
 
-              <div class="min-w-0 flex-1">
-
-                {{-- Nama + Nomor --}}
-                <div class="flex flex-col-reverse">
-
-                  {{-- Nomor --}}
-                  <div
-                    class="{{ $color['number'] }}
-                                   flex h-10 w-10 items-center justify-center
-                                   rounded-full font-semibold shadow-sm">
-                    {{ $loop->index + 1 }}
-                  </div>
-
-                  {{-- Nama --}}
-                  <div class="mb-2">
-                    <h1 class="{{ $color['title'] }} font-semibold">
-                      {{ $stage->name }}
-                    </h1>
-                  </div>
-
+              <div class="flex flex-1 flex-col items-center">
+                <div
+                  class="{{ $color['number'] }} flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold shadow-sm">
+                  {{ $loop->index + 1 }}
                 </div>
+                <h3 class="mt-3 text-sm font-semibold text-gray-900 dark:text-white">
+                  {{ $stage->name }}
+                </h3>
 
-                {{-- Card --}}
                 <form action="{{ route('stages.update', $stage->id) }}" method="POST"
-                  class="{{ $color['card'] }}
-           mt-3 w-full max-w-56 rounded-xl border p-3
-           shadow-sm transition-all duration-300
-           ease-in-out hover:scale-105 hover:shadow-lg">
+                  class="mt-3 w-full max-w-56 rounded-xl border border-gray-200 bg-gray-50 p-3 transition-all duration-200 hover:border-gray-300 hover:bg-white hover:shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:hover:border-gray-600">
                   @csrf
                   @method('PUT')
 
                   @if ($userRole === 'PJM')
-                    <textarea name="description" rows="5"
-                      class="{{ $color['description'] }}
-                   w-full resize-none overflow-scroll
-                   border-0 bg-transparent text-sm leading-5
-                   focus:outline-none focus:ring-0"
+                    <textarea name="description" rows="3"
+                      class="w-full resize-none border-0 bg-transparent text-sm leading-relaxed text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-0 dark:text-gray-300"
                       placeholder="Deskripsi Tahapan Audit">{{ $stage->description }}</textarea>
-
-                    <button type="submit"
-                      class=" rounded-lg bg-white/20 px-3 py-1.5 text-sm font-semibold text-white hover:bg-white/30">
-                      Simpan
-                    </button>
+                    <div class="mt-2 flex justify-end">
+                      <button type="submit"
+                        class="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-blue-500 dark:bg-blue-500 dark:hover:bg-blue-400">
+                        Simpan
+                      </button>
+                    </div>
                   @else
-                    <p class="{{ $color['description'] }} text-sm leading-5">
-                      {{ $stage->description }}
+                    <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+                      {{ $stage->description ?: 'Belum ada deskripsi' }}
                     </p>
                   @endif
                 </form>
-
               </div>
             @endforeach
-
           </div>
+        </div>
+
+        <!-- Bottom row: 5-8 -->
 
 
-          {{-- ========================= --}}
-          {{-- GARIS DESKTOP --}}
-          {{-- ========================= --}}
-
-          @if ($userRole === 'PJM')
-            <div
-              class="absolute left-1 top-[9%] -z-10
-                   h-[55%] w-[100%] xl:top-[8%] xl:h-[56%] xl:w-[95%]
-                   rounded-r-full
-                   border-b-2 border-r-2 border-t-2
-                   border-gray-400">
-            </div>
-          @else
-            <div
-              class="absolute left-1 top-[10%] -z-10
-                   h-[59%] w-[100%] xl:top-[12%] xl:h-[60%] xl:w-[90%]
-                   rounded-r-full
-                   border-b-2 border-r-2 border-t-2
-                   border-gray-400">
-            </div>
+        <div class="relative mt-10">
+          @if ($stages->count() > 4)
+            <div class="absolute left-0 right-0 top-5 h-px bg-gray-200 dark:bg-gray-700"></div>
           @endif
-
-
-
-
-
-
-          {{-- ========================= --}}
-          {{-- DESKTOP : 5 - 8 --}}
-          {{-- ========================= --}}
-          <div class="relative z-10 mt-16 flex w-full justify-between gap-5">
-
-            @foreach ($stages->skip(4)->reverse() as $stage)
+          <div class="relative z-10 flex justify-between gap-4">
+            @foreach ($stages->skip(4) as $stage)
               @php
                 $stageIndex = $stages->search(fn($item) => $item->id === $stage->id);
-
                 $color = $stageColors[$stageIndex];
               @endphp
 
-              <div class="min-w-0 flex-1">
-
-                {{-- Nama + Nomor --}}
-                <div class="flex flex-col-reverse">
-
-                  {{-- Nomor --}}
-                  <div
-                    class="{{ $color['number'] }}
-                                   flex h-10 w-10 items-center justify-center
-                                   rounded-full font-semibold shadow-sm">
-                    {{ $stageIndex + 1 }}
-                  </div>
-
-                  {{-- Nama --}}
-                  <div class="mb-2">
-                    <h1 class="{{ $color['title'] }} font-semibold">
-                      {{ $stage->name }}
-                    </h1>
-                  </div>
-
+              <div class="flex flex-1 flex-col items-center">
+                <div
+                  class="{{ $color['number'] }} flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold shadow-sm">
+                  {{ $stageIndex + 1 }}
                 </div>
+                <h3 class="mt-3 text-sm font-semibold text-gray-900 dark:text-white">
+                  {{ $stage->name }}
+                </h3>
 
-                {{-- Card --}}
                 <form action="{{ route('stages.update', $stage->id) }}" method="POST"
-                  class="{{ $color['card'] }}
-           mt-3 w-full max-w-56 rounded-xl border p-3
-           shadow-sm transition-all duration-300
-           ease-in-out hover:scale-105 hover:shadow-lg">
+                  class="mt-3 w-full max-w-56 rounded-xl border border-gray-200 bg-gray-50 p-3 transition-all duration-200 hover:border-gray-300 hover:bg-white hover:shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:hover:border-gray-600">
                   @csrf
                   @method('PUT')
 
                   @if ($userRole === 'PJM')
-                    <textarea name="description" rows="5"
-                      class="{{ $color['description'] }}
-                   w-full resize-none overflow-scroll
-                   border-0 bg-transparent text-sm leading-5
-                   focus:outline-none focus:ring-0"
+                    <textarea name="description" rows="3"
+                      class="w-full resize-none border-0 bg-transparent text-sm leading-relaxed text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-0 dark:text-gray-300"
                       placeholder="Deskripsi Tahapan Audit">{{ $stage->description }}</textarea>
-
-                    <button type="submit"
-                      class=" rounded-lg bg-white/20 px-3 py-1.5 text-sm font-semibold text-white hover:bg-white/30">
-                      Simpan
-                    </button>
+                    <div class="mt-2 flex justify-end">
+                      <button type="submit"
+                        class="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-blue-500 dark:bg-blue-500 dark:hover:bg-blue-400">
+                        Simpan
+                      </button>
+                    </div>
                   @else
-                    <p class="{{ $color['description'] }} text-sm leading-5">
-                      {{ $stage->description }}
+                    <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+                      {{ $stage->description ?: 'Belum ada deskripsi' }}
                     </p>
                   @endif
                 </form>
-
               </div>
             @endforeach
-
           </div>
+        </div>
+      </div>
+    </div>
 
+    <!-- Users Section -->
+    @if ($userRole == 'PJM' || $userRole == 'Admin')
+      <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100 dark:bg-gray-900 dark:ring-gray-800">
+        <div class="mb-5 flex items-center justify-between">
+          <div>
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
+              Pengguna Online
+            </h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400">
+              {{ $users->count() }} pengguna aktif dalam 3 menit terakhir
+            </p>
+          </div>
         </div>
 
-      </div>
-
-    </div>
-  </div>
-
-  @if ($userRole == 'PJM')
-    <div>
-      <h2 class="text-2xl font-semibold text-blue-800 dark:text-gray-200">
-        Users
-      </h2>
-      <div
-        class="max-h-56 w-full overflow-y-auto rounded-sm scrollbar-thin dark:scrollbar-track-gray-500 dark:scrollbar-thumb-gray-800">
-        <table class="h-full w-full bg-white dark:bg-gray-800">
-          <thead class="sticky top-0 z-10">
-            <tr class="border-b bg-blue-800 text-cool-gray-50">
-              <th class="py-2">#</th>
-              <th>User</th>
-              <th>Contact</th>
-              <th>Role</th>
-              <th>Last seen</th>
-            </tr>
-          </thead>
-          <tbody>
-            @foreach ($users as $user)
-              <tr class="border-b text-sm hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                <td class="px-2 text-center">{{ $loop->iteration . '.' }}</td>
-                <td class="whitespace-nowrap p-3">
-                  <div class="flex items-center gap-3">
-                    <div class="relative h-10 w-10">
-                      <img class="h-full w-full rounded-full object-cover"
-                        src="https://ui-avatars.com/api/?name={{ $user->name }}&background=random" alt=""
-                        loading="lazy" />
-                      <div class="absolute inset-0 rounded-full shadow-inner" aria-hidden="true">
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr
+                class="border-b border-gray-100 text-left text-xs font-medium uppercase tracking-wider text-gray-400 dark:border-gray-800 dark:text-gray-500">
+                <th class="pb-3 pr-4">Pengguna</th>
+                <th class="pb-3 pr-4">Kontak</th>
+                <th class="pb-3 pr-4">Role</th>
+                <th class="pb-3">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
+              @foreach ($users as $user)
+                <tr class="group transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                  <td class="py-3 pr-4">
+                    <div class="flex items-center gap-3">
+                      <div class="relative h-9 w-9 shrink-0">
+                        <img class="h-full w-full rounded-full object-cover ring-2 ring-white dark:ring-gray-800"
+                          src="https://ui-avatars.com/api/?name={{ $user->name }}&background=random" alt=""
+                          loading="lazy" />
+                      </div>
+                      <div class="min-w-0">
+                        <p class="truncate text-sm font-medium text-gray-900 dark:text-white">
+                          {{ $user->name }}{{ Auth::id() === $user->id ? ' (Anda)' : '' }}
+                        </p>
+                        <p class="truncate text-xs text-gray-500 dark:text-gray-400">
+                          {{ $user->email }}
+                        </p>
                       </div>
                     </div>
-                    <div>
-                      <h1>{{ $user->name }}{{ Auth::id() === $user->id ? ' (Anda)' : '' }}
-                      </h1>
-                      <p class="text-gray-600 dark:text-gray-400">
-                        {{ $user->email }}
-                      </p>
+                  </td>
+                  <td class="py-3 pr-4 text-sm text-gray-600 dark:text-gray-400">
+                    {{ $user->contact }}
+                  </td>
+                  <td class="py-3 pr-4">
+                    <div class="flex flex-wrap gap-1">
+                      @foreach ($user->getRoleNames() as $role)
+                        @if ($role == 'PJM')
+                          <span
+                            class="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
+                            {{ $role }}
+                          </span>
+                        @elseif ($role == 'Auditor')
+                          <span
+                            class="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+                            {{ $role }}
+                          </span>
+                        @elseif ($role == 'Auditee')
+                          <span
+                            class="inline-flex items-center rounded-full bg-rose-50 px-2.5 py-0.5 text-xs font-medium text-rose-700 dark:bg-rose-900/30 dark:text-rose-400">
+                            {{ $role }}
+                          </span>
+                        @else
+                          <span
+                            class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                            {{ $role }}
+                          </span>
+                        @endif
+                      @endforeach
                     </div>
-                  </div>
-                </td>
-                <td class="text-center">{{ $user->contact }}</td>
-                <td>
-                  <div class="flex flex-wrap items-center justify-center gap-1 py-2 text-xs">
-                    @foreach ($user->getRoleNames() as $role)
-                      @if ($role == 'PJM')
-                        <span
-                          class="rounded-full bg-green-200 px-3 py-1 leading-tight text-green-700 dark:bg-green-700 dark:text-green-200">
-                          {{ $role }}
-                        </span>
-                      @elseif ($role == 'Auditor')
-                        <span
-                          class="rounded-full bg-yellow-200 px-3 py-1 leading-tight text-yellow-500 dark:bg-yellow-400 dark:text-yellow-200">
-                          {{ $role }}
-                        </span>
-                      @elseif ($role == 'Auditee')
-                        <span
-                          class="rounded-full bg-red-200 px-3 py-1 leading-tight text-red-700 dark:bg-red-700 dark:text-red-200">
-                          {{ $role }}
-                        </span>
-                      @else
-                        <span
-                          class="rounded-full bg-gray-200 px-3 py-1 leading-tight text-gray-700 dark:bg-gray-700 dark:text-gray-200">
-                          {{ $role }}
-                        </span>
-                      @endif
-                    @endforeach
-                  </div>
-                </td>
-                <td class="p-2 text-center">
-                  @if ($user->last_seen && $user->last_seen >= now()->subMinutes(3))
-                    <span class="rounded-full bg-teal-200 px-3 py-1 text-teal-500 dark:bg-teal-400 dark:text-teal-100">
-                      Online
-                    </span>
-                  @elseif ($user->last_seen)
-                    {{ \Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}
-                  @else
-                    <span class="text-gray-600 dark:text-gray-400">Tidak pernah terlihat</span>
-                  @endif
-                </td>
-              </tr>
-            @endforeach
-          </tbody>
-        </table>
+                  </td>
+                  <td class="py-3">
+                    @if ($user->last_seen && $user->last_seen >= now()->subMinutes(3))
+                      <span
+                        class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                        Online
+                      </span>
+                    @elseif ($user->last_seen)
+                      <span class="text-xs text-gray-500 dark:text-gray-400">
+                        {{ \Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}
+                      </span>
+                    @else
+                      <span class="text-xs text-gray-400 dark:text-gray-500">Tidak pernah terlihat</span>
+                    @endif
+                  </td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-  @endif
+    @endif
 
-  <!-- Charts -->
-  <div>
-    <h2 class="text-2xl font-semibold text-blue-800 dark:text-gray-200">
-      Charts
-    </h2>
-    <div class="mb-8 grid gap-6 md:grid-cols-2">
-      <!-- Doughnut/Pie chart -->
-      <div class="shadow-xs min-w-0 rounded-lg bg-white p-4 dark:bg-gray-800">
-        <h4 class="mb-4 font-semibold text-gray-800 dark:text-gray-300">
-          Ketepatan Waktu Pengumpulan Ketercapaian Standar
-        </h4>
-        <canvas id="pie"></canvas>
-        <div class="mt-4 flex justify-center space-x-3 text-sm text-gray-600 dark:text-gray-400">
-          <!-- Chart legend -->
-          <div class="flex items-center">
-            <span class="mr-1 inline-block h-3 w-3 rounded-full bg-red-500"></span>
-            <span>Tidak tepat waktu</span>
+    <!-- Charts Section -->
+    <div class="space-y-4">
+      <div>
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
+          Analitik
+        </h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+          Ringkasan performa audit mutu internal
+        </p>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-2">
+        <!-- Doughnut Chart -->
+        <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100 dark:bg-gray-900 dark:ring-gray-800">
+          <h4 class="mb-4 text-sm font-semibold text-gray-900 dark:text-white">
+            Ketepatan Waktu Pengumpulan
+          </h4>
+          <div class="relative mx-auto h-48 w-48">
+            <canvas id="pie"></canvas>
           </div>
-          <div class="flex items-center">
-            <span class="mr-1 inline-block h-3 w-3 rounded-full bg-cyan-500"></span>
-            <span>Tepat waktu</span>
+          <div class="mt-4 flex justify-center gap-6 text-sm">
+            <div class="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+              <span class="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+              <span>Tepat waktu</span>
+            </div>
+            <div class="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+              <span class="h-2.5 w-2.5 rounded-full bg-rose-400"></span>
+              <span>Tidak tepat waktu</span>
+            </div>
           </div>
         </div>
-      </div>
-      <!-- Lines chart -->
-      {{-- <div class="shadow-xs min-w-0 rounded-lg bg-white p-4 dark:bg-gray-800">
-                    <h4 class="mb-4 font-semibold text-gray-800 dark:text-gray-300">
-                        Lines
-                    </h4>
-                    <canvas id="line"></canvas>
-                    <div class="mt-4 flex justify-center space-x-3 text-sm text-gray-600 dark:text-gray-400">
-                        <!-- Chart legend -->
-                        <div class="flex items-center">
-                            <span class="mr-1 inline-block h-3 w-3 rounded-full bg-teal-500"></span>
-                            <span>Organic</span>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="mr-1 inline-block h-3 w-3 rounded-full bg-purple-600"></span>
-                            <span>Paid</span>
-                        </div>
-                    </div>
-                </div> --}}
-      <!-- Bars chart -->
-      <div class="shadow-xs min-w-0 rounded-lg bg-white p-4 dark:bg-gray-800">
-        <h4 class="mb-4 font-semibold text-gray-800 dark:text-gray-300">
-          Ketercapaian standar
-        </h4>
-        <canvas id="bars"></canvas>
-        <div class="mt-4 flex justify-center space-x-3 text-sm text-gray-600 dark:text-gray-400">
-          <!-- Chart legend -->
-          <div class="flex items-center">
-            <span class="mr-1 inline-block h-3 w-3 rounded-full bg-teal-500"></span>
-            <span>Standar</span>
+
+        <!-- Bar Chart -->
+        <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100 dark:bg-gray-900 dark:ring-gray-800">
+          <h4 class="mb-4 text-sm font-semibold text-gray-900 dark:text-white">
+            Ketercapaian Standar
+          </h4>
+          <div class="relative h-48">
+            <canvas id="bars"></canvas>
           </div>
-          <div class="flex items-center">
-            <span class="mr-1 inline-block h-3 w-3 rounded-full bg-purple-600"></span>
-            <span>Tercapai</span>
+          <div class="mt-4 flex justify-center gap-6 text-sm">
+            <div class="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+              <span class="h-2.5 w-2.5 rounded-full bg-blue-500"></span>
+              <span>Total Standar</span>
+            </div>
+            <div class="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+              <span class="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+              <span>Tercapai</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
   </div>
 
   <script>
     const panes = document.querySelectorAll('.pane');
-    let activePaneIndex = 0; // Track index of currently active pane
+    let activePaneIndex = 0;
 
     panes.forEach((pane, index) => {
       pane.addEventListener('click', () => {
-        // Ambil input dari pane yang sedang aktif sebelumnya dan sembunyikan
         const previousInput = panes[activePaneIndex].querySelector('textarea');
         const previousStage = panes[activePaneIndex].querySelector('#stage');
         const previousTitle = panes[activePaneIndex].querySelector('#title');
-        previousInput.classList.add('hidden'); // Sembunyikan input dari pane sebelumnya
-        previousStage.classList.remove('left-0', 'ml-3'); // Sembunyikan input dari pane sebelumnya
-        previousTitle.classList.add('hidden'); // Sembunyikan input dari pane sebelumnya
+        previousInput.classList.add('hidden');
+        previousStage.classList.remove('left-0', 'ml-3');
+        previousTitle.classList.add('hidden');
         previousTitle.classList.remove('flex');
 
-        // Hapus class 'active' dari pane sebelumnya
         panes[activePaneIndex].classList.remove('active');
 
-        // Set pane yang diklik sebagai pane aktif yang baru
         activePaneIndex = index;
 
-        // Tampilkan input dari pane yang baru diklik
         const currentInput = pane.querySelector('textarea');
         const currentStage = pane.querySelector('#stage');
         const currentTitle = pane.querySelector('#title');
-        currentInput.classList.remove('hidden'); // Tampilkan input dari pane yang diklik
-        currentStage.classList.add('left-0', 'ml-3'); // Tampilkan input dari pane yang diklik
-        currentTitle.classList.remove('hidden'); // Tampilkan input dari pane yang diklik
+        currentInput.classList.remove('hidden');
+        currentStage.classList.add('left-0', 'ml-3');
+        currentTitle.classList.remove('hidden');
         currentTitle.classList.add('flex');
 
-        // Tambahkan class 'active' ke pane yang baru diklik
         pane.classList.add('active');
       });
     });

@@ -7,12 +7,13 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <title>{{ $title ?? config('app.name') }}</title>
-
+  <link rel="icon" href="{{ asset('logo/sim-ami.png') }}" type="image/png">
+  <link rel="apple-touch-icon" href="{{ asset('logo/sim-ami.png') }}">
   @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/echo.js'])
 
   <style>
     .slide {
-      margin-left: -240px;
+      margin-left: -256px;
     }
 
     .pane.active {
@@ -51,9 +52,11 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
   <link rel="icon" href="{{ asset('images/Logo ITK.png') }}">
   <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.min.css">
+
+
 </head>
 
-<body class="flex h-screen bg-cool-gray-50 dark:bg-gray-800">
+<body class="flex h-screen bg-gray-50 dark:bg-gray-900">
 
   <!-- Toast -->
   <x-toast></x-toast>
@@ -66,7 +69,7 @@
     @include('layouts.header')
 
     <main
-      class="h-full w-full overflow-y-auto overflow-x-hidden px-6 scrollbar-thin dark:scrollbar-track-gray-500 dark:scrollbar-thumb-gray-800">
+      class="h-full w-full overflow-y-auto overflow-x-hidden px-6 py-6 scrollbar-thin dark:scrollbar-track-gray-800 dark:scrollbar-thumb-gray-700">
 
       {{ $slot }}
 

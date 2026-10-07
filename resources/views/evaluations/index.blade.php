@@ -80,7 +80,7 @@
                                 class="peer-placeholder-shown:text-gray-440 absolute -top-3.5 left-0 text-sm text-gray-600 transition-all peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-gray-600">Password</label>
                         </div>
                         <div class="relative">
-                            <button class="rounded-md bg-cyan-500 px-2 py-1 text-white">Submit</button>
+                            <button class="rounded-md bg-blue-600 px-2 py-1 text-white hover:bg-blue-500">Submit</button>
                         </div>
                     </div>
                 </div>

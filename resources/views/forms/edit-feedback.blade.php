@@ -4,7 +4,7 @@
         @csrf
         @method('PUT')
 
-        <div class="flex items-center justify-between py-1 text-indigo-700 dark:text-cool-gray-50 md:text-lg">
+        <div class="flex items-center justify-between py-1 text-blue-700 dark:text-cool-gray-50 md:text-lg">
             <ol class="flex items-center gap-x-1">
                 <li>
                     <a href="/forms" class="hover:underline">
@@ -89,7 +89,7 @@
                         x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150"
                         x-transition:leave-start="opacity-100"
                         x-transition:leave-end="opacity-0 transform translate-y-1/2"
-                        class="w-full space-y-3 overflow-hidden rounded-t-lg bg-white p-3 text-indigo-800 dark:bg-gray-700 dark:text-cool-gray-50 sm:m-4 sm:max-w-xl sm:rounded-lg"
+                        class="w-full space-y-3 overflow-hidden rounded-t-lg bg-white p-3 text-blue-800 dark:bg-gray-700 dark:text-cool-gray-50 sm:m-4 sm:max-w-xl sm:rounded-lg"
                         id="modal-contact">
                         <header class="flex justify-between">
                             <div class="ms-5">
@@ -159,7 +159,7 @@
                         </div>
                         <footer class="-mx-6 flex flex-row items-center justify-end px-6 pt-2">
                             <button @click="closeContact()" type="button"
-                                class="w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm text-white transition-colors duration-150 hover:bg-blue-800 focus:shadow-outline-indigo sm:w-auto sm:px-4 sm:py-2">
+                                class="w-full rounded-lg bg-emerald-600 px-5 py-3 text-sm text-white transition-colors duration-150 hover:bg-blue-800 focus:shadow-outline-blue sm:w-auto sm:px-4 sm:py-2">
                                 Close
                             </button>
                         </footer>
@@ -176,7 +176,7 @@
                         <template x-for="category in categories" :key="category.id">
                             <li @click.prevent="openTab = category.id" x-text="category.name"
                                 :class="openTab === category.id ?
-                                    'border border-indigo-800 dark:text-cool-gray-50 text-indigo-800 dark:border-cool-gray-50' :
+                                    'border border-blue-800 dark:text-cool-gray-50 text-blue-800 dark:border-cool-gray-50' :
                                     'border-2 border-gray-300 text-gray-500 hover:border hover:text-green-400 hover:border-green-400 dark:hover:border-red-500 dark:hover:text-gray-200 dark:border-gray-400 dark:text-gray-400'"
                                 class="mr-1 flex cursor-pointer items-center gap-x-2 rounded bg-white p-1 dark:bg-gray-700">
                             </li>
@@ -219,16 +219,16 @@
                                 <template x-for="standard in category.standards" :key="standard.id">
                                     <div>
                                         <div x-text="standard.name" :id="'standard-' + standard.id"
-                                            class="bg-white px-2 text-left text-indigo-700 dark:border-gray-500 dark:bg-gray-700 dark:text-purple-400 sm:text-lg">
+                                            class="bg-white px-2 text-left text-blue-700 dark:border-gray-500 dark:bg-gray-700 dark:text-purple-400 sm:text-lg">
                                         </div>
                                         <table class="w-full border-collapse">
                                             <thead>
-                                                <tr class="bg-indigo-700 text-xs text-white md:text-sm">
+                                                <tr class="bg-blue-700 text-xs text-white md:text-sm">
                                                     <th
-                                                        class="w-[40%] border border-indigo-800 dark:border-gray-400 dark:text-white">
+                                                        class="w-[40%] border border-blue-800 dark:border-gray-400 dark:text-white">
                                                         Competencies</th>
                                                     <th
-                                                        class="border border-indigo-800 dark:border-gray-400 dark:text-white">
+                                                        class="border border-blue-800 dark:border-gray-400 dark:text-white">
                                                         Indicators</th>
                                                 </tr>
                                             </thead>
@@ -239,7 +239,7 @@
                                                         <td
                                                             class="border border-blue-800 p-3 dark:border-gray-500 dark:text-white">
                                                             <textarea x-model="competency.name" disabled
-                                                                class="w-full resize-none overflow-hidden border-0 bg-transparent p-0 text-indigo-700 focus:ring-0"
+                                                                class="w-full resize-none overflow-hidden border-0 bg-transparent p-0 text-blue-700 focus:ring-0"
                                                                 style="text-align: justify;" placeholder="Competency Name">
                                                             </textarea>
                                                         </td>
@@ -250,11 +250,11 @@
                                                                 <div
                                                                     class="my-4 flex w-full flex-col items-center justify-end gap-x-4 gap-y-1 md:flex-row">
                                                                     <div x-text="indicator.code"
-                                                                        class="text-sm text-indigo-700 dark:border-gray-500 dark:bg-gray-700 dark:text-purple-400">
+                                                                        class="text-sm text-blue-700 dark:border-gray-500 dark:bg-gray-700 dark:text-purple-400">
                                                                     </div>
                                                                     <div class="flex w-full flex-col gap-y-1">
                                                                         <div x-text="indicator.assessment"
-                                                                            class="line-clamp-3 w-full border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent text-sm text-indigo-700"
+                                                                            class="line-clamp-3 w-full border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent text-sm text-blue-700"
                                                                             style="text-align: justify;">
                                                                         </div>
                                                                         <div class="flex items-center gap-x-3">
@@ -355,7 +355,7 @@
                                                                             :id="'modal-' + indicator.id">
                                                                             <header class="flex justify-between">
                                                                                 <h3
-                                                                                    class="space-y-2 px-4 text-indigo-600 dark:text-gray-300">
+                                                                                    class="space-y-2 px-4 text-blue-600 dark:text-gray-300">
                                                                                     Set Feedback for
                                                                                     <span
                                                                                         x-text="indicator.code"></span>
@@ -400,7 +400,7 @@
                                                                                             </svg>
                                                                                             <select disabled
                                                                                                 x-model="indicator.submission_status"
-                                                                                                class="w-[90%] border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent focus:border-x-transparent focus:border-b-indigo-600 focus:border-t-transparent focus:ring-0">
+                                                                                                class="w-[90%] border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent focus:border-x-transparent focus:border-b-blue-600 focus:border-t-transparent focus:ring-0">
                                                                                                 <option hidden
                                                                                                     value="">
                                                                                                     Indicator Grade
@@ -414,7 +414,7 @@
                                                                                             </select>
                                                                                         </div>
                                                                                         <div
-                                                                                            class="flex items-center justify-between gap-x-3 text-indigo-600">
+                                                                                            class="flex items-center justify-between gap-x-3 text-blue-600">
                                                                                             <i
                                                                                                 class="fa-solid fa-chart-column fa-lg w-6"></i>
                                                                                             <template
@@ -422,7 +422,7 @@
                                                                                                 <select
                                                                                                     @input="isEditing = true"
                                                                                                     x-model="focusIndicator.validation"
-                                                                                                    class="w-[90%] border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent focus:border-x-transparent focus:border-b-indigo-600 focus:border-t-transparent focus:ring-0">
+                                                                                                    class="w-[90%] border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent focus:border-x-transparent focus:border-b-blue-600 focus:border-t-transparent focus:ring-0">
                                                                                                     <option hidden
                                                                                                         value="">
                                                                                                         Choose
@@ -447,7 +447,7 @@
                                                                                                         x-model="focusIndicator.validation"
                                                                                                         type="number"
                                                                                                         placeholder="Enter some digit"
-                                                                                                        class="peer w-full appearance-none border-0 border-b-2 border-gray-200 bg-transparent px-4 py-2.5 placeholder-transparent focus:border-indigo-600 focus:placeholder-gray-400 focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                                                                                                        class="peer w-full appearance-none border-0 border-b-2 border-gray-200 bg-transparent px-4 py-2.5 placeholder-transparent focus:border-blue-600 focus:placeholder-gray-400 focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                                                                                                         oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
                                                                                                     <div
                                                                                                         class="absolute top-2.5 -z-10 origin-[0] -translate-y-6 scale-75 transform px-4 text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600 rtl:peer-focus:translate-x-1/4 dark:text-gray-400 peer-focus:dark:text-blue-500">
@@ -464,7 +464,7 @@
                                                                                                         x-model="focusIndicator.validation"
                                                                                                         type="number"
                                                                                                         placeholder="Enter some decimal"
-                                                                                                        class="peer w-full appearance-none border-0 border-b-2 border-gray-200 bg-transparent px-4 py-2.5 placeholder-transparent focus:border-indigo-600 focus:placeholder-gray-400 focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" />
+                                                                                                        class="peer w-full appearance-none border-0 border-b-2 border-gray-200 bg-transparent px-4 py-2.5 placeholder-transparent focus:border-blue-600 focus:placeholder-gray-400 focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" />
                                                                                                     <div
                                                                                                         class="absolute top-2.5 -z-10 origin-[0] -translate-y-6 scale-75 transform px-4 text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600 rtl:peer-focus:translate-x-1/4 dark:text-gray-400 peer-focus:dark:text-blue-500">
                                                                                                         Decimal
@@ -479,7 +479,7 @@
                                                                                                         @input="isEditing = true; formatCurrency($event.target.value);"
                                                                                                         x-model="focusIndicator.validation"
                                                                                                         placeholder="Enter some Rupiah"
-                                                                                                        class="peer w-full appearance-none border-0 border-b-2 border-gray-200 bg-transparent px-4 py-2.5 placeholder-transparent focus:border-indigo-600 focus:placeholder-gray-400 focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500" />
+                                                                                                        class="peer w-full appearance-none border-0 border-b-2 border-gray-200 bg-transparent px-4 py-2.5 placeholder-transparent focus:border-blue-600 focus:placeholder-gray-400 focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500" />
                                                                                                     <div
                                                                                                         class="absolute top-2.5 -z-10 origin-[0] -translate-y-6 scale-75 transform px-4 text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600 rtl:peer-focus:translate-x-1/4 dark:text-gray-400 peer-focus:dark:text-blue-500">
                                                                                                         Rupiah
@@ -495,7 +495,7 @@
                                                                                                         x-model="focusIndicator.validation"
                                                                                                         type="number"
                                                                                                         placeholder="Enter some percentage"
-                                                                                                        class="peer w-full appearance-none border-0 border-b-2 border-gray-200 bg-transparent px-4 py-2.5 placeholder-transparent focus:border-indigo-600 focus:placeholder-gray-400 focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                                                                                                        class="peer w-full appearance-none border-0 border-b-2 border-gray-200 bg-transparent px-4 py-2.5 placeholder-transparent focus:border-blue-600 focus:placeholder-gray-400 focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                                                                                                         oninput="if (this.value < 0) this.value = 0; else if (this.value > 100) this.value = 100;" />
                                                                                                     <div
                                                                                                         class="absolute top-2.5 -z-10 origin-[0] -translate-y-6 scale-75 transform px-4 text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600 rtl:peer-focus:translate-x-1/4 dark:text-gray-400 peer-focus:dark:text-blue-500">
@@ -540,7 +540,7 @@
                                                                                                         x-model="focusIndicator.validation"
                                                                                                         type="number"
                                                                                                         placeholder="Range 1 - 100"
-                                                                                                        class="peer w-full appearance-none border-0 border-b-2 border-gray-200 bg-transparent px-4 py-2.5 placeholder-transparent focus:border-indigo-600 focus:placeholder-gray-400 focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                                                                                                        class="peer w-full appearance-none border-0 border-b-2 border-gray-200 bg-transparent px-4 py-2.5 placeholder-transparent focus:border-blue-600 focus:placeholder-gray-400 focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                                                                                                         oninput="if (this.value > 100) this.value = 100; else if (this.value < 0) this.value = 0; this.value = this.value.replace(/[^0-9]/g, '');" />
                                                                                                     <div
                                                                                                         class="absolute top-2.5 -z-10 origin-[0] -translate-y-6 scale-75 transform px-4 text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600 rtl:peer-focus:translate-x-1/4 dark:text-gray-400 peer-focus:dark:text-blue-500">
@@ -553,7 +553,7 @@
                                                                                             </template>
                                                                                         </div>
                                                                                         <div
-                                                                                            class="flex items-center justify-between gap-x-3 text-indigo-600">
+                                                                                            class="flex items-center justify-between gap-x-3 text-blue-600">
                                                                                             <svg class="size-6 w-6"
                                                                                                 xmlns="http://www.w3.org/2000/svg"
                                                                                                 fill="none"
@@ -575,12 +575,12 @@
                                                                                                         type="text"
                                                                                                         @input="isEditing = true"
                                                                                                         x-model="focusIndicator.link"
-                                                                                                        class="w-full rounded-e-lg border-gray-200 bg-gray-50 px-4 text-sm text-indigo-600 shadow-sm focus:ring-indigo-600 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                                                                        class="w-full rounded-e-lg border-gray-200 bg-gray-50 px-4 text-sm text-blue-600 shadow-sm focus:ring-blue-600 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                                                                         placeholder="https://www.example.com">
                                                                                                 </div>
                                                                                                 <div
                                                                                                     class="hs-tooltip px-2">
-                                                                                                    <svg class="size-6 hs-tooltip-toggle cursor-pointer text-gray-500 hover:text-indigo-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500"
+                                                                                                    <svg class="size-6 hs-tooltip-toggle cursor-pointer text-gray-500 hover:text-blue-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500"
                                                                                                         xmlns="http://www.w3.org/2000/svg"
                                                                                                         fill="none"
                                                                                                         stroke="currentColor"
@@ -594,7 +594,7 @@
                                                                                                     <div style="text-align: justify;"
                                                                                                         class="hs-tooltip-content invisible absolute z-10 hidden max-w-xs rounded-lg border border-gray-100 bg-white p-3 text-gray-600 opacity-0 shadow-md transition-opacity hs-tooltip-shown:visible hs-tooltip-shown:opacity-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-400">
                                                                                                         <h3
-                                                                                                            class="font-bold text-indigo-600">
+                                                                                                            class="font-bold text-blue-600">
                                                                                                             Link
                                                                                                             Verification
                                                                                                             Info</h3>
@@ -633,7 +633,7 @@
                                                                                             </svg>
                                                                                             <select disabled
                                                                                                 x-model="indicator.assessment_status"
-                                                                                                class="w-[90%] border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent focus:border-x-transparent focus:border-b-indigo-600 focus:border-t-transparent focus:ring-0">
+                                                                                                class="w-[90%] border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent focus:border-x-transparent focus:border-b-blue-600 focus:border-t-transparent focus:ring-0">
                                                                                                 <option hidden
                                                                                                     value="">
                                                                                                     Indicator Grade
@@ -651,7 +651,7 @@
                                                                                             <i
                                                                                                 class="fa-regular fa-comment-dots fa-lg w-6"></i>
                                                                                             <textarea disabled x-model="indicator.description"
-                                                                                                class="w-[90%] border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent px-4 font-semibold scrollbar-thin focus:border-x-transparent focus:border-b-indigo-600 focus:border-t-transparent focus:ring-0 dark:scrollbar-track-gray-500 dark:scrollbar-thumb-gray-800"
+                                                                                                class="w-[90%] border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent px-4 font-semibold scrollbar-thin focus:border-x-transparent focus:border-b-blue-600 focus:border-t-transparent focus:ring-0 dark:scrollbar-track-gray-500 dark:scrollbar-thumb-gray-800"
                                                                                                 style="text-align: justify" placeholder="Assessment description">
                                                                                             </textarea>
                                                                                         </div>
@@ -661,7 +661,7 @@
 
                                                                                 <!-- Feedback Form -->
                                                                                 <div
-                                                                                    class="flex w-full flex-col gap-y-2 text-left text-indigo-600">
+                                                                                    class="flex w-full flex-col gap-y-2 text-left text-blue-600">
                                                                                     Feedback Form
                                                                                     <!-- Modal form -->
                                                                                     <div class="space-y-6">
@@ -677,7 +677,7 @@
                                                                                             <select
                                                                                                 @input="isEditing = true"
                                                                                                 x-model="focusIndicator.feedback"
-                                                                                                class="w-[90%] border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent focus:border-x-transparent focus:border-b-indigo-600 focus:border-t-transparent focus:ring-0">
+                                                                                                class="w-[90%] border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent focus:border-x-transparent focus:border-b-blue-600 focus:border-t-transparent focus:ring-0">
                                                                                                 <option hidden
                                                                                                     value="">
                                                                                                     Choose feedback
@@ -694,7 +694,7 @@
                                                                                             <i
                                                                                                 class="fa-regular fa-comment-dots fa-lg w-6"></i>
                                                                                             <textarea @input="isEditing = true" x-model="focusIndicator.comment"
-                                                                                                class="w-[90%] border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent px-4 font-semibold scrollbar-thin focus:border-x-transparent focus:border-b-indigo-600 focus:border-t-transparent focus:ring-0 dark:scrollbar-track-gray-500 dark:scrollbar-thumb-gray-800"
+                                                                                                class="w-[90%] border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent px-4 font-semibold scrollbar-thin focus:border-x-transparent focus:border-b-blue-600 focus:border-t-transparent focus:ring-0 dark:scrollbar-track-gray-500 dark:scrollbar-thumb-gray-800"
                                                                                                 style="text-align: justify" placeholder="Enter audit comments">
                                                                                             </textarea>
                                                                                         </div>
@@ -707,7 +707,7 @@
                                                                                 class="-mx-6 flex flex-row items-center justify-end px-6 pt-2 dark:bg-gray-800">
                                                                                 <button @click="submitForm()"
                                                                                     type="button"
-                                                                                    class="w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm text-white transition-colors duration-150 hover:bg-blue-800 focus:shadow-outline-indigo sm:w-auto sm:px-4 sm:py-2">
+                                                                                    class="w-full rounded-lg bg-emerald-600 px-5 py-3 text-sm text-white transition-colors duration-150 hover:bg-blue-800 focus:shadow-outline-blue sm:w-auto sm:px-4 sm:py-2">
                                                                                     Save
                                                                                 </button>
                                                                             </footer>
@@ -739,7 +739,7 @@
             </a>
             @if ($submitAccess)
                 <button type="button"
-                    class="rounded-md bg-indigo-700 px-4 py-2 text-xs uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-blue-800 focus:shadow-outline-blue"
+                    class="rounded-md bg-blue-700 px-4 py-2 text-xs uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-blue-800 focus:shadow-outline-blue"
                     @click="openConfirm('Yakin ingin mengirim?', 'Data yang dikirim tidak dapat diubah.', () => {
                             document.getElementById('form').submit()
                         });">

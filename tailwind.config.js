@@ -17,6 +17,7 @@ module.exports = {
     theme: {
         fontFamily: {
             figtree: ["Figtree", "sans-serif"],
+            inter: ["Inter", "sans-serif"],
 
             helvetica: ["Helvetica", "Arial", "sans-serif"],
         },

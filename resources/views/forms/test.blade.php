@@ -18,7 +18,7 @@
     <li class="flex items-center">
         <div class="relative flex items-center">
             <input type="text" id="auditeeName-0" @input="searchUsers('auditee', 0)" name="user_names[]"
-                class="w-full rounded-e-lg border border-s-2 border-gray-300 border-s-gray-50 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:border-s-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500"
+                class="w-full rounded-e-lg border border-s-2 border-gray-300 border-s-gray-50 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-emerald-500 dark:border-gray-600 dark:border-s-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500"
                 placeholder="Search User" />
             <input type="hidden" id="auditeeUsername-0" name="user_usernames[]" />
             <input type="hidden" id="auditeeEmail-0" name="user_emails[]" />
@@ -39,7 +39,7 @@
     <li class="flex items-center">
         <div class="relative flex items-center">
             <input type="text" id="auditeeName-1" @input="searchUsers('auditee', 1)" name="user_names[]"
-                class="w-full rounded-e-lg border border-s-2 border-gray-300 border-s-gray-50 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:border-s-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500"
+                class="w-full rounded-e-lg border border-s-2 border-gray-300 border-s-gray-50 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-emerald-500 dark:border-gray-600 dark:border-s-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500"
                 placeholder="Search User" />
             <input type="hidden" id="auditeeUsername-1" name="user_usernames[]" />
             <input type="hidden" id="auditeeEmail-1" name="user_emails[]" />
@@ -62,7 +62,7 @@
             <div class="relative flex items-center">
                 <input type="text" :id="'auditeeName-' + item.id" @input="searchUsers('auditee', item.id)"
                     name="user_names[]"
-                    class="w-full rounded-e-lg border border-s-2 border-gray-300 border-s-gray-50 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:border-s-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500"
+                    class="w-full rounded-e-lg border border-s-2 border-gray-300 border-s-gray-50 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-emerald-500 dark:border-gray-600 dark:border-s-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500"
                     placeholder="Search User" />
                 <input type="hidden" :id="'auditeeUsername-' + item.id" name="user_usernames[]" />
                 <input type="hidden" :id="'auditeeEmail-' + item.id" name="user_emails[]" />

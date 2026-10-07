@@ -1,94 +1,91 @@
 <x-app-layout>
-
-    <div
-        class="mb-4 flex items-center justify-between text-sm font-medium text-blue-800 dark:text-cool-gray-50 md:text-lg">
-        <ol class="flex items-center">
-            <li>
-                <a href="/units" class="mx-1 hover:underline">
-                    Units
-                </a>
-            </li>
-            <li>
-                <svg class="mx-1 h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="m1 9 4-4-4-4" />
-                </svg>
-            </li>
-            <li>
-                <a class="mx-1">
-                    Create
-                </a>
-            </li>
-        </ol>
+  <div class="space-y-6">
+    <!-- Page Header -->
+    <div class="flex items-center justify-between">
+      <div class="flex flex-col gap-1">
+        <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
+          Tambah Unit Baru
+        </h1>
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+          Lengkapi informasi unit kerja
+        </p>
+      </div>
+      <a href="{{ route('units.index') }}"
+        class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Kembali
+      </a>
     </div>
 
-    <div
-        class="overflow-x-auto rounded-sm bg-white p-6 shadow-lg scrollbar-thin dark:bg-gray-900 dark:scrollbar-track-gray-500 dark:scrollbar-thumb-gray-800 md:h-[545px]">
-        <header class="text-center">
-            <h2 class="text-lg font-medium text-gray-900 dark:text-white">
-                {{ __('Daftarkan Unit Baru') }}
-            </h2>
+    <!-- Form -->
+    <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100 dark:bg-gray-900 dark:ring-gray-800">
+      <form action="{{ route('units.store') }}" method="POST" class="mx-auto max-w-xl">
+        @csrf
 
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
-                {{ __('Masukkan nama dan singkatan Unit.') }}
-            </p>
-        </header>
-        <form action="/units" method="POST" class="mx-auto my-4 max-w-xl">
-            @csrf
-            <!-- Name -->
-            <div class="mt-4">
-                <x-input-label for="name" :value="__('Name')" />
-                <x-text-input id="name" name="name" type="text" class="mt-1 w-full" :value="old('name')"
-                    required autofocus autocomplete="name" placeholder="{{ __('Nama Unit') }}" />
-                <x-input-error class="mt-2" :messages="$errors->get('name')" />
-            </div>
-            <!-- Code -->
-            <div class="mt-4">
-                <x-input-label for="code" :value="__('Code')" />
-                <x-text-input id="code" name="code" type="text" class="mt-1 w-full" :value="old('code')"
-                    required placeholder="{{ __('Kode/Singkatan Unit') }}" />
-                <x-input-error class="mt-2" :messages="$errors->get('code')" />
-            </div>
-            <!-- Faculty -->
-            <div id="faculty" class="mt-4 hidden">
-                <x-input-label for="faculty" :value="__('Faculty')" />
-                <select name="faculty"
-                    class="mt-1 w-full rounded-md text-sm shadow-sm focus:ring-blue-800 dark:border-white dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500">
-                    <option value="" disabled {{ old('faculty') ? '' : 'selected' }} hidden>
-                        Choose Faculty</option>
-                    @foreach ($faculties as $faculty)
-                        <option value="{{ $faculty->id }}" {{ old('faculty') == $faculty->id ? 'selected' : '' }}>
-                            {{ $faculty->name }}</option>
-                    @endforeach
-                </select>
-                <x-input-error class="mt-2" :messages="$errors->get('faculty')" />
-            </div>
-            <!-- Button -->
-            <div class="mt-8 space-x-2 text-right">
-                <a href="/faculties"
-                    class="inline-flex rounded-md bg-gray-500 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700">
-                    {{ __('Batal') }}
-                </a>
-                <x-primary-button>
-                    {{ __('Daftar') }}
-                </x-primary-button>
+        <div class="mb-6">
+          <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Unit</label>
+          <input type="text" name="name" value="{{ old('name') }}" required
+            class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+            placeholder="Masukkan nama unit">
+          @error('name')
+            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+          @enderror
+        </div>
 
-            </div>
-        </form>
+        <div class="mb-6">
+          <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Kode</label>
+          <input type="text" name="code" id="code" value="{{ old('code') }}" required
+            class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+            placeholder="Masukkan kode/singkatan unit">
+          @error('code')
+            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+          @enderror
+        </div>
+
+        <div class="mb-6" id="faculty" style="display: none;">
+          <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Fakultas</label>
+          <select name="faculty"
+            class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+            <option value="" disabled selected>Pilih Fakultas</option>
+            @foreach ($faculties as $faculty)
+              <option value="{{ $faculty->id }}" {{ old('faculty') == $faculty->id ? 'selected' : '' }}>
+                {{ $faculty->name }}
+              </option>
+            @endforeach
+          </select>
+          @error('faculty')
+            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+          @enderror
+        </div>
+
+        <div class="flex justify-end gap-3">
+          <a href="{{ route('units.index') }}"
+            class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
+            Batal
+          </a>
+          <button type="submit"
+            class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-500 dark:hover:bg-blue-400 dark:focus:ring-offset-gray-900">
+            Simpan Unit
+          </button>
+        </div>
+      </form>
     </div>
+  </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const codeInput = document.getElementById('code');
-            const facultyDiv = document.getElementById('faculty');
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const codeInput = document.getElementById('code');
+      const facultyDiv = document.getElementById('faculty');
 
-            codeInput.addEventListener('input', function() {
-                if (this.value.charAt(0).match(/\d/)) { // Cek apakah karakter pertama adalah angka
-                    facultyDiv.classList.remove('hidden');
-                } else {
-                    facultyDiv.classList.add('hidden');
-                }
-            });
-        });
-    </script>
+      codeInput.addEventListener('input', function() {
+        if (this.value.charAt(0).match(/\d/)) {
+          facultyDiv.style.display = 'block';
+        } else {
+          facultyDiv.style.display = 'none';
+        }
+      });
+    });
+  </script>
 </x-app-layout>

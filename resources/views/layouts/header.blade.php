@@ -1,168 +1,94 @@
-<header class="z-30 bg-cool-gray-50  transition-all duration-300 ease-in-out dark:bg-gray-800">
-  <div class="mx-6 my-4 rounded-md bg-white px-4 py-2 shadow-sm dark:bg-cool-gray-50">
-    <div class=" flex items-center justify-between">
+<header class="sticky top-0 z-30 border-b border-gray-100 bg-white/80 backdrop-blur-md dark:border-gray-800 dark:bg-gray-900/80">
+  <div class="flex items-center justify-between px-6 py-3">
+    <div class="flex items-center gap-3">
       <button id="toggle-sidebar" @click="toggleSideMenu"
-        class="hidden rounded-md text-gray-500 hover:shadow-outline-blue focus:shadow-outline-blue lg:block">
-        <svg class="h-5 w-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd"
-            d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-            clip-rule="evenodd"></path>
+        class="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 lg:block">
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
-      <!-- Mobile hamburger -->
       <button @click="toggleSideMenuResponsive"
-        class="rounded-md text-gray-500 hover:shadow-outline-blue focus:shadow-outline-blue lg:hidden">
-        <svg class="h-5 w-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd"
-            d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-            clip-rule="evenodd"></path>
+        class="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 lg:hidden">
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
-      <ul class="flex flex-shrink-0 items-center md:space-x-6">
-        <!-- Theme toggler -->
-        <div class="flex items-end gap-x-4">
-          <li class="flex">
-            <button
-              class="rounded-md text-gray-500 hover:shadow-outline-blue focus:shadow-outline-blue dark:text-yellow-300"
-              @click="toggleTheme" aria-label="Toggle color mode">
-              <template x-if="!dark">
-                <svg class="h-5 w-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z">
-                  </path>
-                </svg>
-              </template>
-              <template x-if="dark">
-                <svg class="h-5 w-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-                    clip-rule="evenodd"></path>
-                </svg>
-              </template>
-            </button>
-          </li>
-          <!-- Notifications menu -->
-          <li class="relative">
-            <button
-              class="relative rounded-md align-middle text-gray-500 hover:shadow-outline-blue focus:shadow-outline-blue"
-              @click="toggleNotificationsMenu" @keydown.escape="closeNotificationsMenu" aria-label="Notifications"
-              aria-haspopup="true">
-              <svg class="h-5 w-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-                <path
-                  d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z">
-                </path>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <!-- Notifications -->
+      <button @click="toggleNotificationsMenu" @keydown.escape="closeNotificationsMenu"
+        class="relative rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+        aria-label="Notifications">
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+        <span class="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-rose-500"></span>
+      </button>
+
+      <!-- Profile -->
+      <div class="relative">
+        <button @click="toggleProfileMenu"
+          class="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800">
+          <div class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-xs font-semibold text-blue-600 dark:bg-blue-900/50 dark:text-blue-400">
+            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+          </div>
+          <span class="hidden md:block">{{ $userRole }}</span>
+          <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+
+        <template x-if="isProfileMenuOpen">
+          <div x-transition:enter="transition ease-out duration-100"
+            x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-75" x-transition:leave-start="opacity-100 scale-100"
+            x-transition:leave-end="opacity-0 scale-95" @click.away="closeProfileMenu"
+            @keydown.escape="closeProfileMenu"
+            class="absolute right-0 mt-2 w-48 origin-top-right rounded-xl border border-gray-100 bg-white py-1 shadow-lg dark:border-gray-800 dark:bg-gray-900">
+            <a href="/profile"
+              class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800">
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
-              <!-- Notification badge -->
-              <span aria-hidden="true"
-                class="absolute right-0 top-0 inline-block h-3 w-3 -translate-y-1 translate-x-1 transform rounded-full border-2 border-white bg-red-600"></span>
-            </button>
-            <template x-if="isNotificationsMenuOpen">
-              <ul x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100"
-                x-transition:leave-end="opacity-0" @click.away="closeNotificationsMenu"
-                @keydown.escape="closeNotificationsMenu"
-                class="absolute right-0 mt-2 w-56 space-y-2 rounded-md border border-gray-100 bg-white p-2 text-gray-600 shadow-md dark:border-gray-900 dark:bg-gray-900 dark:text-gray-300">
-                <li class="flex">
-                  <a
-                    class="inline-flex w-full items-center justify-between rounded-md px-2 py-1 text-sm font-semibold transition-colors duration-150 hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200">
-                    <span>No new notification</span>
-                  </a>
-                </li>
-              </ul>
-            </template>
-          </li>
-        </div>
-        <!-- Profile menu -->
-        <li class="relative">
-          <button @click="toggleProfileMenu"
-            class="hidden items-center space-x-1 rounded-md border-2 border-gray-500 px-2 py-1 text-xs font-medium transition duration-500 ease-in-out hover:bg-gray-500 hover:text-cool-gray-50 md:inline-flex">
-            <div>{{ $userRole }}</div>
-            <div>
-              <template x-if="isProfileMenuOpen">
-                <svg class="h-4 w-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M14.707 12.707a1 1 0 01-1.414 1.414L10 10.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4z"
-                    clip-rule="evenodd"></path>
-                </svg>
-              </template>
-              <template x-if="!isProfileMenuOpen">
-                <svg class="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                    clip-rule="evenodd" />
-                </svg>
-              </template>
-            </div>
-          </button>
-          <template x-if="isProfileMenuOpen">
-            <ul x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100"
-              x-transition:leave-end="opacity-0" @click.away="closeProfileMenu" @keydown.escape="closeProfileMenu"
-              class="absolute right-0 mt-2 w-44 space-y-2 rounded-md bg-white p-2 text-gray-900 shadow-md dark:bg-cool-gray-50">
-              <li class="flex">
-                <a class="inline-flex w-full items-center rounded-md px-2 py-1 text-sm font-semibold transition-colors duration-150 hover:bg-gray-300"
-                  href="/profile">
-                  <svg class="mr-3 h-4 w-4" aria-hidden="true" fill="none" stroke-linecap="round"
-                    stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                    <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
-                    </path>
-                  </svg>
-                  <span>Profile</span>
-                </a>
-              </li>
-              {{-- <li class="flex">
-                                <a class="inline-flex w-full items-center rounded-md px-2 py-1 text-sm font-semibold transition-colors duration-150 hover:bg-gray-300"
-                                    href="/edit-password">
-                                    <svg class="mr-3 h-4 w-4" aria-hidden="true" fill="none" stroke-linecap="round"
-                                        stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path
-                                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
-                                        </path>
-                                        <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    </svg>
-                                    <span>Change Password</span>
-                                </a>
-                            </li> --}}
+              Profile
+            </a>
 
-              @if (Auth::user()->roles->count() > 1)
-                @foreach (Auth::user()->roles->where('name', '!=', $userRole) as $role)
-                  <li class="flex">
-                    <form method="POST" action="/roles"
-                      class="inline-flex w-full items-center rounded-md px-2 py-1 text-sm font-semibold transition-colors duration-150 hover:bg-gray-300">
-                      @csrf
-                      <input value="{{ $role->name }}" type="hidden" name="role">
-                      <button type="submit" class="inline-flex w-full items-center">
-                        <svg class="mr-3 h-4 w-4" viewBox="0 0 24 24" fill="none"
-                          xmlns="http://www.w3.org/2000/svg" stroke-width="2" stroke-linecap="round"
-                          stroke-linejoin="round" stroke="currentColor">
-                          <path d="M18 10L21 7M21 7L18 4M21 7H7M6 14L3 17M3 17L6 20M3 17H17">
-                          </path>
-                        </svg>
-                        <span>Switch to {{ $role->name }}</span>
-                      </button>
-                    </form>
-                  </li>
-                @endforeach
-              @endif
-
-
-              <li class="flex">
-                <form method="POST" action="/logout"
-                  class="inline-flex w-full items-center rounded-md px-2 py-1 text-sm font-semibold transition-colors duration-150 hover:bg-gray-300">
+            @if (Auth::user()->roles->count() > 1)
+              <div class="my-1 border-t border-gray-100 dark:border-gray-800"></div>
+              @foreach (Auth::user()->roles->where('name', '!=', $userRole) as $role)
+                <form method="POST" action="/roles">
                   @csrf
-                  <button type="submit" class="inline-flex w-full items-center">
-                    <svg class="mr-3 h-4 w-4" aria-hidden="true" fill="none" stroke-linecap="round"
-                      stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9">
-                      </path>
+                  <input value="{{ $role->name }}" type="hidden" name="role">
+                  <button type="submit"
+                    class="flex w-full items-center gap-2 px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800">
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M18 10L21 7M21 7L18 4M21 7H7M6 14L3 17M3 17L6 20M3 17H17" />
                     </svg>
-                    {{ __('Log Out') }}
+                    Switch to {{ $role->name }}
                   </button>
                 </form>
-              </li>
-            </ul>
-          </template>
-        </li>
-      </ul>
+              @endforeach
+            @endif
+
+            <div class="my-1 border-t border-gray-100 dark:border-gray-800"></div>
+            <form method="POST" action="{{ route('logout') }}">
+              @csrf
+              <button type="submit"
+                class="flex w-full items-center gap-2 px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                Log Out
+              </button>
+            </form>
+          </div>
+        </template>
+      </div>
     </div>
   </div>
 </header>

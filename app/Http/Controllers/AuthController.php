@@ -55,7 +55,7 @@ class AuthController extends Controller
 
     public function index(Form $form)
     {
-        $stages = Stage::all();
+        $stages = Stage::where('is_active', true)->orderBy('order', 'asc')->get();
 
         $users = User::where('last_seen', '>=', now()->subMinutes(3))
             ->orderBy('last_seen', 'desc')
