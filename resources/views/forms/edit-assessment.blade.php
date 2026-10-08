@@ -451,7 +451,7 @@
                                               </template>
 
                                               <template
-                                                x-if="indicator.entry === 'Rate' && indicator.rate_option === 'researcherSatisfaction'">
+                                                x-if="indicator.entry === 'Rate' && indicator.rate_option === 'researcher_satisfaction'">
                                                 <div class="group relative z-0 w-[90%]">
                                                   <div class="mb-3">
                                                     Beri nilai sesuai tingkat kepuasan

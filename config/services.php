@@ -37,6 +37,12 @@ return [
 
     'gerbang' => [
         'api_url' => env('GERBANG_API_URL', 'https://api-gerbang.itk.ac.id/api/siakad'),
+        'token' => env('GERBANG_TOKEN'),
+    ],
+
+    'simpas' => [
+        'api_url' => env('SIMPAS_API_URL', 'https://api-simpas.itk.ac.id/api/siakad'),
+        'token' => env('SIMPAS_TOKEN'),
     ],
 
 ];

@@ -1,286 +1,3 @@
-{{-- <x-app-layout>
-  <div x-data="form()" class="flex h-full w-full flex-col gap-y-4">
-    <!-- Page Header -->
-    <div class="flex items-center justify-between">
-      <div class="flex items-center gap-2 text-sm">
-        <a href="/forms"
-          class="text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-          Daftar Formulir
-        </a>
-        <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
-        <span class="font-medium text-gray-900 dark:text-white">{{ $form->document->name }}</span>
-        <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
-        <span class="font-medium text-gray-900 dark:text-white">{{ $form->unit->name }}</span>
-      </div>
-      <button type="button" @click="openContact()"
-        class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-500 dark:hover:bg-blue-400 dark:focus:ring-offset-gray-900">
-        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-        </svg>
-        Kontak
-      </button>
-    </div>
-
-    <!-- Contact Modal -->
-    <div x-cloak x-show="isContactOpen" class="fixed inset-0 z-40 flex items-center justify-center">
-      <div x-show="isContactOpen" x-transition:enter="transition ease-out duration-200"
-        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-        x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0" class="fixed inset-0 bg-black/50 backdrop-blur-sm" @click="closeContact()">
-      </div>
-      <div x-show="isContactOpen" x-transition:enter="transition ease-out duration-200"
-        x-transition:enter-start="opacity-0 scale-95 translate-y-4"
-        x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-        x-transition:leave="transition ease-in duration-150"
-        x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-        x-transition:leave-end="opacity-0 scale-95 translate-y-4"
-        class="relative z-10 w-full max-w-2xl transform rounded-2xl bg-white p-6 shadow-2xl dark:bg-gray-900"
-        role="dialog" aria-modal="true">
-        <div class="mb-4 flex items-center justify-between">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Kontak Pengguna</h3>
-          <button type="button" @click="closeContact()"
-            class="rounded-lg p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-        <div class="grid grid-cols-2 gap-6">
-          <div>
-            <h4 class="mb-3 text-sm font-medium text-gray-500 dark:text-gray-400">Auditee</h4>
-            <div class="space-y-3">
-              @foreach ($auditees as $auditee)
-                <div class="flex items-center gap-3">
-                  <img class="h-9 w-9 rounded-full object-cover"
-                    src="https://ui-avatars.com/api/?name={{ $auditee->user->name }}&background=random"
-                    alt="" />
-                  <div>
-                    <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $auditee->user->name }}</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ $auditee->user->contact }}</p>
-                  </div>
-                </div>
-              @endforeach
-            </div>
-          </div>
-          <div>
-            <h4 class="mb-3 text-sm font-medium text-gray-500 dark:text-gray-400">Auditor</h4>
-            <div class="space-y-3">
-              @foreach ($auditors as $auditor)
-                <div class="flex items-center gap-3">
-                  <img class="h-9 w-9 rounded-full object-cover"
-                    src="https://ui-avatars.com/api/?name={{ $auditor->user->name }}&background=random"
-                    alt="" />
-                  <div>
-                    <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $auditor->user->name }}</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ $auditor->user->contact }}</p>
-                  </div>
-                </div>
-              @endforeach
-            </div>
-          </div>
-        </div>
-        <div class="mt-6 flex justify-end">
-          <button @click="closeContact()" type="button"
-            class="rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
-            Tutup
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Back Button -->
-    <a href="/forms"
-      class="inline-flex w-fit items-center gap-2 rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
-      <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-      </svg>
-      Kembali
-    </a>
-
-    <!-- Main Content -->
-    <div class="flex-1 overflow-auto">
-      <!-- Category Tabs -->
-      <div class="mb-4 flex gap-1 overflow-x-auto rounded-xl bg-gray-100 p-1 dark:bg-gray-800">
-        @foreach ($categories as $category)
-          <button @click.prevent="openTab = {{ $category['id'] }}"
-            :class="openTab === {{ $category['id'] }} ? 'bg-white text-gray-900 shadow-sm dark:bg-gray-700 dark:text-white' :
-                'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'"
-            class="flex-1 whitespace-nowrap rounded-lg px-4 py-2 text-sm font-medium transition-all">
-            {{ $category['name'] }}
-          </button>
-        @endforeach
-      </div>
-
-      <!-- Standards Content -->
-      <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100 dark:bg-gray-900 dark:ring-gray-800">
-        @foreach ($categories as $category)
-          <div x-show="openTab === {{ $category['id'] }}" class="space-y-6">
-            @foreach ($category['standards'] as $standard)
-              <div>
-                <h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">{{ $standard['name'] }}</h3>
-                <div class="overflow-x-auto">
-                  <table class="w-full">
-                    <thead>
-                      <tr
-                        class="border-b border-gray-100 text-left text-xs font-medium uppercase tracking-wider text-gray-400 dark:border-gray-800 dark:text-gray-500">
-                        <th class="pb-3 pr-4">Kompetensi</th>
-                        <th class="pb-3">Indikator</th>
-                      </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
-                      @foreach ($standard['competencies'] as $competency)
-                        <tr>
-                          <td class="py-4 pr-4">
-                            <p class="text-sm text-gray-700 dark:text-gray-300">{{ $competency['name'] }}</p>
-                          </td>
-                          <td class="py-4">
-                            @foreach ($competency['indicators'] as $indicator)
-                              <div class="mb-4">
-                                <div class="mb-2 flex items-center gap-2">
-                                  <span
-                                    class="text-sm font-medium text-gray-900 dark:text-white">{{ $indicator['code'] }}</span>
-                                  <span
-                                    class="inline-flex items-center rounded-full bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
-                                    {{ $indicator['assessment_status'] }}
-                                  </span>
-                                </div>
-                                <p class="text-sm text-gray-600 dark:text-gray-400">{{ $indicator['assessment'] }}</p>
-                                <button @click="openIndicator({{ $indicator['id'] }})" type="button"
-                                  class="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700 transition-colors hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50">
-                                  <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                  </svg>
-                                  Lihat Detail
-                                </button>
-                              </div>
-                            @endforeach
-                          </td>
-                        </tr>
-                      @endforeach
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            @endforeach
-          </div>
-        @endforeach
-
-        <!-- Empty State -->
-        @if (empty($categories))
-          <div class="flex h-64 flex-col items-center justify-center gap-4 text-gray-500">
-            <svg class="h-12 w-12 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor"
-              viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-            </svg>
-            <p class="text-sm">Belum ada data</p>
-          </div>
-        @endif
-      </div>
-    </div>
-
-    <!-- Indicator Detail Modal -->
-    <div x-cloak x-show="focusIndicatorId !== null" class="fixed inset-0 z-40 flex items-center justify-center">
-      <div x-show="focusIndicatorId !== null" x-transition:enter="transition ease-out duration-200"
-        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-        x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0" class="fixed inset-0 bg-black/50 backdrop-blur-sm"
-        @click="closeIndicator()"></div>
-      <div x-show="focusIndicatorId !== null" x-transition:enter="transition ease-out duration-200"
-        x-transition:enter-start="opacity-0 scale-95 translate-y-4"
-        x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-        x-transition:leave="transition ease-in duration-150"
-        x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-        x-transition:leave-end="opacity-0 scale-95 translate-y-4"
-        class="relative z-10 w-full max-w-3xl transform rounded-2xl bg-white p-6 shadow-2xl dark:bg-gray-900"
-        role="dialog" aria-modal="true">
-        <div class="mb-4 flex items-center justify-between">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-            Detail Indikator
-          </h3>
-          <button type="button" @click="closeIndicator()"
-            class="rounded-lg p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-        <div class="space-y-4">
-          <div>
-            <label class="mb-1 block text-sm font-medium text-gray-500 dark:text-gray-400">Kode Indikator</label>
-            <p class="text-sm text-gray-900 dark:text-white" x-text="focusIndicator?.code"></p>
-          </div>
-          <div>
-            <label class="mb-1 block text-sm font-medium text-gray-500 dark:text-gray-400">Penilaian</label>
-            <p class="text-sm text-gray-900 dark:text-white" x-text="focusIndicator?.assessment"></p>
-          </div>
-          <div>
-            <label class="mb-1 block text-sm font-medium text-gray-500 dark:text-gray-400">Status Pengajuan</label>
-            <p class="text-sm text-gray-900 dark:text-white" x-text="focusIndicator?.submission_status"></p>
-          </div>
-          <div>
-            <label class="mb-1 block text-sm font-medium text-gray-500 dark:text-gray-400">Status Penilaian</label>
-            <p class="text-sm text-gray-900 dark:text-white" x-text="focusIndicator?.assessment_status"></p>
-          </div>
-        </div>
-        <div class="mt-6 flex justify-end">
-          <button @click="closeIndicator()" type="button"
-            class="rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
-            Tutup
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    function form() {
-      return {
-        openTab: {{ !empty($categories) ? $categories[0]['id'] : 1 }},
-        categories: @json($categories),
-        isContactOpen: false,
-        focusIndicatorId: null,
-        focusIndicator: null,
-        openContact() {
-          this.isContactOpen = true;
-        },
-        closeContact() {
-          this.isContactOpen = false;
-        },
-        openIndicator(id) {
-          this.focusIndicatorId = id;
-          // Find indicator data
-          for (let cat of this.categories) {
-            for (let std of cat.standards) {
-              for (let comp of std.competencies) {
-                for (let ind of comp.indicators) {
-                  if (ind.id === id) {
-                    this.focusIndicator = ind;
-                    return;
-                  }
-                }
-              }
-            }
-          }
-        },
-        closeIndicator() {
-          this.focusIndicatorId = null;
-          this.focusIndicator = null;
-        }
-      }
-    }
-  </script>
-</x-app-layout> --}}
-
-
 <x-app-layout>
   <div x-data="form()" class="flex h-full w-full flex-col gap-y-1 font-semibold">
 
@@ -564,7 +281,7 @@
 
                                             {{-- Detail Button --}}
                                             <div class="mt-3">
-                                              <button @click="openIndicator(indicator.id)" type="button"
+                                              <button @click="openIndicator(indicator)" type="button"
                                                 class="inline-flex items-center gap-1.5 rounded-lg bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700 transition-colors hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50">
                                                 <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor"
                                                   viewBox="0 0 24 24">
@@ -593,7 +310,7 @@
                                             x-transition:leave="transition ease-in duration-150"
                                             x-transition:leave-start="opacity-100"
                                             x-transition:leave-end="opacity-0 translate-y-1/2"
-                                            class="flex w-full max-w-7xl flex-col gap-2 overflow-hidden rounded-t-2xl bg-white p-6 shadow-xl dark:bg-gray-900 sm:rounded-2xl"
+                                            class="flex w-1/2 flex-col gap-2 overflow-hidden rounded-t-2xl bg-white p-6 shadow-xl dark:bg-gray-900 sm:rounded-2xl"
                                             :id="'modal-' + indicator.id">
 
                                             {{-- Header Modal --}}
@@ -697,8 +414,120 @@
                                                         class="w-full border-0 border-b border-gray-200 bg-transparent px-0 py-2 text-sm text-gray-700 focus:border-primary focus:ring-0 dark:border-gray-700 dark:text-white" />
                                                     </template>
 
+
+                                                    <template
+                                                      x-if="indicator.entry === 'Percentage' && indicator.percentage_option !== 'actual_percentage'">
+                                                      <div
+                                                        class="mb-4 rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/20">
+                                                        <div class="mb-3 flex items-center gap-2">
+                                                          <svg class="size-4 text-blue-600 dark:text-blue-400"
+                                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                              stroke-width="2"
+                                                              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                                          </svg>
+                                                          <h5
+                                                            class="text-sm font-semibold text-blue-700 dark:text-blue-400">
+                                                            Data Aktivitas
+                                                          </h5>
+                                                        </div>
+
+                                                        <div class="mb-3 grid grid-cols-3 gap-2 text-xs">
+                                                          <div class="rounded bg-white p-2 dark:bg-gray-900">
+                                                            <p class="text-gray-500 dark:text-gray-400">Kategori</p>
+                                                            <p class="font-medium text-gray-900 dark:text-white"
+                                                              x-text="indicator.activity_category || '-'"></p>
+                                                          </div>
+                                                          <div class="rounded bg-white p-2 dark:bg-gray-900">
+                                                            <p class="text-gray-500 dark:text-gray-400">Peserta</p>
+                                                            <p class="font-medium text-gray-900 dark:text-white"
+                                                              x-text="indicator.participant || '-'"></p>
+                                                          </div>
+                                                          <div class="rounded bg-white p-2 dark:bg-gray-900">
+                                                            <p class="text-gray-500 dark:text-gray-400">Tahun</p>
+                                                            <p class="font-medium text-gray-900 dark:text-white"
+                                                              x-text="indicator.activity_year || '-'"></p>
+                                                          </div>
+                                                        </div>
+
+                                                        <!-- Loading State -->
+                                                        <div x-show="activityLoading"
+                                                          class="flex items-center justify-center py-4">
+                                                          <svg
+                                                            class="size-5 animate-spin text-blue-600 dark:text-blue-400"
+                                                            xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                            viewBox="0 0 24 24">
+                                                            <circle class="opacity-25" cx="12" cy="12"
+                                                              r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                            <path class="opacity-75" fill="currentColor"
+                                                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                                            </path>
+                                                          </svg>
+                                                          <span
+                                                            class="ml-2 text-sm text-blue-600 dark:text-blue-400">Memuat
+                                                            data aktivitas...</span>
+                                                        </div>
+
+                                                        <!-- Data Table -->
+                                                        <div x-show="activityData && !activityLoading"
+                                                          class="overflow-hidden rounded-lg border border-blue-200 dark:border-blue-800">
+                                                          <div class="max-h-60 overflow-auto">
+                                                            <table class="w-full text-xs">
+                                                              <thead class="bg-blue-100 dark:bg-blue-900/50">
+                                                                <tr>
+                                                                  <th
+                                                                    class="px-3 py-2 text-left font-semibold text-blue-800 dark:text-blue-300">
+                                                                    Prodi</th>
+                                                                  <th
+                                                                    class="px-3 py-2 text-left font-semibold text-blue-800 dark:text-blue-300">
+                                                                    Jurusan</th>
+                                                                  <th
+                                                                    class="px-3 py-2 text-left font-semibold text-blue-800 dark:text-blue-300">
+                                                                    Fakultas</th>
+                                                                  <th
+                                                                    class="px-3 py-2 text-right font-semibold text-blue-800 dark:text-blue-300">
+                                                                    Jumlah</th>
+                                                                </tr>
+                                                              </thead>
+                                                              <tbody
+                                                                class="divide-y divide-blue-100 dark:divide-blue-800">
+                                                                <template
+                                                                  x-for="(item, index) in activityData?.data?.items || []"
+                                                                  :key="index">
+                                                                  <tr class="bg-white dark:bg-gray-900">
+                                                                    <td class="px-3 py-2 text-gray-900 dark:text-white"
+                                                                      x-text="item.prodi?.nama || '-'"></td>
+                                                                    <td
+                                                                      class="px-3 py-2 text-gray-600 dark:text-gray-400"
+                                                                      x-text="item.jurusan?.nama || '-'"></td>
+                                                                    <td
+                                                                      class="px-3 py-2 text-gray-600 dark:text-gray-400"
+                                                                      x-text="item.fakultas?.nama || '-'"></td>
+                                                                    <td
+                                                                      class="px-3 py-2 text-right font-medium text-gray-900 dark:text-white"
+                                                                      x-text="item.jumlah || 0"></td>
+                                                                  </tr>
+                                                                </template>
+                                                              </tbody>
+                                                              <tfoot class="bg-blue-50 dark:bg-blue-900/30">
+                                                                <tr>
+                                                                  <td colspan="3"
+                                                                    class="px-3 py-2 text-right font-semibold text-blue-800 dark:text-blue-300">
+                                                                    Total:</td>
+                                                                  <td
+                                                                    class="px-3 py-2 text-right font-bold text-blue-800 dark:text-blue-300"
+                                                                    x-text="activityData?.data?.total || 0"></td>
+                                                                </tr>
+                                                              </tfoot>
+                                                            </table>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </template>
+
                                                     {{-- Percentage --}}
-                                                    <template x-if="indicator.entry === 'Percentage'">
+                                                    <template
+                                                      x-if="indicator.entry === 'Percentage' && indicator.percentage_option === 'actual_percentage'">
                                                       <div class="flex items-center gap-2">
                                                         <input disabled x-model="indicator.validation"
                                                           placeholder="Percentage"
@@ -707,6 +536,217 @@
                                                       </div>
                                                     </template>
 
+                                                    <template
+                                                      x-if="indicator.entry === 'Percentage' && indicator.percentage_option == 'percentage-1'">
+
+                                                      <div class="flex flex-wrap gap-5 text-sm text-gray-500">
+
+                                                        <label class="flex cursor-pointer items-center gap-2 text-sm">
+                                                          <input disabled type="radio"
+                                                            x-model="indicator.validation" value="batas_bawah"
+                                                            class="text-blue-600 focus:ring-blue-500" />
+                                                          <span>100% Prodi memenuhi "Batas Bawah"</span>
+                                                        </label>
+
+                                                        <label class="flex cursor-pointer items-center gap-2 text-sm">
+                                                          <input disabled type="radio"
+                                                            x-model="indicator.validation" value="batas_target"
+                                                            class="text-blue-600 focus:ring-blue-500" />
+                                                          <span>100% Prodi memenuhi "Batas Target"</span>
+                                                        </label>
+
+                                                        <label class="flex cursor-pointer items-center gap-2 text-sm">
+                                                          <input disabled type="radio"
+                                                            x-model="indicator.validation" value="target_maks3"
+                                                            @change="isEditing = true"
+                                                            class="text-blue-600 focus:ring-blue-500">
+                                                          <span>100% Prodi memenuhi "Batas Target" dan maks 3 Prodi
+                                                            tidak memenuhi "Batas Melampaui"</span>
+                                                        </label>
+
+
+                                                        <div></div>
+
+
+                                                      </div>
+                                                    </template>
+
+
+
+
+
+                                                    <template
+                                                      x-if="indicator.entry === 'Percentage' && indicator.percentage_option == 'percentage-2'">
+
+                                                      <div>
+                                                        <p class="mb-3 text-sm text-gray-600 dark:text-gray-300">
+                                                          Beri nilai sesuai tingkat pencapaian indikator
+                                                        </p>
+
+                                                        <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+
+                                                          <label
+                                                            class="flex cursor-pointer items-center gap-2 text-sm">
+                                                            <input type="radio" x-model="indicator.validation"
+                                                              value="batas_bawah" @change="isEditing = true"
+                                                              class="text-blue-600 focus:ring-blue-500">
+                                                            <span>100% Prodi memenuhi
+                                                              "Batas Bawah"</span>
+                                                          </label>
+
+                                                          <label
+                                                            class="flex cursor-pointer items-center gap-2 text-sm">
+                                                            <input type="radio" x-model="indicator.validation"
+                                                              value="batas_target" @change="isEditing = true"
+                                                              class="text-blue-600 focus:ring-blue-500">
+                                                            <span>100% Prodi memenuhi
+                                                              "Batas Target"</span>
+                                                          </label>
+
+                                                          <label
+                                                            class="flex cursor-pointer items-center gap-2 text-sm">
+                                                            <input type="radio" x-model="indicator.validation"
+                                                              value="target_maks3" @change="isEditing = true"
+                                                              class="text-blue-600 focus:ring-blue-500">
+                                                            <span>100% Prodi memenuhi "Batas Target" dan maks 1 Prodi
+                                                              tidak memenuhi "Batas Melampaui"</span>
+                                                          </label>
+
+
+
+                                                        </div>
+                                                      </div>
+                                                    </template>
+
+                                                    <template
+                                                      x-if="indicator.entry === 'Percentage' && indicator.percentage_option == 'percentage-3'">
+
+                                                      <div>
+                                                        <p class="mb-3 text-sm text-gray-600 dark:text-gray-300">
+                                                          Beri nilai sesuai tingkat pencapaian indikator
+                                                        </p>
+
+                                                        <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+
+                                                          <label
+                                                            class="flex cursor-pointer items-center gap-2 text-sm">
+                                                            <input type="radio" x-model="indicator.validation"
+                                                              value="batas_bawah" @change="isEditing = true"
+                                                              class="text-blue-600 focus:ring-blue-500">
+                                                            <span>≥ 30 % penelitian program studi melibatkan
+                                                              Mahasiswa</span>
+                                                          </label>
+
+                                                          <label
+                                                            class="flex cursor-pointer items-center gap-2 text-sm">
+                                                            <input type="radio" x-model="indicator.validation"
+                                                              value="batas_target" @change="isEditing = true"
+                                                              class="text-blue-600 focus:ring-blue-500">
+                                                            <span>≥ 50 % penelitian program studi melibatkan
+                                                              Mahasiswa</span>
+                                                          </label>
+
+                                                          <label
+                                                            class="flex cursor-pointer items-center gap-2 text-sm">
+                                                            <input type="radio" x-model="indicator.validation"
+                                                              value="target_maks3" @change="isEditing = true"
+                                                              class="text-blue-600 focus:ring-blue-500">
+                                                            <span>≥ 75 % penelitian program studi melibatkan
+                                                              Mahasiswa</span>
+                                                          </label>
+
+
+
+                                                        </div>
+                                                      </div>
+                                                    </template>
+
+                                                    <template
+                                                      x-if="indicator.entry === 'Percentage' && indicator.percentage_option == 'percentage-4'">
+
+                                                      <div>
+                                                        <p class="mb-3 text-sm text-gray-600 dark:text-gray-300">
+                                                          Beri nilai sesuai tingkat pencapaian indikator
+                                                        </p>
+
+                                                        <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+
+                                                          <label
+                                                            class="flex cursor-pointer items-center gap-2 text-sm">
+                                                            <input type="radio" x-model="indicator.validation"
+                                                              value="batas_bawah" @change="isEditing = true"
+                                                              class="text-blue-600 focus:ring-blue-500">
+                                                            <span>> 0 % penelitian program studi melibatkan Tenaga
+                                                              Kependidikan ITK</span>
+                                                          </label>
+
+                                                          <label
+                                                            class="flex cursor-pointer items-center gap-2 text-sm">
+                                                            <input type="radio" x-model="indicator.validation"
+                                                              value="batas_target" @change="isEditing = true"
+                                                              class="text-blue-600 focus:ring-blue-500">
+                                                            <span>≥ 5 % penelitian program studi melibatkan Tenaga
+                                                              Kependidikan ITK</span>
+                                                          </label>
+
+                                                          <label
+                                                            class="flex cursor-pointer items-center gap-2 text-sm">
+                                                            <input type="radio" x-model="indicator.validation"
+                                                              value="target_maks3" @change="isEditing = true"
+                                                              class="text-blue-600 focus:ring-blue-500">
+                                                            <span>≥ 10 % penelitian program studi melibatkan Tenaga
+                                                              Kependidikan ITK</span>
+                                                          </label>
+
+
+
+                                                        </div>
+                                                      </div>
+                                                    </template>
+
+
+                                                    <template
+                                                      x-if="indicator.entry === 'Percentage' && indicator.percentage_option == 'percentage-5'">
+
+                                                      <div>
+                                                        <p class="mb-3 text-sm text-gray-600 dark:text-gray-300">
+                                                          Beri nilai sesuai tingkat pencapaian indikator
+                                                        </p>
+
+                                                        <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+
+                                                          <label
+                                                            class="flex cursor-pointer items-center gap-2 text-sm">
+                                                            <input type="radio" x-model="indicator.validation"
+                                                              value="batas_bawah" @change="isEditing = true"
+                                                              class="text-blue-600 focus:ring-blue-500">
+                                                            <span>> 0 % penelitian program studi melibatkan Peneliti
+                                                              non-ITK</span>
+                                                          </label>
+
+                                                          <label
+                                                            class="flex cursor-pointer items-center gap-2 text-sm">
+                                                            <input type="radio" x-model="indicator.validation"
+                                                              value="batas_target" @change="isEditing = true"
+                                                              class="text-blue-600 focus:ring-blue-500">
+                                                            <span>≥ 10 % penelitian program studi melibatkan Peneliti
+                                                              non-ITK</span>
+                                                          </label>
+
+                                                          <label
+                                                            class="flex cursor-pointer items-center gap-2 text-sm">
+                                                            <input type="radio" x-model="indicator.validation"
+                                                              value="target_maks3" @change="isEditing = true"
+                                                              class="text-blue-600 focus:ring-blue-500">
+                                                            <span>≥ 25 % penelitian program studi melibatkan Peneliti
+                                                              non-ITK</span>
+                                                          </label>
+
+
+
+                                                        </div>
+                                                      </div>
+                                                    </template>
                                                     {{-- Rate --}}
                                                     <template
                                                       x-if="indicator.entry === 'Rate' && (indicator.rate_option === null || indicator.rate_option === '' || indicator.rate_option === '1-10')">
@@ -740,7 +780,7 @@
 
                                                     {{-- Researcher Satisfaction --}}
                                                     <template
-                                                      x-if="indicator.entry === 'Rate' && indicator.rate_option === 'researcherSatisfaction'">
+                                                      x-if="indicator.entry === 'Rate' && indicator.rate_option === 'researcher_satisfaction'">
                                                       <div>
                                                         <p class="mb-3 text-sm text-gray-500">
                                                           Beri nilai sesuai tingkat kepuasan
@@ -973,6 +1013,11 @@
                                 code: '{{ $indicator->indicator->code }}',
                                 assessment: @json($indicator->indicator->assessment),
                                 entry: '{{ $indicator->indicator->entry }}',
+                                percentage_option: '{{ $indicator->indicator->percentage_option }}',
+                                activity_category: '{{ $indicator->indicator->activity_category }}',
+                                participant: '{{ $indicator->indicator->participant }}',
+                                activity_year: '{{ $indicator->indicator->activity_year }}',
+
                                 rate_option: '{{ $indicator->indicator->rate_option }}',
                               },
                             @endforeach
@@ -1012,9 +1057,55 @@
         },
         focusIndicatorId: null,
         focusTrap: null,
-        openIndicator(indicatorId) {
-          this.focusIndicatorId = indicatorId;
-          this.focusTrap = focusTrap(document.querySelector('#modal-' + indicatorId));
+        activityData: null,
+        activityLoading: false,
+
+        openIndicator(indicator) {
+          this.focusIndicatorId = indicator.id;
+          this.activityData = null;
+
+          this.focusTrap = focusTrap(
+            document.querySelector('#modal-' + indicator.id)
+          );
+
+          if (
+            indicator.entry === 'Percentage' &&
+            indicator.percentage_option !== 'actual_percentage'
+          ) {
+            this.fetchActivity(indicator);
+          }
+        },
+
+        formId: @json($form->id),
+        async fetchActivity(indicator) {
+          if (!indicator.activity_category && !indicator.participant) {
+            alert('Kategori dan peserta harus diisi terlebih dahulu.');
+            return;
+          }
+          this.activityLoading = true;
+          try {
+
+            const params = new URLSearchParams({
+              kategori: indicator.activity_category,
+              peserta: indicator.participant,
+              prodi: @json($form->unit?->code),
+              fakultas: @json($form->unit?->department?->faculty?->code),
+            });
+
+            if (indicator.activity_year) {
+              params.append('tahun', indicator.activity_year);
+            }
+            const response = await fetch(
+              `/forms/${this.formId}/get-activity?${params.toString()}`
+            );
+            const data = await response.json();
+            this.activityData = data;
+          } catch (error) {
+            console.error('Error fetching activity:', error);
+            alert('Gagal memuat data aktivitas.');
+          } finally {
+            this.activityLoading = false;
+          }
         },
         closeIndicator() {
           // Close without confirmation if no changes

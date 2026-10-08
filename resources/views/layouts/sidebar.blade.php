@@ -122,6 +122,11 @@
             x-transition:enter-start="opacity-0 -translate-y-1" x-transition:enter-end="opacity-100 translate-y-0"
             x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0"
             x-transition:leave-end="opacity-0 -translate-y-1" class="mt-1 space-y-1 pl-4">
+            <a href="{{ route('faculties.index') }}"
+              class="{{ Request::is('faculties*') ? 'bg-blue-50 text-primary dark:bg-blue-900/20 dark:text-blue-400' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white' }} flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors">
+              <span class="h-1.5 w-1.5 rounded-full bg-current opacity-50"></span>
+              Fakultas
+            </a>
             <a href="/departments"
               class="{{ Request::is('departments*') ? 'bg-blue-50 text-primary dark:bg-blue-900/20 dark:text-blue-400' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white' }} flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors">
               <span class="h-1.5 w-1.5 rounded-full bg-current opacity-50"></span>

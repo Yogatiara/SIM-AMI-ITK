@@ -26,6 +26,7 @@ class RolePermissionSeeder extends Seeder
         Permission::create(['name' => 'manage documents']);
         Permission::create(['name' => 'manage forms']);
         Permission::create(['name' => 'manage stages']);
+        Permission::create(['name' => 'manage faculties']);
         Permission::create(['name' => 'view reports']);
 
         // Assign permissions to Admin role
@@ -34,6 +35,6 @@ class RolePermissionSeeder extends Seeder
 
         // Assign permissions to PJM role
         $pjmRole = Role::findByName('PJM');
-        $pjmRole->givePermissionTo(['manage documents', 'manage forms', 'manage stages', 'view reports']);
+        $pjmRole->givePermissionTo(['manage documents', 'manage forms', 'manage stages', 'manage faculties', 'view reports']);
     }
 }

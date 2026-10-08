@@ -32,7 +32,7 @@
             placeholder="Masukkan nama permission">
           @error('name')
             <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-          @error
+          @enderror
         </div>
 
         <div class="mb-6">
@@ -42,17 +42,19 @@
             placeholder="Masukkan deskripsi permission">{{ old('description', $permission->description) }}</textarea>
           @error('description')
             <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-          @error
+          @enderror
         </div>
 
         <div class="mb-6">
           <label class="mb-3 block text-sm font-medium text-gray-700 dark:text-gray-300">Digunakan oleh Role</label>
           <div class="flex flex-wrap gap-2">
             @foreach ($permission->roles as $role)
-              <span class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+              <span
+                class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
                 {{ $role->name }}
                 <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </span>
             @endforeach
@@ -85,11 +87,13 @@
         </div>
         <div class="rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
           <p class="text-xs text-gray-500 dark:text-gray-400">Dibuat Pada</p>
-          <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $permission->created_at->translatedFormat('d F Y') }}</p>
+          <p class="text-sm font-medium text-gray-900 dark:text-white">
+            {{ $permission->created_at->translatedFormat('d F Y') }}</p>
         </div>
         <div class="rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
           <p class="text-xs text-gray-500 dark:text-gray-400">Terakhir Diubah</p>
-          <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $permission->updated_at->translatedFormat('d F Y') }}</p>
+          <p class="text-sm font-medium text-gray-900 dark:text-white">
+            {{ $permission->updated_at->translatedFormat('d F Y') }}</p>
         </div>
       </div>
     </div>

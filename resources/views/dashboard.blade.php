@@ -357,15 +357,17 @@
       });
     });
   </script>
-</x-app-layout>
-<script src="{{ asset('js/charts-lines.js') }}" defer></script>
-<script src="{{ asset('js/charts-pie.js') }}" defer></script>
-<script src="{{ asset('js/charts-bars.js') }}" defer></script>
-<script>
-  window.chartData = {
-    tepatWaktu: {{ $tepatWaktu }},
-    tidakTepatWaktu: {{ $tidakTepatWaktu }}
-  };
 
-  var categoryPercentages = @json(array_values($categoryPercentages));
-</script>
+  <!-- Chart Data -->
+  <script>
+    window.chartData = {
+      tepatWaktu: {{ $tepatWaktu }},
+      tidakTepatWaktu: {{ $tidakTepatWaktu }}
+    };
+    var categoryPercentages = @json(array_values($categoryPercentages));
+  </script>
+
+  <!-- Chart Scripts -->
+  <script src="{{ asset('js/charts-pie.js') }}" defer></script>
+  <script src="{{ asset('js/charts-bars.js') }}" defer></script>
+</x-app-layout>

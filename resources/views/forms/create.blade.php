@@ -847,19 +847,19 @@
                         el.style.height = 'auto';
                         el.style.height = `${el.scrollHeight + offsetTop}px`;
                     }
-            
+
                     this.$nextTick(() => {
                         document.querySelectorAll('textarea').forEach(textarea => {
                             textarea.addEventListener('focus', () => textareaAutoHeight(textarea, 30));
                             textareaAutoHeight(textarea, 30); // Initial call
                         });
                     });
-            
+
                 },
                 toggleDisableIndicator(standardId, competencyId, indicatorId) {
                     let category = this.categories.find(cat => cat.id === this.openTab);
                     let indicator = category.standards[standardId].competencies[competencyId].indicators[indicatorId];
-            
+
                     indicator.isDisabled = !indicator.isDisabled;
                 },
             }">
@@ -1028,7 +1028,7 @@
                                                                                         indicator.rate_option === '1-10' ? indicator.entry + ' (1/10)' :
                                                                                         indicator.rate_option === '1-100' ? indicator.entry + ' (1/100)' :
 
-                                                                                        indicator.rate_option === 'researcherSatisfaction' ? 'Tingkat Kepuasan (label)' : indicator.entry">
+                                                                                        indicator.rate_option === 'researcher_satisfaction' ? 'Tingkat Kepuasan (label)' : indicator.entry">
                                             </div>
                                             <!-- md: Popover -->
                                             <div
@@ -1271,7 +1271,8 @@
           if (query.length > 2) {
             const url =
               `https://api-gerbang.itk.ac.id/api/siakad/pegawai/search?keyword=${encodeURIComponent(query)}`;
-            const token = '119961|e1jvJWYHODtLf4u15duHkFeb4qpPmuz97f2DhfiV'
+            const token = @json(config('services.gerbang.token'));
+
             fetch(url, {
                 method: 'GET',
                 headers: {

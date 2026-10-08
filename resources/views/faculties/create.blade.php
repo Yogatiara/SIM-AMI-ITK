@@ -4,13 +4,13 @@
     <div class="flex items-center justify-between">
       <div class="flex flex-col gap-1">
         <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
-          Tambah Unit Baru
+          Tambah Fakultas Baru
         </h1>
         <p class="text-sm text-gray-500 dark:text-gray-400">
-          Lengkapi informasi unit kerja
+          Lengkapi informasi fakultas
         </p>
       </div>
-      <a href="{{ route('units.index') }}"
+      <a href="{{ route('faculties.index') }}"
         class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -21,30 +21,14 @@
 
     <!-- Form -->
     <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100 dark:bg-gray-900 dark:ring-gray-800">
-      <form action="{{ route('units.store') }}" method="POST" class="mx-auto max-w-xl">
+      <form action="{{ route('faculties.store') }}" method="POST" class="mx-auto max-w-xl">
         @csrf
 
         <div class="mb-6">
-          <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Departemen</label>
-          <select name="department_id" required
-            class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
-            <option value="" disabled selected>Pilih Departemen</option>
-            @foreach ($departments as $department)
-              <option value="{{ $department->id }}" {{ old('department_id') == $department->id ? 'selected' : '' }}>
-                {{ $department->name }} ({{ $department->faculty->name ?? 'Tanpa Fakultas' }})
-              </option>
-            @endforeach
-          </select>
-          @error('department_id')
-            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-          @enderror
-        </div>
-
-        <div class="mb-6">
-          <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Unit</label>
+          <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Fakultas</label>
           <input type="text" name="name" value="{{ old('name') }}" required
             class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-            placeholder="Masukkan nama unit">
+            placeholder="Masukkan nama fakultas">
           @error('name')
             <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
           @enderror
@@ -54,20 +38,20 @@
           <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Kode</label>
           <input type="text" name="code" value="{{ old('code') }}" required
             class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-            placeholder="Masukkan kode/singkatan unit">
+            placeholder="Masukkan kode fakultas">
           @error('code')
             <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
           @enderror
         </div>
 
         <div class="flex justify-end gap-3">
-          <a href="{{ route('units.index') }}"
+          <a href="{{ route('faculties.index') }}"
             class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
             Batal
           </a>
           <button type="submit"
             class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-500 dark:hover:bg-blue-400 dark:focus:ring-offset-gray-900">
-            Simpan Unit
+            Simpan Fakultas
           </button>
         </div>
       </form>

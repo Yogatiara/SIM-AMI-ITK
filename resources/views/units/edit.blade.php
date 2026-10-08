@@ -26,6 +26,23 @@
         @method('PUT')
 
         <div class="mb-6">
+          <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Departemen</label>
+          <select name="department_id" required
+            class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+            <option value="" disabled>Pilih Departemen</option>
+            @foreach ($departments as $department)
+              <option value="{{ $department->id }}"
+                {{ old('department_id', $unit->department_id) == $department->id ? 'selected' : '' }}>
+                {{ $department->name }} ({{ $department->faculty->name ?? 'Tanpa Fakultas' }})
+              </option>
+            @endforeach
+          </select>
+          @error('department_id')
+            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+          @enderror
+        </div>
+
+        <div class="mb-6">
           <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Unit</label>
           <input type="text" name="name" value="{{ old('name', $unit->name) }}" required
             class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
@@ -37,27 +54,10 @@
 
         <div class="mb-6">
           <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Kode</label>
-          <input type="text" name="code" id="code" value="{{ old('code', $unit->code) }}" required
+          <input type="text" name="code" value="{{ old('code', $unit->code) }}" required
             class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
             placeholder="Masukkan kode/singkatan unit">
           @error('code')
-            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-          @enderror
-        </div>
-
-        <div class="mb-6" id="faculty" style="display: none;">
-          <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Fakultas</label>
-          <select name="faculty" id="faculty"
-            class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
-            <option value="" disabled selected>Pilih Fakultas</option>
-            @foreach ($faculties as $faculty)
-              <option value="{{ $faculty->id }}"
-                {{ old('faculty', $unit->faculty_id) == $faculty->id ? 'selected' : '' }}>
-                {{ $faculty->name }}
-              </option>
-            @endforeach
-          </select>
-          @error('faculty')
             <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
           @enderror
         </div>
@@ -75,25 +75,4 @@
       </form>
     </div>
   </div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const codeInput = document.getElementById('code');
-      const facultyDiv = document.getElementById('faculty');
-
-      function checkFacultyVisibility() {
-        if (codeInput.value && codeInput.value.charAt(0).match(/\d/)) {
-          facultyDiv.style.display = 'block';
-        } else {
-          facultyDiv.style.display = 'none';
-        }
-      }
-
-      checkFacultyVisibility();
-
-      codeInput.addEventListener('input', function() {
-        checkFacultyVisibility();
-      });
-    });
-  </script>
 </x-app-layout>

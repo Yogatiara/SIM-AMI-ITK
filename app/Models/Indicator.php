@@ -15,7 +15,12 @@ class Indicator extends Model
         'code',
         'entry',
         'rate_option',
+        'categorical_percentage',
         'link_info',
+        'activity_category',
+        'percentage_option',
+        'participant',
+        'activity_year',
     ];
 
     public function competency()

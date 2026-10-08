@@ -526,26 +526,18 @@
                                                           </div>
                                                         </div>
 
-                                                        <!-- Loading State -->
-                                                        <div x-show="activityLoading"
-                                                          class="flex items-center justify-center py-4">
-                                                          <svg
-                                                            class="size-5 animate-spin text-blue-600 dark:text-blue-400"
-                                                            xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        <button @click="fetchActivity(indicator)" type="button"
+                                                          class="mb-3 inline-flex items-center gap-1 rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-blue-500">
+                                                          <svg class="size-3" fill="none" stroke="currentColor"
                                                             viewBox="0 0 24 24">
-                                                            <circle class="opacity-25" cx="12" cy="12"
-                                                              r="10" stroke="currentColor" stroke-width="4"></circle>
-                                                            <path class="opacity-75" fill="currentColor"
-                                                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                                            </path>
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                              stroke-width="2"
+                                                              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                                           </svg>
-                                                          <span
-                                                            class="ml-2 text-sm text-blue-600 dark:text-blue-400">Memuat
-                                                            data aktivitas...</span>
-                                                        </div>
+                                                          Muat Data Aktivitas
+                                                        </button>
 
-                                                        <!-- Data Table -->
-                                                        <div x-show="activityData && !activityLoading"
+                                                        <div x-show="activityData"
                                                           class="overflow-hidden rounded-lg border border-blue-200 dark:border-blue-800">
                                                           <div class="max-h-60 overflow-auto">
                                                             <table class="w-full text-xs">
@@ -659,179 +651,6 @@
                                                               class="text-blue-600 focus:ring-blue-500">
                                                             <span>100% Prodi memenuhi "Batas Target" dan maks 3 Prodi
                                                               tidak memenuhi "Batas Melampaui"</span>
-                                                          </label>
-
-
-
-                                                        </div>
-                                                      </div>
-                                                    </template>
-
-                                                    <template
-                                                      x-if="indicator.entry === 'Percentage' && indicator.percentage_option == 'percentage-2'">
-
-                                                      <div>
-                                                        <p class="mb-3 text-sm text-gray-600 dark:text-gray-300">
-                                                          Beri nilai sesuai tingkat pencapaian indikator
-                                                        </p>
-
-                                                        <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
-
-                                                          <label
-                                                            class="flex cursor-pointer items-center gap-2 text-sm">
-                                                            <input type="radio" x-model="focusIndicator.validation"
-                                                              value="batas_bawah" @change="isEditing = true"
-                                                              class="text-blue-600 focus:ring-blue-500">
-                                                            <span>100% Prodi memenuhi
-                                                              "Batas Bawah"</span>
-                                                          </label>
-
-                                                          <label
-                                                            class="flex cursor-pointer items-center gap-2 text-sm">
-                                                            <input type="radio" x-model="focusIndicator.validation"
-                                                              value="batas_target" @change="isEditing = true"
-                                                              class="text-blue-600 focus:ring-blue-500">
-                                                            <span>100% Prodi memenuhi
-                                                              "Batas Target"</span>
-                                                          </label>
-
-                                                          <label
-                                                            class="flex cursor-pointer items-center gap-2 text-sm">
-                                                            <input type="radio" x-model="focusIndicator.validation"
-                                                              value="target_maks3" @change="isEditing = true"
-                                                              class="text-blue-600 focus:ring-blue-500">
-                                                            <span>100% Prodi memenuhi "Batas Target" dan maks 1 Prodi
-                                                              tidak memenuhi "Batas Melampaui"</span>
-                                                          </label>
-
-
-
-                                                        </div>
-                                                      </div>
-                                                    </template>
-
-                                                    <template
-                                                      x-if="indicator.entry === 'Percentage' && indicator.percentage_option == 'percentage-3'">
-
-                                                      <div>
-                                                        <p class="mb-3 text-sm text-gray-600 dark:text-gray-300">
-                                                          Beri nilai sesuai tingkat pencapaian indikator
-                                                        </p>
-
-                                                        <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
-
-                                                          <label
-                                                            class="flex cursor-pointer items-center gap-2 text-sm">
-                                                            <input type="radio" x-model="focusIndicator.validation"
-                                                              value="batas_bawah" @change="isEditing = true"
-                                                              class="text-blue-600 focus:ring-blue-500">
-                                                            <span>≥ 30 % penelitian program studi melibatkan
-                                                              Mahasiswa</span>
-                                                          </label>
-
-                                                          <label
-                                                            class="flex cursor-pointer items-center gap-2 text-sm">
-                                                            <input type="radio" x-model="focusIndicator.validation"
-                                                              value="batas_target" @change="isEditing = true"
-                                                              class="text-blue-600 focus:ring-blue-500">
-                                                            <span>≥ 50 % penelitian program studi melibatkan
-                                                              Mahasiswa</span>
-                                                          </label>
-
-                                                          <label
-                                                            class="flex cursor-pointer items-center gap-2 text-sm">
-                                                            <input type="radio" x-model="focusIndicator.validation"
-                                                              value="target_maks3" @change="isEditing = true"
-                                                              class="text-blue-600 focus:ring-blue-500">
-                                                            <span>≥ 75 % penelitian program studi melibatkan
-                                                              Mahasiswa</span>
-                                                          </label>
-
-
-
-                                                        </div>
-                                                      </div>
-                                                    </template>
-
-                                                    <template
-                                                      x-if="indicator.entry === 'Percentage' && indicator.percentage_option == 'percentage-4'">
-
-                                                      <div>
-                                                        <p class="mb-3 text-sm text-gray-600 dark:text-gray-300">
-                                                          Beri nilai sesuai tingkat pencapaian indikator
-                                                        </p>
-
-                                                        <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
-
-                                                          <label
-                                                            class="flex cursor-pointer items-center gap-2 text-sm">
-                                                            <input type="radio" x-model="focusIndicator.validation"
-                                                              value="batas_bawah" @change="isEditing = true"
-                                                              class="text-blue-600 focus:ring-blue-500">
-                                                            <span>> 0 % penelitian program studi melibatkan Tenaga
-                                                              Kependidikan ITK</span>
-                                                          </label>
-
-                                                          <label
-                                                            class="flex cursor-pointer items-center gap-2 text-sm">
-                                                            <input type="radio" x-model="focusIndicator.validation"
-                                                              value="batas_target" @change="isEditing = true"
-                                                              class="text-blue-600 focus:ring-blue-500">
-                                                            <span>≥ 5 % penelitian program studi melibatkan Tenaga
-                                                              Kependidikan ITK</span>
-                                                          </label>
-
-                                                          <label
-                                                            class="flex cursor-pointer items-center gap-2 text-sm">
-                                                            <input type="radio" x-model="focusIndicator.validation"
-                                                              value="target_maks3" @change="isEditing = true"
-                                                              class="text-blue-600 focus:ring-blue-500">
-                                                            <span>≥ 10 % penelitian program studi melibatkan Tenaga
-                                                              Kependidikan ITK</span>
-                                                          </label>
-
-
-
-                                                        </div>
-                                                      </div>
-                                                    </template>
-
-
-                                                    <template
-                                                      x-if="indicator.entry === 'Percentage' && indicator.percentage_option == 'percentage-5'">
-
-                                                      <div>
-                                                        <p class="mb-3 text-sm text-gray-600 dark:text-gray-300">
-                                                          Beri nilai sesuai tingkat pencapaian indikator
-                                                        </p>
-
-                                                        <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
-
-                                                          <label
-                                                            class="flex cursor-pointer items-center gap-2 text-sm">
-                                                            <input type="radio" x-model="focusIndicator.validation"
-                                                              value="batas_bawah" @change="isEditing = true"
-                                                              class="text-blue-600 focus:ring-blue-500">
-                                                            <span>> 0 % penelitian program studi melibatkan Peneliti
-                                                              non-ITK</span>
-                                                          </label>
-
-                                                          <label
-                                                            class="flex cursor-pointer items-center gap-2 text-sm">
-                                                            <input type="radio" x-model="focusIndicator.validation"
-                                                              value="batas_target" @change="isEditing = true"
-                                                              class="text-blue-600 focus:ring-blue-500">
-                                                            <span>≥ 10 % penelitian program studi melibatkan Peneliti
-                                                              non-ITK</span>
-                                                          </label>
-
-                                                          <label
-                                                            class="flex cursor-pointer items-center gap-2 text-sm">
-                                                            <input type="radio" x-model="focusIndicator.validation"
-                                                              value="target_maks3" @change="isEditing = true"
-                                                              class="text-blue-600 focus:ring-blue-500">
-                                                            <span>≥ 25 % penelitian program studi melibatkan Peneliti
-                                                              non-ITK</span>
                                                           </label>
 
 
@@ -1181,42 +1000,23 @@
           this.focusIndicator = Object.assign({}, indicator);
           this.activityData = null;
           this.focusTrap = focusTrap(document.querySelector('#modal-' + indicator.id));
-          // Auto fetch activity data if applicable
-          if (indicator.entry === 'Percentage' && indicator.percentage_option !== 'actual_percentage') {
-            this.fetchActivity(indicator);
-          }
         },
         activityData: null,
-        activityLoading: false,
         formId: {{ $form->id }},
         async fetchActivity(indicator) {
-          if (!indicator.activity_category && !indicator.participant) {
-            alert('Kategori dan peserta harus diisi terlebih dahulu.');
+          if (!indicator.activity_category || !indicator.participant || !indicator.activity_year) {
+            alert('Kategori, peserta, dan tahun harus diisi terlebih dahulu.');
             return;
           }
-          this.activityLoading = true;
           try {
-
-            const params = new URLSearchParams({
-              kategori: indicator.activity_category,
-              peserta: indicator.participant,
-              prodi: @json($form->unit?->code),
-              fakultas: @json($form->unit?->department?->faculty?->code),
-            });
-
-            if (indicator.activity_year) {
-              params.append('tahun', indicator.activity_year);
-            }
             const response = await fetch(
-              `/forms/${this.formId}/get-activity?${params.toString()}`
+              `/forms/${this.formId}/get-activity?kategori=${encodeURIComponent(indicator.activity_category)}&peserta=${encodeURIComponent(indicator.participant)}&tahun=${encodeURIComponent(indicator.activity_year)}`
             );
             const data = await response.json();
             this.activityData = data;
           } catch (error) {
             console.error('Error fetching activity:', error);
             alert('Gagal memuat data aktivitas.');
-          } finally {
-            this.activityLoading = false;
           }
         },
         closeIndicator() {

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Log;
 // use Mpdf\Mpdf;
 use Carbon\Carbon;
 use App\Models\Form;
@@ -40,6 +39,8 @@ use PhpOffice\PhpSpreadsheet\Chart\DataSeries;
 use PhpOffice\PhpSpreadsheet\Chart\DataSeriesValues;
 use PhpOffice\PhpSpreadsheet\Chart\Chart as SpreadsheetChart;
 use id;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class FormController extends Controller
 {
@@ -393,21 +394,17 @@ class FormController extends Controller
     public function editSubmission(Form $form)
     {
         $formAccesses = FormAccess::where('form_id', $form->id)->get();
-
-        $editAccess = $formAccesses->contains(function ($access) {
-            return $access->user_id === auth()->id() &&
-                ($access->position === 'Chief' || strpos($access->position, 'PIC') !== false);
-        });
+        $indicator = Indicator::with(['competency, standard, category'])->where('competency_id', )->get();
 
         // if (!$editAccess || $form->stage_id !== 1 || app('user_role') !== 'Auditee') {
         //     abort(403, "The form is currently {$form->stage->name} Stage.");
         // }
 
-        $submitAccess = true;
+        // $submitAccess = true;
 
-        // $submitAccess = $formAccesses->contains(function ($access) {
-        //     return $access->user_id === auth()->id() && $access->position === 'Chief';
-        // });
+        $submitAccess = $formAccesses->contains(function ($access) {
+            return $access->user_id === auth()->id() && ($access->position === 'Chief') || Auth::user()->hasRole('PJM');
+        });
 
         $auditees = $formAccesses->filter(function ($access) {
             return $access->position === 'Chief' || strpos($access->position, 'PIC') !== false;
@@ -429,11 +426,48 @@ class FormController extends Controller
             return $item->indicator?->competency?->standard?->category?->id ?? null;
         });
 
+
         $statuses = Status::orderBy('id', 'desc')->get();
+
+        // $activityData = $this->getActivity(form->);
+
 
         return view('forms.edit-submission', compact('form', 'submitAccess', 'auditees', 'auditors', 'grouped', 'statuses'));
     }
 
+
+    public function getActivity(Request $request)
+    {
+        $kategori = $request->input('kategori');
+        $peserta = $request->input('peserta');
+        $tahun = $request->input('tahun');
+        $prodi = $request->input('prodi');
+        $fakultas = $request->input('fakultas');
+
+        $apiUrl = config('services.simpas.api_url');
+        $apiToken = config('services.simpas.token');
+
+        try {
+            $response = Http::acceptJson()
+                ->withToken($apiToken)
+                ->get($apiUrl, [
+                    'kategori' => $kategori,
+                    'peserta' => $peserta,
+                    'tahun' => $tahun,
+                    'prodi' => $prodi,
+                    'fakultas' => $fakultas,
+                ]);
+
+            if ($response->successful()) {
+                return response()->json($response->json());
+            } else {
+                return response()->json(['error' => 'Failed to fetch activity data.'], 500);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error fetching activity data: ' . $e->getMessage());
+            return response()->json(['error' => 'An error occurred while fetching activity data.'], 500);
+        }
+    }
     /**
      * Find the next active stage after the given stage_id.
      */

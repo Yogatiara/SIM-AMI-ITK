@@ -111,6 +111,7 @@ class DocumentController extends Controller
             $indicatorsByCompetency = $indicators->groupBy('competency_id');
         }
 
+        dd($indicatorsByCompetency);
         // Mengirim data ke view
         return view('documents.create', compact(
             'template',
@@ -124,7 +125,9 @@ class DocumentController extends Controller
 
     public function store(Request $request)
     {
+
         // dd($request->all());
+
         $categories = $request->input('categories', []);
         $document_name = $request->input('document_name');
 
@@ -171,6 +174,11 @@ class DocumentController extends Controller
                                         'entry' => $indicatorData['entry'],
                                         'link_info' => $indicatorData['link_info'],
                                         'rate_option' => $indicatorData['rate_option'] ?? null,
+                                        'activity_category' => $indicatorData['activity_category'] ?? null,
+                                        'participant' => $indicatorData['participant'] ?? null,
+                                        'activity_year' => $indicatorData['activity_year'] ?? null,
+                                        'percentage_option' => $indicatorData['percentage_option'] ?? null,
+
                                     ];
                                 }
                             }
@@ -211,6 +219,7 @@ class DocumentController extends Controller
                     'categories.*.standards.*.competencies.*.indicators.*.entry' => 'required|string',
                     'categories.*.standards.*.competencies.*.indicators.*.link_info' => 'nullable|string',
                     'categories.*.standards.*.competencies.*.indicators.*.rate_option' => 'nullable|string',
+                    'categories.*.standards.*.competencies.*.indicators.*.activity_year' => 'nullable|integer|min:2018|max:2027'
                 ],
                 [
                     'document_name.required' => 'Nama dokumen wajib diisi.',
@@ -229,9 +238,34 @@ class DocumentController extends Controller
 
             );
 
+
+            $validator->after(function ($validator) use ($request) {
+                foreach ($request->input('categories', []) as $categoryIndex => $category) {
+                    foreach ($category['standards'] ?? [] as $standardIndex => $standard) {
+                        foreach ($standard['competencies'] ?? [] as $competencyIndex => $competency) {
+                            foreach ($competency['indicators'] ?? [] as $indicatorIndex => $indicator) {
+
+                                if (
+                                    ($indicator['activity_category'] === "penelitian" || $indicator['activity_category'] === "pengmas")
+                                    && (empty($indicator['participant']) || empty($indicator['activity_year']))
+                                ) {
+
+                                    $validator->errors()->add(
+                                        "categories.$categoryIndex.standards.$standardIndex.competencies.$competencyIndex.indicators.$indicatorIndex.participant",
+                                        'Jenis Peserta dan tahun wajib diisi jika katoegori kegiatan dipilih.'
+                                    );
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
+
+
 
             $document = Document::create([
                 'name' => $document_name,
@@ -267,6 +301,12 @@ class DocumentController extends Controller
                                             'entry' => $indicatorData['entry'],
                                             'link_info' => $indicatorData['link_info'],
                                             'rate_option' => $indicatorData['rate_option'] ?? null,
+                                            'activity_category' => $indicatorData['activity_category'] ?? null,
+                                            'participant' => $indicatorData['participant'] ?? null,
+                                            'percentage_option' => $indicatorData['percentage_option'] ?? null,
+                                            'activity_year' => $indicatorData['activity_year'] ?? null,
+
+
                                         ]);
                                     }
                                 }

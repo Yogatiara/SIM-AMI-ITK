@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Faculty;
+use App\Models\Department;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 
@@ -13,7 +13,7 @@ class UnitController extends Controller
      */
     public function index()
     {
-        $units = Unit::withCount('forms')
+        $units = Unit::with(['department.faculty'])
             ->latest()
             ->get();
 
@@ -29,10 +29,8 @@ class UnitController extends Controller
      */
     public function create()
     {
-        $faculties = Faculty::latest();
-        return view('units.create', [
-            'faculties' => $faculties->get()
-        ]);
+        $departments = Department::with('faculty')->get();
+        return view('units.create', compact('departments'));
     }
 
     /**
@@ -43,17 +41,17 @@ class UnitController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:100', 'unique:units'],
             'code' => ['required', 'string', 'max:10', 'unique:units'],
-            'faculty' => [],
+            'department_id' => ['required', 'exists:departments,id'],
         ]);
 
-        $units = Unit::create([
+        $unit = Unit::create([
             'name' => $request->name,
             'code' => $request->code,
-            'faculty_id' => $request->faculty,
+            'department_id' => $request->department_id,
         ]);
 
         return redirect('/units')
-            ->with("status", "$units->name added successfully!");
+            ->with("status", "$unit->name added successfully!");
     }
 
     /**
@@ -69,9 +67,8 @@ class UnitController extends Controller
      */
     public function edit(Unit $unit)
     {
-        $units = Unit::all();
-        $faculties = Faculty::all();
-        return view('units.edit', compact('unit', 'units', 'faculties'));
+        $departments = Department::with('faculty')->get();
+        return view('units.edit', compact('unit', 'departments'));
     }
 
     /**
@@ -79,32 +76,18 @@ class UnitController extends Controller
      */
     public function update(Request $request, Unit $unit)
     {
-        // Validasi input
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'code' => 'required|string|max:255',
-            'faculty' => 'nullable|exists:faculties,id', // Faculty tidak wajib, hanya jika diisi
+            'department_id' => 'required|exists:departments,id',
         ]);
 
-        // Update 'code' secara langsung
-        $unit->name = $validatedData['name'];
-        $unit->code = $validatedData['code'];
+        $unit->update([
+            'name' => $validatedData['name'],
+            'code' => $validatedData['code'],
+            'department_id' => $validatedData['department_id'],
+        ]);
 
-        // Cek apakah 'code' dimulai dengan angka, jika ya, update 'faculty'
-        if (preg_match('/^\d/', $validatedData['code'])) {
-            // Jika 'code' dimulai dengan angka dan 'faculty' dipilih, update faculty
-            if (!empty($validatedData['faculty'])) {
-                $unit->faculty_id = $validatedData['faculty'];
-            }
-        } else {
-            // Jika 'code' tidak dimulai dengan angka, pastikan 'faculty_id' diset ke null
-            $unit->faculty_id = null;
-        }
-
-        // Simpan perubahan ke database
-        $unit->save();
-
-        // Redirect kembali dengan pesan sukses
         return redirect()->route('units.index')
             ->with('success', "Data $unit->name berhasil diperbarui.");
     }

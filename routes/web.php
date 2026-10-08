@@ -8,6 +8,7 @@ use App\Http\Controllers\FormController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\StageManagementController;
+use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use App\Livewire\auth\Login;
@@ -198,6 +199,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     |--------------------------------------------------------------------------
     */
 
+    Route::resource('/faculties', FacultyController::class);
+    Route::get('/faculties/{faculty}/show', [FacultyController::class, 'show'])
+        ->name('faculties.show');
+
     Route::resource('/departments', DepartmentController::class);
 
     Route::resource('/units', UnitController::class);
@@ -271,6 +276,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::put('/submission', 'updateSubmission')
                 ->name('updateSubmission');
+
+            Route::get('/get-activity', 'getActivity')
+                ->name('getActivity');
 
 
             /*

@@ -48,7 +48,10 @@
                                                 entry: '{{ $indicator['entry'] }}',
                                                 link_info: '{{ str_replace(["\r\n", "\r", "\n"], "\\n", e($indicator['link_info'])) }}',
                                                 rate_option: '{{ $indicator['rate_option'] }}',
-                                                percentage_options: [],
+                                                activity_category: '{{ $indicator['activity_category'] }}',
+                                                participant: '{{ $indicator['participant'] }}',
+                                                activity_year: '{{ $indicator['activity_year'] }}',
+                                                percentage_options: '{{ $indicator['percentage_option'] }}',
 
                                             }, @endforeach
                                         @else
@@ -68,29 +71,29 @@
                 }, @empty
                 { id: 1, name: '', standards: [] } @endforelse
         ],
-    
+
         updateAllIds() {
             let categoryId = 1,
                 standardId = 1,
                 competencyId = 1,
                 indicatorId = 1;
-    
+
             this.categories.forEach((category) => {
                 category.id = categoryId++;
                 let indicatorIndex = 1
-    
+
                 category.standards.forEach((standard) => {
                     standard.id = standardId++;
                     standard.category_id = category.id; // Assign the parent category id
-    
+
                     standard.competencies.forEach((competency) => {
                         competency.id = competencyId++;
                         competency.standard_id = standard.id; // Assign the parent standard id
-    
+
                         competency.indicators.forEach((indicator) => {
                             indicator.id = indicatorId++;
                             indicator.competency_id = competency.id; // Assign the parent competency id
-    
+
                             // Generate the indicator code based on category.id and indicator.id
                             let categoryLetter = String.fromCharCode(64 + category.id) + '.' + indicatorIndex++; // Convert category.id to a letter (A, B, C, ...)
                             indicator.code = categoryLetter;
@@ -144,15 +147,21 @@
         },
         addIndicator(standardId, competencyId) {
             let category = this.categories.find(cat => cat.id === this.openTab);
-    
-            // Hitung ID baru untuk indikator
-            let newIndicatorId = category.standards[standardId].competencies[competencyId].indicators.length + 1
+
             category.standards[standardId].competencies[competencyId].indicators.push({
                 id: 0,
+                competency_id: 0,
+                code: '',
                 assessment: '',
-                code: ''
-    
+                entry: 'Option',
+                link_info: '',
+                rate_option: '1-10',
+                percentage_option: '',
+                activity_category: '',
+                participant: '',
+                activity_year: ''
             });
+
             this.updateAllIds();
         },
         removeIndicator(standardId, competencyId, indicatorId) {
@@ -165,14 +174,14 @@
                 el.style.height = 'auto';
                 el.style.height = `${el.scrollHeight + offsetTop}px`;
             }
-    
+
             this.$nextTick(() => {
                 document.querySelectorAll('textarea').forEach(textarea => {
                     textarea.addEventListener('focus', () => textareaAutoHeight(textarea, 30));
                     textareaAutoHeight(textarea, 30); // Initial call
                 });
             });
-    
+
         },
         isOpenTabInvalid() {
             return !this.categories.some(category => category.id === this.openTab);
@@ -371,7 +380,7 @@
                                   x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
                                   x-transition:leave="transition ease-in duration-150"
                                   x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-                                  class="fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-50 sm:items-center">
+                                  class="fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-50 sm:items-center ">
                                   <!-- Modal -->
                                   <div x-show="isModalOpen && currentIndicatorId === indicator.id"
                                     x-transition:enter="transition ease-out duration-150"
@@ -379,9 +388,9 @@
                                     x-transition:enter-end="opacity-100"
                                     x-transition:leave="transition ease-in duration-150"
                                     x-transition:leave-start="opacity-100"
-                                    x-transition:leave-end="opacity-0  transform translate-y-1/2"
+                                    x-transition:leave-end="opacity-0 transform translate-y-1/2"
                                     @click.away="closeModal()" @keydown.escape="closeModal()"
-                                    class="w-full overflow-hidden rounded-t-lg bg-white px-6 py-4 text-left dark:bg-gray-800 sm:m-4 sm:max-w-xl sm:rounded-lg"
+                                    class="flex w-1/2 max-h-[90vh] flex-col overflow-hidden rounded-t-lg bg-white px-4  py-4 text-left dark:bg-gray-800 sm:m-4 sm:rounded-lg"
                                     role="dialog" :id="'modal-' + indicator.id">
                                     <!-- Remove header if you don't want a close icon. Use modal body to place modal tile. -->
                                     <header class="flex justify-between">
@@ -402,7 +411,7 @@
                                     </header>
                                     <!-- Modal body -->
 
-                                    <div class="mt-6 flex flex-col gap-y-8 text-gray-500">
+                                    <div class="mt-6 min-h-0 flex-1 overflow-y-auto px-2 text-gray-500">
 
                                       <div class="flex flex-col ">
                                         <!-- Modal form -->
@@ -470,14 +479,14 @@
                                               <option value="1-100">1-100
                                               </option>
 
-                                              <option value="researcherSatisfaction">
+                                              <option value="researcher_satisfaction">
                                                 Tingkat Kepuasan (label)</option>
                                             </select>
                                           </template>
 
 
                                           <template x-if="indicator.entry === 'Percentage'">
-                                            <select x-model="indicator.rate_option"
+                                            <select x-model="indicator.percentage_option"
                                               :name="'categories[' + index +
                                                   '][standards][' +
                                                   standardIndex +
@@ -485,14 +494,14 @@
                                                   competencyIndex +
                                                   '][indicators][' +
                                                   indicatorIndex +
-                                                  '][rate_option]'"
+                                                  '][percentage_option]'"
                                               class=" bg-gray-50 border mt-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                               <option hidden value="1-10">
                                                 Pilih jenis inputan persentase</option>
-                                              <option value="actualPercentage">Presentase Aktual
+                                              <option value="actual_percentage">Presentase Aktual
                                               </option>
 
-                                              <option value="categoricalPercentage">Presentase Kategorikal
+                                              <option value="categorical_percentage">Presentase Kategorikal
                                               </option>
                                               Tingkat Kepuasan (label)</option>
                                             </select>
@@ -500,7 +509,262 @@
 
 
 
+
+
                                         </div>
+
+                                        <template x-if="indicator.percentage_option === 'categorical_percentage'">
+
+                                          <div class="block mt-2">
+
+                                            <h3 class="mb-5 text-lg font-medium text-gray-900 dark:text-white">Pilih
+                                              jenis inputan presentase kategorikal</h3>
+
+                                            <ul class="grid w-full items-stretch gap-6 md:grid-cols-2">
+
+                                              <li class="h-full">
+                                                <input
+                                                  :name="'categories[' + index +
+                                                      '][standards][' +
+                                                      standardIndex +
+                                                      '][competencies][' +
+                                                      competencyIndex +
+                                                      '][indicators][' +
+                                                      indicatorIndex +
+                                                      '][percentage_option]'"
+                                                  type="radio" id="percentage-1" name="percentage_option"
+                                                  value="percentage-1" class="peer hidden" required />
+
+                                                <label for="percentage-1"
+                                                  class="flex h-full w-full items-stretch justify-between gap-3 rounded-lg border border-gray-200 bg-white p-5 text-gray-500 cursor-pointer
+                   hover:bg-gray-100 hover:text-gray-600
+                   peer-checked:border-blue-600 peer-checked:text-blue-600
+                   dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400
+                   dark:hover:bg-gray-700 dark:hover:text-gray-300
+                   dark:peer-checked:border-blue-600 dark:peer-checked:text-blue-500">
+
+                                                  <div class="flex-1">
+                                                    <ul
+                                                      class="w-full overflow-hidden rounded-lg border border-gray-200 bg-white text-sm font-medium dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                                                      <li
+                                                        class="border-b border-gray-200 px-4 py-2 dark:border-gray-600">
+                                                        100% Prodi memenuhi "Batas Bawah"
+                                                      </li>
+
+                                                      <li
+                                                        class="border-b border-gray-200 px-4 py-2 dark:border-gray-600">
+                                                        100% Prodi memenuhi "Batas Target"
+                                                      </li>
+
+                                                      <li class="px-4 py-2">
+                                                        100% Prodi memenuhi "Batas Target" dan maks 3 Prodi tidak
+                                                        memenuhi "Batas Melampaui"
+                                                      </li>
+                                                    </ul>
+                                                  </div>
+
+                                                  <div class="flex shrink-0 items-center">
+                                                    %
+                                                  </div>
+
+                                                </label>
+                                              </li>
+
+
+                                              <li class="h-full">
+                                                <input
+                                                  :name="'categories[' + index +
+                                                      '][standards][' +
+                                                      standardIndex +
+                                                      '][competencies][' +
+                                                      competencyIndex +
+                                                      '][indicators][' +
+                                                      indicatorIndex +
+                                                      '][percentage_option]'"
+                                                  type="radio" id="percentage-2" name="percentage_option"
+                                                  value="percentage-2" class="peer hidden" />
+
+                                                <label for="percentage-2"
+                                                  class="flex h-full w-full items-stretch justify-between gap-3 rounded-lg border border-gray-200 bg-white p-5 text-gray-500 cursor-pointer
+                   hover:bg-gray-100 hover:text-gray-600
+                   peer-checked:border-blue-600 peer-checked:text-blue-600
+                   dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400
+                   dark:hover:bg-gray-700 dark:hover:text-gray-300
+                   dark:peer-checked:border-blue-600 dark:peer-checked:text-blue-500">
+
+                                                  <div class="flex-1">
+                                                    <ul
+                                                      class="w-full overflow-hidden rounded-lg border border-gray-200 bg-white text-sm font-medium dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                                                      <li
+                                                        class="border-b border-gray-200 px-4 py-2 dark:border-gray-600">
+                                                        100% Prodi memenuhi "Batas Bawah"
+                                                      </li>
+
+                                                      <li
+                                                        class="border-b border-gray-200 px-4 py-2 dark:border-gray-600">
+                                                        100% Prodi memenuhi "Batas Target"
+                                                      </li>
+
+                                                      <li class="px-4 py-2">
+                                                        100% Prodi memenuhi "Batas Target" dan maks 1 Prodi tidak
+                                                        memenuhi "Batas Melampaui"
+                                                      </li>
+                                                    </ul>
+                                                  </div>
+
+                                                  <div class="flex shrink-0 items-center">
+                                                    %
+                                                  </div>
+
+                                                </label>
+                                              </li>
+
+                                              <li class="h-full">
+                                                <input
+                                                  :name="'categories[' + index +
+                                                      '][standards][' +
+                                                      standardIndex +
+                                                      '][competencies][' +
+                                                      competencyIndex +
+                                                      '][indicators][' +
+                                                      indicatorIndex +
+                                                      '][percentage_option]'"
+                                                  type="radio" id="percentage-3" name="percentage_option"
+                                                  value="percentage-3" class="peer hidden" />
+
+                                                <label for="percentage-3"
+                                                  class="flex h-full w-full items-stretch justify-between gap-3 rounded-lg border border-gray-200 bg-white p-5 text-gray-500 cursor-pointer
+                   hover:bg-gray-100 hover:text-gray-600
+                   peer-checked:border-blue-600 peer-checked:text-blue-600
+                   dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400
+                   dark:hover:bg-gray-700 dark:hover:text-gray-300
+                   dark:peer-checked:border-blue-600 dark:peer-checked:text-blue-500">
+
+                                                  <div class="flex-1">
+                                                    <ul
+                                                      class="w-full overflow-hidden rounded-lg border border-gray-200 bg-white text-sm font-medium dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                                                      <li
+                                                        class="border-b border-gray-200 px-4 py-2 dark:border-gray-600">
+                                                        ≥ 30 % penelitian program studi melibatkan Mahasiswa
+                                                      </li>
+
+                                                      <li
+                                                        class="border-b border-gray-200 px-4 py-2 dark:border-gray-600">
+                                                        ≥ 50 % penelitian program studi melibatkan Mahasiswa </li>
+
+                                                      <li class="px-4 py-2">
+                                                        ≥ 75 % penelitian program studi melibatkan Mahasiswa
+                                                      </li>
+                                                    </ul>
+                                                  </div>
+
+                                                  <div class="flex shrink-0 items-center">
+                                                    %
+                                                  </div>
+
+                                                </label>
+                                              </li>
+                                              <li class="h-full">
+                                                <input
+                                                  :name="'categories[' + index +
+                                                      '][standards][' +
+                                                      standardIndex +
+                                                      '][competencies][' +
+                                                      competencyIndex +
+                                                      '][indicators][' +
+                                                      indicatorIndex +
+                                                      '][percentage_option]'"
+                                                  type="radio" id="percentage-4" name="percentage_option"
+                                                  value="percentage-4" class="peer hidden" />
+
+                                                <label for="percentage-4"
+                                                  class="flex h-full w-full items-stretch justify-between gap-3 rounded-lg border border-gray-200 bg-white p-5 text-gray-500 cursor-pointer
+                   hover:bg-gray-100 hover:text-gray-600
+                   peer-checked:border-blue-600 peer-checked:text-blue-600
+                   dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400
+                   dark:hover:bg-gray-700 dark:hover:text-gray-300
+                   dark:peer-checked:border-blue-600 dark:peer-checked:text-blue-500">
+
+                                                  <div class="flex-1">
+                                                    <ul
+                                                      class="w-full overflow-hidden rounded-lg border border-gray-200 bg-white text-sm font-medium dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                                                      <li
+                                                        class="border-b border-gray-200 px-4 py-2 dark:border-gray-600">
+                                                        > 0 % penelitian program studi melibatkan Tenaga Kependidikan
+                                                        ITK
+                                                      </li>
+
+                                                      <li
+                                                        class="border-b border-gray-200 px-4 py-2 dark:border-gray-600">
+                                                        ≥ 5 % penelitian program studi melibatkan Tenaga Kependidikan
+                                                        ITK
+                                                      </li>
+
+                                                      <li class="px-4 py-2">
+                                                        ≥ 10 % penelitian program studi melibatkan Tenaga Kependidikan
+                                                        ITK
+                                                      </li>
+                                                    </ul>
+                                                  </div>
+
+                                                  <div class="flex shrink-0 items-center">
+                                                    %
+                                                  </div>
+
+                                                </label>
+                                              </li>
+                                              <li class="h-full">
+                                                <input
+                                                  :name="'categories[' + index +
+                                                      '][standards][' +
+                                                      standardIndex +
+                                                      '][competencies][' +
+                                                      competencyIndex +
+                                                      '][indicators][' +
+                                                      indicatorIndex +
+                                                      '][percentage_option]'"
+                                                  type="radio" id="percentage-5" name="percentage_option"
+                                                  value="percentage-5" class="peer hidden" />
+
+                                                <label for="percentage-5"
+                                                  class="flex h-full w-full items-stretch justify-between gap-3 rounded-lg border border-gray-200 bg-white p-5 text-gray-500 cursor-pointer
+                   hover:bg-gray-100 hover:text-gray-600
+                   peer-checked:border-blue-600 peer-checked:text-blue-600
+                   dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400
+                   dark:hover:bg-gray-700 dark:hover:text-gray-300
+                   dark:peer-checked:border-blue-600 dark:peer-checked:text-blue-500">
+
+                                                  <div class="flex-1">
+                                                    <ul
+                                                      class="w-full overflow-hidden rounded-lg border border-gray-200 bg-white text-sm font-medium dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                                                      <li
+                                                        class="border-b border-gray-200 px-4 py-2 dark:border-gray-600">
+                                                        > 0 % penelitian program studi melibatkan Peneliti non-ITK </li>
+
+                                                      <li
+                                                        class="border-b border-gray-200 px-4 py-2 dark:border-gray-600">
+                                                        ≥ 10 % penelitian program studi melibatkan Peneliti non-ITK
+                                                      </li>
+
+                                                      <li class="px-4 py-2">
+                                                        ≥ 25 % penelitian program studi melibatkan Peneliti non-ITK
+                                                      </li>
+                                                    </ul>
+                                                  </div>
+
+                                                  <div class="flex shrink-0 items-center">
+                                                    %
+                                                  </div>
+
+                                                </label>
+                                              </li>
+
+                                            </ul>
+                                          </div>
+
+
+
+                                        </template>
 
                                         <div class="mt-6">
                                           <div class="flex w-full">
@@ -535,21 +799,135 @@
                                           placeholder="elonmusk"> --}}
                                         </div>
 
-                                        {{-- <form class="mx-auto mt-6 w-full">
-                                          <label for="activity_category"
+                                        {{-- Keperluan data simpas --}}
+                                        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 mt-8">
+
+                                          {{-- Kategori Kegiatan --}}
+                                          <div class="w-full">
+                                            <label :for="'activity_category_' + indicator.id"
+                                              class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                                              Kategori Kegiatan
+                                              <span class="font-normal text-gray-500">(opsional)</span>
+                                            </label>
+
+                                            <select :id="'activity_category_' + indicator.id"
+                                              x-model="indicator.activity_category"
+                                              :name="'categories[' + index +
+                                                  '][standards][' +
+                                                  standardIndex +
+                                                  '][competencies][' +
+                                                  competencyIndex +
+                                                  '][indicators][' +
+                                                  indicatorIndex +
+                                                  '][activity_category]'"
+                                              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900
+                   focus:border-blue-500 focus:ring-blue-500
+                   dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+
+                                              <option value="">Pilih kategori kegiatan</option>
+                                              <option value="penelitian">Penelitian</option>
+                                              <option value="pengmas">Pengmas</option>
+                                            </select>
+                                          </div>
+
+                                          {{-- Peserta --}}
+                                          <template
+                                            x-if="
+            indicator.activity_category === 'penelitian' ||
+            indicator.activity_category === 'pengmas'
+        ">
+                                            <div class="w-full">
+                                              <label :for="'participant_' + indicator.id"
+                                                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                                                Peserta
+                                              </label>
+
+                                              <select :id="'participant_' + indicator.id"
+                                                x-model="indicator.participant"
+                                                :name="'categories[' + index +
+                                                    '][standards][' +
+                                                    standardIndex +
+                                                    '][competencies][' +
+                                                    competencyIndex +
+                                                    '][indicators][' +
+                                                    indicatorIndex +
+                                                    '][participant]'"
+                                                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900
+                       focus:border-blue-500 focus:ring-blue-500
+                       dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+
+                                                <option value="">Pilih jenis peserta</option>
+                                                <option value="mahasiswa">Mahasiswa</option>
+                                                <option value="tendik">Tendik</option>
+                                                <option value="mitra">Mitra</option>
+                                                <option value="eksternal">Eksternal</option>
+
+                                              </select>
+                                            </div>
+                                          </template>
+
+                                          {{-- Tahun Kegiatan --}}
+                                          <template
+                                            x-if="
+            indicator.activity_category === 'penelitian' ||
+            indicator.activity_category === 'pengmas'
+        ">
+                                            <div class="w-full">
+                                              <label :for="'activity_year_' + indicator.id"
+                                                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+
+                                                Pilih tahun kegiatan
+
+                                                <span class="font-normal text-gray-500 dark:text-gray-400">
+                                                  (2018–2027)
+                                                </span>
+                                              </label>
+
+                                              <input :id="'activity_year_' + indicator.id"
+                                                x-model="indicator.activity_year"
+                                                :name="'categories[' + index +
+                                                    '][standards][' +
+                                                    standardIndex +
+                                                    '][competencies][' +
+                                                    competencyIndex +
+                                                    '][indicators][' +
+                                                    indicatorIndex +
+                                                    '][activity_year]'"
+                                                type="number" min="2018" max="2027" step="1"
+                                                inputmode="numeric" placeholder="2026"
+                                                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900
+                       focus:border-blue-500 focus:ring-blue-500
+                       dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                                required />
+                                            </div>
+                                          </template>
+
+                                        </div>
+
+
+                                        {{-- <div class="mx-auto mt-6 w-full">
+                                          <label :for="'activity_category_' + indicator.id"
                                             class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
                                             Kategori Kegiatan (opsional)
                                           </label>
 
-                                          <select id="activity_category" x-model="indicator.activity_category"
-                                            @change="setData($event, indicator)"
+                                          <select :id="'activity_category_' + indicator.id"
+                                            x-model="indicator.activity_category"
+                                            :name="'categories[' + index +
+                                                '][standards][' +
+                                                standardIndex +
+                                                '][competencies][' +
+                                                competencyIndex +
+                                                '][indicators][' +
+                                                indicatorIndex +
+                                                '][activity_category]'"
                                             class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
 
                                             <option value="">Pilih kategori kegiatan</option>
                                             <option value="penelitian">Penelitian</option>
                                             <option value="pengmas">Pengmas</option>
                                           </select>
-                                        </form>
+                                        </div>
 
 
                                         <template
@@ -565,6 +943,14 @@
                                             </label>
 
                                             <select id="participant" x-model="indicator.participant"
+                                              :name="'categories[' + index +
+                                                  '][standards][' +
+                                                  standardIndex +
+                                                  '][competencies][' +
+                                                  competencyIndex +
+                                                  '][indicators][' +
+                                                  indicatorIndex +
+                                                  '][participant]'"
                                               class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
 
                                               <option value="">Pilih jenis peserta</option>
@@ -576,9 +962,45 @@
                                             </select>
 
                                           </div>
+                                        </template>
+
+
+
+                                        <template
+                                          x-if="
+    indicator.activity_category === 'penelitian' ||
+    indicator.activity_category === 'pengmas'
+">
+
+                                          <div class=" mt-6 ">
+                                            <label :for="'activity_year_' + indicator.id"
+                                              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                              Pilih tahun kegiatan
+                                              <span class="font-normal text-gray-500 dark:text-gray-400">
+                                                (Masukkan tahun rentang dari 2018–2027)
+                                              </span>
+                                            </label>
+
+                                            <input :id="'activity_year_' + indicator.id"
+                                              x-model="indicator.activity_year"
+                                              :name="'categories[' + index +
+                                                  '][standards][' +
+                                                  standardIndex +
+                                                  '][competencies][' +
+                                                  competencyIndex +
+                                                  '][indicators][' +
+                                                  indicatorIndex +
+                                                  '][activity_year]'"
+                                              type="number" name="year" min="2018" max="2027"
+                                              step="1" inputmode="numeric"
+                                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+               focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5
+               dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+               dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                              placeholder="2019" required />
+                                          </div>
+
                                         </template> --}}
-
-
 
 
                                       </div>
@@ -645,7 +1067,7 @@
 
       </div>
 
-      <div class="flex justify-end gap-3 mt-2">
+      <div class="flex justify-end gap-3 mt-3 pb-3">
         <button type="submit" name="action" value="draft"
           class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
           Simpan Sebagai Draft

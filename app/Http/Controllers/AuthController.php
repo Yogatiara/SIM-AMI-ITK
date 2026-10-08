@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Form;
+use App\Models\FormAccess;
 use App\Models\User;
 use App\Models\Stage;
 use Illuminate\Http\Request;
@@ -53,8 +54,20 @@ class AuthController extends Controller
         }
     }
 
-    public function index(Form $form)
+    public function index()
     {
+
+
+
+
+        $forms = Form::whereIn(
+            'id',
+            FormAccess::where('user_id', Auth::id())
+                ->pluck('form_id')
+        )->get();
+
+
+
         $stages = Stage::where('is_active', true)->orderBy('order', 'asc')->get();
 
         $users = User::where('last_seen', '>=', now()->subMinutes(3))
@@ -66,7 +79,7 @@ class AuthController extends Controller
         $forms = Form::with([
             'formAudits.indicator.competency.standard.category',
             'formTime'
-        ])->where('document_id', 2)->get();
+        ])->get();
 
         $categoriesStats = [];
 
@@ -120,6 +133,8 @@ class AuthController extends Controller
         [$tepatWaktu, $tidakTepatWaktu] = $forms->partition(function ($form) {
             return optional($form->formTime)->submission_time <= optional($form->formTime)->submission_deadline;
         })->map->count();
+
+        // dd($tepatWaktu, $tidakTepatWaktu);
 
         // Kirim data ke view
         return view('dashboard', compact('stages', 'users', 'tepatWaktu', 'tidakTepatWaktu', 'categoryPercentages'));

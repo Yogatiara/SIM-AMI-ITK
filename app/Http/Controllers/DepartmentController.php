@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\Faculty;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
@@ -12,7 +13,7 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        $departments = Department::get();
+        $departments = Department::with(['faculty', 'units'])->get();
 
         return view('departments.index', [
             'departments' => $departments
@@ -24,11 +25,8 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        return view('departments.create', [
-            'header' => "Tambah Departemen Baru",
-            'route' => route('departments.store'),
-            'submit' => "Simpan"
-        ]);
+        $faculties = Faculty::all();
+        return view('departments.create', compact('faculties'));
     }
 
     /**
@@ -38,12 +36,14 @@ class DepartmentController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:100', 'unique:departments'],
-            'code' => ['required', 'string', 'max:10', 'unique:departments']
+            'code' => ['required', 'string', 'max:10', 'unique:departments'],
+            'faculty_id' => ['required', 'exists:faculties,id'],
         ]);
 
         $department = Department::create([
             'name' => $request->name,
-            'code' => $request->code
+            'code' => $request->code,
+            'faculty_id' => $request->faculty_id,
         ]);
 
         return redirect('/departments')
@@ -63,12 +63,8 @@ class DepartmentController extends Controller
      */
     public function edit(Department $department)
     {
-        return view('departments.edit', [
-            'header' => "Edit Departemen",
-            'route' => route('departments.update', $department),
-            'submit' => "Simpan Perubahan",
-            'department' => $department
-        ]);
+        $faculties = Faculty::all();
+        return view('departments.edit', compact('department', 'faculties'));
     }
 
     /**
@@ -78,12 +74,14 @@ class DepartmentController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:100', 'unique:departments,name,' . $department->id],
-            'code' => ['required', 'string', 'max:10', 'unique:departments,code,' . $department->id]
+            'code' => ['required', 'string', 'max:10', 'unique:departments,code,' . $department->id],
+            'faculty_id' => ['required', 'exists:faculties,id'],
         ]);
 
         $department->update([
             'name' => $request->name,
-            'code' => $request->code
+            'code' => $request->code,
+            'faculty_id' => $request->faculty_id,
         ]);
 
         return redirect('/departments')
@@ -95,6 +93,11 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
+        // Check if department has units
+        if ($department->units()->count() > 0) {
+            return redirect('/departments')->with('error', 'Departemen tidak dapat dihapus karena memiliki program studi.');
+        }
+
         Department::destroy($department->id);
 
         return redirect('/departments')->with('status', 'Delete successfully');
